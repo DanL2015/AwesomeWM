@@ -1,0 +1,38 @@
+Documentation of Signals (so i dont go insane)
+
+Daemons
+"daemon::battery::status"
+- Input: Nothing
+- Output: {1 = status, 2 = percentage}
+- Automatically updates every 5s
+
+"daemon::brightness::status"
+- Input: Nothing
+- Output: Brightness percentage
+"daemon::brightness::update"
+- Input: Optional value
+- Output: Nothing
+- Sets brightness and calls "daemon::brightness::status" to update all widgets
+
+"daemon::volume::status"
+- Input: Nothing
+- Output: Volume percentage
+"daemon::volume::update"
+- Input: Optional value
+- Output: Nothing
+- Sets volume and calls "daemon::volume::status" to update all widgets
+
+"daemon::bluetooth::status"
+- Input: Nothing
+- Output: true is bluetooth is unblocked, false otherwise
+- Automatically updates every 2s
+
+"daemon::weather::status"
+- Input: Nothing
+- Output: temperature, description, icon code
+- Automatically updates every 1600s
+
+"daemon::wifi::status"
+- Input: Nothing
+- Output: Wifi ID if wifi is unblocked, nothing otherwise
+- Automatically updates every 2s

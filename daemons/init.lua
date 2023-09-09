@@ -1,0 +1,6 @@
+require("daemons.battery")
+require("daemons.wifi")
+require("daemons.bluetooth")
+require("daemons.brightness")
+require("daemons.volume")
+require("daemons.weather")
