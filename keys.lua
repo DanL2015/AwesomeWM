@@ -67,6 +67,7 @@ awful.keyboard.append_global_keybindings({
 			awful.spawn("xbacklight -inc 5")
       awesome.emit_signal("daemon::brightness::update")
 			brightness_osd.visible = true
+      brightness_osd.screen = awful.screen.focused()
 			brightness_timer:again()
 		end,
 	}),
@@ -79,6 +80,7 @@ awful.keyboard.append_global_keybindings({
 			awful.spawn("xbacklight -dec 5")
       awesome.emit_signal("daemon::brightness::update")
 			brightness_osd.visible = true
+      brightness_osd.screen = awful.screen.focused()
 			brightness_timer:again()
 		end,
 	}),
@@ -91,6 +93,7 @@ awful.keyboard.append_global_keybindings({
         awful.spawn("pamixer -i 5")
         awesome.emit_signal("daemon::volume::update")
         volume_osd.visible = true
+        volume_osd.screen = awful.screen.focused()
         volume_timer:again()
       end,
     },
@@ -104,6 +107,7 @@ awful.keyboard.append_global_keybindings({
         awful.spawn("pamixer -d 5")
         awesome.emit_signal("daemon::volume::update")
         volume_osd.visible = true
+        volume_osd.screen = awful.screen.focused()
         volume_timer:again()
       end,
     },
@@ -117,6 +121,7 @@ awful.keyboard.append_global_keybindings({
         awful.spawn("pamixer -t")
         awesome.emit_signal("daemon::volume::update")
         volume_osd.visible = true
+        volume_osd.screen = awful.screen.focused()
         volume_timer:again()
       end,
     },

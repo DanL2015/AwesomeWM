@@ -74,10 +74,12 @@ local function create_widget()
 			margins = beautiful.osd_padding,
 			layout = wibox.container.margin,
 		}),
+    border_color = beautiful.border_color_normal,
+    border_width = beautiful.border_width,
 		bg = beautiful.osd_bg,
 		ontop = true,
 		visible = false,
-    screen = screen[1],
+    screen = awful.screen.focused(),
 		placement = function(c)
 			awful.placement.bottom(c, { margins = { top = 0, bottom = beautiful.osd_margin, left = 0, right = 0 } })
 		end,

@@ -7,15 +7,25 @@ local bling = require("bling")
 local playerctl = bling.signal.playerctl.lib()
 
 local function add_background(widget)
+	-- return wibox.widget({
+	-- 	widget,
+	-- 	shape = function(cr, width, height)
+	-- 		gears.shape.rounded_rect(cr, width, height, 8)
+	-- 	end,
+	-- 	fill_horizontal = false,
+	-- 	fill_vertical = false,
+	-- 	bg = beautiful.panel_widget_bg,
+	-- 	layout = wibox.container.background,
+	-- })
 	return wibox.widget({
 		widget,
+		bg = beautiful.panel_bg,
 		shape = function(cr, width, height)
 			gears.shape.rounded_rect(cr, width, height, 8)
 		end,
-		fill_horizontal = false,
-		fill_vertical = false,
-		bg = beautiful.panel_widget_bg,
-		layout = wibox.container.background,
+		border_color = beautiful.panel_border_color,
+		border_width = beautiful.border_width,
+		widget = wibox.container.background,
 	})
 end
 
@@ -23,6 +33,9 @@ local function create_large_button(image, text, on_command, off_command)
 	local icon = wibox.widget({
 		image = image,
 		widget = wibox.widget.imagebox,
+    resize = true,
+    halign = "center",
+    valign = "center",
 		forced_height = beautiful.panel_button_icon_size,
 		forced_width = beautiful.panel_button_icon_size,
 	})
@@ -101,6 +114,7 @@ local function create_small_button(image, command, description, simple)
 		widget = wibox.widget.imagebox,
 		forced_height = beautiful.panel_button_icon_size,
 		forced_width = beautiful.panel_button_icon_size,
+    resize = true,
 		halign = "center",
 		valign = "center",
 	})
@@ -485,7 +499,7 @@ local theme = add_background(wibox.widget({
 		},
 		layout = wibox.layout.stack,
 	},
-	margins = beautiful.panel_internal_margin,
+	-- margins = beautiful.panel_internal_margin,
 	layout = wibox.container.margin,
 }))
 
@@ -522,22 +536,31 @@ local panel = wibox({
 })
 
 panel:setup({
-	widget,
-	margins = beautiful.panel_internal_margin,
-	layout = wibox.container.margin,
+	{
+		widget,
+		margins = beautiful.panel_internal_margin,
+		layout = wibox.container.margin,
+	},
+	bg = beautiful.panel_bg,
+	shape = function(cr, width, height)
+		gears.shape.rounded_rect(cr, width, height, 8)
+	end,
+	border_color = beautiful.panel_border_color,
+	border_width = beautiful.border_width,
+	widget = wibox.container.background,
 })
 
 -- Signals
 awesome.connect_signal("theme::load", function()
 	theme_bg.image = gears.surface.load_uncached(beautiful.backgrounds_path .. beautiful.backgrounds[theme_id])
-  theme_name.markup = tostring(beautiful.backgrounds[theme_id])
+	theme_name.markup = tostring(beautiful.backgrounds[theme_id])
 end)
 awesome.connect_signal("theme::prev", function()
 	theme_id = theme_id - 1
 	if theme_id < 0 then
 		theme_id = theme_id + beautiful.background_num
 	end
-  theme_name.markup = tostring(beautiful.backgrounds[theme_id])
+	theme_name.markup = tostring(beautiful.backgrounds[theme_id])
 	awesome.emit_signal("theme::load")
 end)
 awesome.connect_signal("theme::next", function()
@@ -545,15 +568,18 @@ awesome.connect_signal("theme::next", function()
 	if theme_id >= beautiful.background_num then
 		theme_id = theme_id - beautiful.background_num
 	end
-  theme_name.markup = tostring(beautiful.backgrounds[theme_id])
+	theme_name.markup = tostring(beautiful.backgrounds[theme_id])
 	awesome.emit_signal("theme::load")
 end)
 awesome.connect_signal("theme::set", function()
-	-- naughty.notification({text="executing ".."wal --cols16 -i "..beautiful.backgrounds[theme_id]})
-	awful.spawn.easy_async_with_shell("wal --cols16 -i '" .. beautiful.backgrounds_path .. beautiful.backgrounds[theme_id] .. "'", function()
-		awesome.restart()
-		awesome.emit_signal("wallpaper::load")
-	end)
+	awful.spawn.easy_async_with_shell(
+		"wal --cols16 -nq -i '" .. beautiful.backgrounds_path .. beautiful.backgrounds[theme_id] .. "'",
+		function()
+			awesome.restart()
+      -- beautiful.init("~/.config/awesome/theme.lua")
+			-- awesome.emit_signal("wallpaper::load")
+		end
+	)
 end)
 
 awesome.connect_signal("settings::toggle", function()

@@ -2,7 +2,7 @@ local awful = require("awful")
 local gears = require("gears")
 local naughty = require("naughty")
 
--- local update_interval = 1
+local update_interval = 5
 local volume_script = "pamixer --get-volume"
 
 local function update_volume()
@@ -22,11 +22,11 @@ awesome.connect_signal("daemon::volume::update", function(i)
 	end
 end)
 
--- gears.timer({
--- 	timeout = update_interval,
--- 	autostart = true,
--- 	call_now = true,
--- 	callback = update_volume,
--- })
+gears.timer({
+	timeout = update_interval,
+	autostart = true,
+	call_now = true,
+	callback = update_volume,
+})
 
 update_volume()

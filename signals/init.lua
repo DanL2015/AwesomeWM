@@ -77,7 +77,9 @@ client.connect_signal("request::titlebars", function(c)
 				{
 					halign = "left",
           valign = "center",
-					widget = awful.titlebar.widget.titlewidget(c),
+					-- widget = awful.titlebar.widget.titlewidget(c),
+          markup = "<b>"..c.class:gsub("^%l", string.upper).."</b>",
+          widget = wibox.widget.textbox,
 					font = beautiful.font_small,
 				},
 				buttons = buttons,
@@ -158,10 +160,12 @@ ruled.notification.connect_signal("request::rules", function()
 							{
 								halign = "left",
 								widget = naughty.widget.title,
+                forced_width = beautiful.notification_text_width,
 							},
 							{
 								halign = "left",
 								widget = naughty.widget.message,
+                forced_width = beautiful.notification_text_width,
 							},
 							layout = wibox.layout.fixed.vertical,
 						},

@@ -1,6 +1,3 @@
----------------------------
--- Default awesome theme --
----------------------------
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local rnotification = require("ruled.notification")
@@ -17,9 +14,7 @@ theme.backgrounds_path = themes_path .. "backgrounds/"
 theme.backgrounds = {}
 theme.background_num = 0
 local cmd = "bash -c 'ls " .. theme.backgrounds_path .. "'"
--- naughty.notification({text=cmd})
 awful.spawn.easy_async_with_shell(cmd, function(stdout)
-    -- naughty.notification({text = stdout})
     for s in stdout:gmatch("[^\r\n]+") do
         s = s:gsub("[\n\r]", "")
         theme.backgrounds[theme.background_num] = s
@@ -31,9 +26,10 @@ end)
 theme.colors = xresources.get_current_theme()
 
 theme.font = "Iosevka Nerd Font Medium 12"
-theme.font_small = "Iosevka Nerd Font Bold 10"
+theme.font_small = "Iosevka Nerd Font Bold 11"
 theme.font_icon = "Iosevka Nerd Font Mono 18"
 
+-- Old Mountain Colorscheme
 -- theme.red = "#AC8A8C"
 -- theme.orange = "#C6A679"
 -- theme.yellow = "#ACA98A"
@@ -108,7 +104,7 @@ theme.bar_bg = theme.bg0
 theme.slider_handle_color = theme.a30
 theme.slider_bar_active_color = theme.a20
 theme.slider_bar_height = dpi(10)
-theme.slider_bar_color = theme.bg0
+theme.slider_bar_color = theme.bg1
 theme.slider_handle_width = dpi(20)
 
 -- Spacing
@@ -201,6 +197,7 @@ theme.notification_icon_size = dpi(32)
 theme.notification_inner_margin = theme.xlarge_space
 theme.notification_border_width = dpi(2)
 theme.notification_border_color = theme.bg1
+theme.notification_text_width = dpi(300)
 theme.notification_shape = function(cr, width, height)
 	gears.shape.rounded_rect(cr, width, height, 10)
 end
@@ -214,11 +211,12 @@ theme.panel_button_inactive_bg = theme.bg0
 theme.panel_button_active_bg = theme.a00
 theme.panel_button_fg = theme.fg0
 theme.panel_fg = theme.fg0
-theme.panel_button_icon_size = dpi(20)
+theme.panel_button_icon_size = dpi(24)
 theme.panel_button_icon_padding = dpi(10)
-theme.panel_internal_margin = dpi(10)
+theme.panel_internal_margin = dpi(8)
 theme.panel_art_size = dpi(80)
 theme.panel_theme_bg_width = dpi(280)
+theme.panel_border_color = theme.bg1
 
 -- Menu
 theme.menu_submenu_icon = ""
