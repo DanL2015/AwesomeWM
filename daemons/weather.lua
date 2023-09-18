@@ -2,7 +2,7 @@ local awful = require("awful")
 local gears = require("gears")
 local naughty = require("naughty")
 
-local key = "d1e53efd2d5da39cc87215ddd9b4a15b"
+local key = ""
 local city_id = "5327684"
 local units = "imperial"
 
