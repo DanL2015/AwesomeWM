@@ -227,8 +227,8 @@ theme.menu_fg_normal = theme.fg0
 theme.menu_bg_normal = theme.bg0
 
 -- Systray
-theme.systray_bg = theme.bg1
-theme.bg_systray = theme.bg1
+theme.systray_bg = theme.bg0
+theme.bg_systray = theme.bg0
 
 -- Titlebar
 theme.titlebar_height = dpi(40)

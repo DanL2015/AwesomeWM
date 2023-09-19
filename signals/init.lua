@@ -160,12 +160,12 @@ ruled.notification.connect_signal("request::rules", function()
 							{
 								halign = "left",
 								widget = naughty.widget.title,
-                forced_width = beautiful.notification_text_width,
+                -- forced_width = beautiful.notification_text_width,
 							},
 							{
 								halign = "left",
 								widget = naughty.widget.message,
-                forced_width = beautiful.notification_text_width,
+                -- forced_width = beautiful.notification_text_width,
 							},
 							layout = wibox.layout.fixed.vertical,
 						},

@@ -12,8 +12,6 @@ local function create_widget(widget, hspace, vspace)
 			{
 				widget,
 				layout = wibox.container.margin,
-				left = beautiful.medium_space,
-				right = beautiful.medium_space,
 			},
 			layout = wibox.container.background,
 			bg = beautiful.bg1,

@@ -20,7 +20,10 @@ Daemons
 "daemon::volume::update"
 - Input: Optional value
 - Output: Nothing
-- Sets volume and calls "daemon::volume::status" to update all widgets
+- Sets volume and calls "daemon::volume::status" and "daemon::mute::status" to update all widgets
+"daemon::mute::status"
+- Input: Nothing
+- Output: true or false
 
 "daemon::bluetooth::status"
 - Input: Nothing

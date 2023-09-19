@@ -11,25 +11,26 @@ local function buttons()
 		end),
 		awful.button({}, 4, function()
 			awful.spawn.with_shell("pamixer -i 5")
-      awesome.emit_signal("daemon::volume::update")
+			awesome.emit_signal("daemon::volume::update")
 		end),
 		awful.button({}, 5, function()
 			awful.spawn.with_shell("pamixer -d 5")
-      awesome.emit_signal("daemon::volume::update")
+			awesome.emit_signal("daemon::volume::update")
 		end)
 	)
 end
 
-local function update_widget(image, tooltip, res)
-	local status = "<b>Volume</b>: "..tostring(res).."%"
+local function update_volume(image, tooltip, vol)
+	vol = vol or 0
+	local status = "<b>Volume</b>: " .. tostring(vol) .. "%"
 
 	-- Edit Icon
-	if not res or res == 0 then
+	if not vol or vol == 0 then
 		image.image = beautiful.icon_volume_x
 		status = "<b>Muted</b>"
-	elseif res < 20 then
+	elseif vol < 20 then
 		image.image = beautiful.icon_volume
-	elseif res < 60 then
+	elseif vol < 60 then
 		image.image = beautiful.icon_volume_1
 	else
 		image.image = beautiful.icon_volume_2
@@ -37,6 +38,15 @@ local function update_widget(image, tooltip, res)
 
 	-- Edit Tooltip
 	tooltip.markup = status
+end
+
+local function update_mute(image, tooltip, mute)
+	mute = mute or "false"
+	-- Edit Icon
+	if mute == "true" then
+		image.image = beautiful.icon_volume_x
+		tooltip.markup = "<b>Muted</b>"
+	end
 end
 
 local function create_widget()
@@ -54,8 +64,12 @@ local function create_widget()
 		markup = "",
 	})
 
-	awesome.connect_signal("daemon::volume::status", function(...)
-		update_widget(image, tooltip, ...)
+	awesome.connect_signal("daemon::volume::status", function(vol)
+		update_volume(image, tooltip, vol)
+	end)
+
+	awesome.connect_signal("daemon::mute::status", function(mute)
+		update_mute(image, tooltip, mute)
 	end)
 
 	return widget

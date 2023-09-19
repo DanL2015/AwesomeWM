@@ -14,12 +14,12 @@ local function create_widget()
             bg = beautiful.systray_bg,
             {
 
-                margins = beautiful.small_space,
+                -- margins = beautiful.small_space,
                 layout = wibox.container.margin,
                 systray,
             },
         },
-        -- margins = beautiful.small_space,
+        margins = beautiful.small_space,
         layout = wibox.container.margin,
     }
 
