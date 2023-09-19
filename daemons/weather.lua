@@ -2,7 +2,7 @@ local awful = require("awful")
 local gears = require("gears")
 local naughty = require("naughty")
 
-local key = "afa4db6c8e1430038e3a26524925b0e1"
+local key = require("daemons.weatherkey")
 local city_id = "5327684"
 local units = "imperial"
 
