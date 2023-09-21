@@ -6,12 +6,6 @@ local gears = require("gears")
 local beautiful = require("beautiful")
 local rubato = require("rubato")
 
-local function buttons(n)
-	return gears.table.join(awful.button({}, 1, function()
-		n:destroy(naughty.notification_closed_reason.dismissed_by_user)
-	end))
-end
-
 -- Notifications
 naughty.connect_signal("request::display", function(n)
 	-- All notifications will match this rule.
@@ -27,7 +21,18 @@ naughty.connect_signal("request::display", function(n)
 		image = beautiful.titlebar_close_button_focus,
 		widget = wibox.widget.imagebox,
 	})
-  close_button:buttons(buttons(n))
+
+	local icon = wibox.widget{
+		image = n.icon or beautiful.icon_bell,
+    resize = true,
+		forced_height = beautiful.notification_icon_size,
+		halign = "center",
+		valign = "center",
+		clip_shape = function(cr, width, height)
+			gears.shape.rounded_rect(cr, width, height, 4)
+		end,
+		widget = wibox.widget.imagebox,
+	}
 
 	local title = wibox.widget({
 		layout = wibox.container.scroll.horizontal,
@@ -69,16 +74,16 @@ naughty.connect_signal("request::display", function(n)
 		shape = function(cr, width, height)
 			gears.shape.rounded_rect(cr, width, height, 8)
 		end,
-    color = beautiful.notification_progress_fg,
-    background_color = beautiful.notification_progress_bg,
+		color = beautiful.notification_progress_fg,
+		background_color = beautiful.notification_progress_bg,
 		widget = wibox.widget.progressbar,
 	})
 
 	local timed = rubato.timed({
 		duration = timeout,
 		intro = 0.1,
-    pos = 0,
-    rate = 20,
+		pos = 0,
+		rate = 20,
 		clamp_position = true,
 		subscribed = function(pos)
 			progressbar:set_value(pos)
@@ -88,7 +93,42 @@ naughty.connect_signal("request::display", function(n)
 		end,
 	})
 
-  timed.target = 1
+	timed.target = 1
+
+	close_button:buttons(gears.table.join(awful.button({}, 1, function()
+		n:destroy(naughty.notification_closed_reason.dismissed_by_user)
+  end)))
+
+	local actions = wibox.widget({
+		notification = n,
+		base_layout = wibox.widget({
+			spacing = beautiful.small_space,
+			layout = wibox.layout.flex.horizontal,
+		}),
+		widget_template = {
+			{
+				{
+					{
+						id = "text_role",
+						widget = wibox.widget.textbox,
+					},
+					left = beautiful.xlarge_space,
+					right = beautiful.xlarge_space,
+					widget = wibox.container.margin,
+				},
+				widget = wibox.container.place,
+			},
+			bg = beautiful.notification_action_bg,
+			forced_height = beautiful.notification_action_height,
+			forced_width = beautiful.notification_action_width,
+			widget = wibox.container.background,
+		},
+		style = {
+			underline_normal = false,
+			underline_selected = true,
+		},
+		widget = naughty.list.actions,
+	})
 
 	local widget = naughty.layout.box({
 		notification = n,
@@ -102,39 +142,47 @@ naughty.connect_signal("request::display", function(n)
 			{
 				{
 					{
-						app_name,
-						close_button,
-						layout = wibox.layout.flex.horizontal,
-					},
-					{
+						{
+							app_name,
+							close_button,
+							layout = wibox.layout.flex.horizontal,
+						},
 						{
 							{
 								{
-									naughty.widget.icon,
-									forced_height = beautiful.notification_icon_size,
-									halign = "center",
-									valign = "center",
-									widget = wibox.container.place,
+									icon,
+									right = beautiful.notification_inner_margin,
+									widget = wibox.container.margin,
 								},
-								right = beautiful.notification_inner_margin,
-								widget = wibox.container.margin,
+								{
+									title,
+									message,
+									layout = wibox.layout.fixed.vertical,
+								},
+								layout = wibox.layout.fixed.horizontal,
 							},
-							nil,
-							{
-								title,
-								message,
-								layout = wibox.layout.fixed.vertical,
-							},
-							layout = wibox.layout.align.horizontal,
+							margins = beautiful.notification_inner_margin,
+							widget = wibox.container.margin,
 						},
-						margins = beautiful.notification_inner_margin,
-						widget = wibox.container.margin,
+						{
+							{
+								actions,
+								shape = function(cr, width, height)
+									gears.shape.rounded_rect(cr, width, height, 8)
+								end,
+								widget = wibox.container.background,
+							},
+							margins = beautiful.notification_inner_margin,
+							layout = wibox.container.margin,
+							visible = n.actions and #n.actions > 0,
+						},
+						layout = wibox.layout.fixed.vertical,
 					},
-					progressbar,
-					layout = wibox.layout.fixed.vertical,
+					margins = beautiful.notification_padding,
+					widget = wibox.container.margin,
 				},
-				margins = beautiful.notification_padding,
-				widget = wibox.container.margin,
+				progressbar,
+				layout = wibox.layout.fixed.vertical,
 			},
 			id = "background_role",
 			widget = naughty.container.background,
@@ -143,11 +191,11 @@ naughty.connect_signal("request::display", function(n)
 
 	widget.buttons = {}
 
-  widget:connect_signal("mouse::enter", function()
-    timed.pause = true
-  end)
+	widget:connect_signal("mouse::enter", function()
+		timed.pause = true
+	end)
 
-  widget:connect_signal("mouse::leave", function()
-    timed.pause = false
-  end)
+	widget:connect_signal("mouse::leave", function()
+		timed.pause = false
+	end)
 end)

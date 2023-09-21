@@ -51,7 +51,10 @@ awful.screen.connect_for_each_screen(function(s)
 					widget = require("widgets.battery"),
 				},
 				{
-					widget = require("widgets.panel"),
+					widget = require("widgets.settings"),
+				},
+				{
+					widget = require("widgets.notifications"),
 				},
 				layout = wibox.layout.fixed.horizontal,
 			})),

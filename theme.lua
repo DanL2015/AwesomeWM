@@ -193,6 +193,7 @@ theme.bat_bg_color = theme.bg0
 theme.notification_bg = theme.bg0
 theme.notification_fg = theme.fg0
 theme.notification_close_size = dpi(12)
+theme.notification_trash_size = dpi(20)
 theme.notification_padding = dpi(10)
 theme.notification_icon_size = dpi(48)
 theme.notification_inner_margin = theme.xlarge_space
@@ -204,6 +205,9 @@ theme.notification_max_height = dpi(180)
 theme.notification_progress_height = dpi(5)
 theme.notification_progress_fg = theme.a00
 theme.notification_progress_bg = theme.bg1
+theme.notification_action_width = dpi(50)
+theme.notification_action_height = dpi(25)
+theme.notification_action_bg = theme.bg1
 theme.notification_shape = function(cr, width, height)
 	gears.shape.rounded_rect(cr, width, height, 10)
 end
@@ -301,6 +305,7 @@ theme.icon_settings = themes_path .. "icons/settings.svg"
 theme.icon_skip_back = themes_path .. "icons/skip-back.svg"
 theme.icon_skip_forward = themes_path .. "icons/skip-forward.svg"
 theme.icon_terminal = themes_path .. "icons/terminal.svg"
+theme.icon_trash = themes_path .. "icons/trash.svg"
 theme.icon_volume_1 = themes_path .. "icons/volume-1.svg"
 theme.icon_volume_2 = themes_path .. "icons/volume-2.svg"
 theme.icon_volume_x = themes_path .. "icons/volume-x.svg"

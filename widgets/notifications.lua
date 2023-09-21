@@ -9,7 +9,7 @@ local function buttons()
         awful.button(
             {}, 1,
             function()
-                awesome.emit_signal("settings::toggle")
+                awesome.emit_signal("panel::notifications")
             end
         )
     )
@@ -17,7 +17,7 @@ end
 
 local function create_widget()
     local image = wibox.widget {
-        image = beautiful.icon_settings,
+        image = beautiful.icon_bell,
         widget = wibox.widget.imagebox,
     }
 
@@ -27,7 +27,7 @@ local function create_widget()
 
     local tooltip = awful.tooltip {
         objects = { widget },
-        markup = "<b>Settings</b>"
+        markup = "<b>Notifications</b>"
     }
 
     return widget
