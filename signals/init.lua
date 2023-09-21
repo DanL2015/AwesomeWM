@@ -2,7 +2,6 @@ local naughty = require("naughty")
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local ruled = require("ruled")
 local bling = require("bling")
 
 naughty.connect_signal("request::display_error", function(message, startup)
@@ -76,14 +75,14 @@ client.connect_signal("request::titlebars", function(c)
 				},
 				{
 					halign = "left",
-          valign = "center",
+					valign = "center",
 					-- widget = awful.titlebar.widget.titlewidget(c),
-          markup = "<b>"..c.class:gsub("^%l", string.upper).."</b>",
-          widget = wibox.widget.textbox,
+					markup = "<b>" .. c.class:gsub("^%l", string.upper) .. "</b>",
+					widget = wibox.widget.textbox,
 					font = beautiful.font_small,
 				},
 				buttons = buttons,
-        spacing = beautiful.xlarge_space,
+				spacing = beautiful.xlarge_space,
 				layout = wibox.layout.fixed.horizontal,
 			},
 			top = beautiful.xlarge_space,
@@ -128,62 +127,11 @@ client.connect_signal("request::titlebars", function(c)
 			right = beautiful.xlarge_space,
 			layout = wibox.container.margin,
 		},
-    expand = "none",
+		expand = "none",
 		layout = wibox.layout.align.horizontal,
 	}
 end)
 
--- Notifications
-ruled.notification.connect_signal("request::rules", function()
-	-- All notifications will match this rule.
-	ruled.notification.append_rule({
-		rule = {}, -- Match everything.
-		properties = {
-			screen = awful.screen.preferred,
-			implicit_timeout = 5,
-			widget_template = {
-				{
-					{
-						{
-							{
-								naughty.widget.icon,
-								forced_height = beautiful.notification_icon_size,
-								halign = "center",
-								valign = "center",
-								widget = wibox.container.place,
-							},
-							right = beautiful.notification_inner_margin,
-							widget = wibox.container.margin,
-						},
-						nil,
-						{
-							{
-								halign = "left",
-								widget = naughty.widget.title,
-                -- forced_width = beautiful.notification_text_width,
-							},
-							{
-								halign = "left",
-								widget = naughty.widget.message,
-                -- forced_width = beautiful.notification_text_width,
-							},
-							layout = wibox.layout.fixed.vertical,
-						},
-						layout = wibox.layout.align.horizontal,
-					},
-					margins = beautiful.notification_padding,
-					widget = wibox.container.margin,
-				},
-				id = "background_role",
-				widget = naughty.container.background,
-			},
-		},
-	})
-end)
-
-naughty.connect_signal("request::display", function(n)
-	naughty.layout.box({ notification = n })
-end)
 
 -- Enable sloppy focus, so that focus follows mouse.
 -- client.connect_signal("mouse::enter", function(c)

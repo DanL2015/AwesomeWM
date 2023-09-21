@@ -192,12 +192,18 @@ theme.bat_bg_color = theme.bg0
 -- Notifications
 theme.notification_bg = theme.bg0
 theme.notification_fg = theme.fg0
-theme.notification_padding = dpi(20)
-theme.notification_icon_size = dpi(32)
+theme.notification_close_size = dpi(12)
+theme.notification_padding = dpi(10)
+theme.notification_icon_size = dpi(48)
 theme.notification_inner_margin = theme.xlarge_space
 theme.notification_border_width = dpi(2)
 theme.notification_border_color = theme.bg1
 theme.notification_text_width = dpi(300)
+theme.notification_max_width = dpi(350)
+theme.notification_max_height = dpi(180)
+theme.notification_progress_height = dpi(5)
+theme.notification_progress_fg = theme.a00
+theme.notification_progress_bg = theme.bg1
 theme.notification_shape = function(cr, width, height)
 	gears.shape.rounded_rect(cr, width, height, 10)
 end
@@ -227,8 +233,8 @@ theme.menu_fg_normal = theme.fg0
 theme.menu_bg_normal = theme.bg0
 
 -- Systray
-theme.systray_bg = theme.bg0
 theme.bg_systray = theme.bg0
+theme.systray_icon_size = dpi(20)
 
 -- Titlebar
 theme.titlebar_height = dpi(40)

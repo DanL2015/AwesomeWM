@@ -27,7 +27,7 @@ menubar.utils.terminal = apps.terminal -- Set the terminal for applications that
 -- Signals
 require("signals")
 
--- Daemons
+--Daemons
 require("daemons")
 
 -- Components
@@ -38,6 +38,9 @@ require("keys")
 
 -- Client rules
 require("rules")
+
+-- Notifications
+require("notifications")
 
 -- Autostart Applications
 awful.spawn.single_instance("xfsettingsd", false)

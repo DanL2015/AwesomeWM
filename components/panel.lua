@@ -291,18 +291,21 @@ local art = wibox.widget({
 	valign = "center",
 	forced_height = beautiful.panel_art_size,
 	forced_width = beautiful.panel_art_size,
+  clip_shape = function(cr, width, height)
+			gears.shape.rounded_rect(cr, width, height, 8)
+		end,
 	widget = wibox.widget.imagebox,
 })
 
 local title_widget = wibox.widget({
-	markup = "",
+	markup = "Playing",
 	align = "left",
 	valign = "center",
 	widget = wibox.widget.textbox,
 })
 
 local artist_widget = wibox.widget({
-	markup = "Nothing Playing",
+	markup = "Nothing",
 	align = "left",
 	valign = "center",
 	widget = wibox.widget.textbox,
@@ -425,7 +428,7 @@ local screenshot_select_widget = create_small_button(
 	"maim -su | xclip -selection clipboard -t image/png",
 	"Screenshot Selected"
 )
-local power_widget = create_small_button(beautiful.icon_power, "systemctl poweroff", "Shutdown")
+local power_widget = create_small_button(beautiful.icon_power, "systemctl hibernate", "Hibernate")
 
 -- Theme switcher widget
 local theme_id = 0
