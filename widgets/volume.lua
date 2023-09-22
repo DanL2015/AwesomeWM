@@ -21,13 +21,16 @@ local function buttons()
 end
 
 local function update_volume(image, tooltip, vol)
+	if tooltip.mute == nil or tooltip.mute == "true" then
+    return
+	end
+
 	vol = vol or 0
 	local status = "<b>Volume</b>: " .. tostring(vol) .. "%"
 
 	-- Edit Icon
 	if not vol or vol == 0 then
 		image.image = beautiful.icon_volume_x
-		status = "<b>Muted</b>"
 	elseif vol < 20 then
 		image.image = beautiful.icon_volume
 	elseif vol < 60 then
@@ -42,6 +45,7 @@ end
 
 local function update_mute(image, tooltip, mute)
 	mute = mute or "false"
+  tooltip.mute = mute
 	-- Edit Icon
 	if mute == "true" then
 		image.image = beautiful.icon_volume_x

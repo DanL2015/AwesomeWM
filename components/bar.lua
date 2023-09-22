@@ -40,9 +40,6 @@ awful.screen.connect_for_each_screen(function(s)
 			-- {
 			--     widget = require("widgets.username")
 			-- },
-			{
-				widget = require("widgets.systray"),
-			},
 			require("widgets.background_widget")(wibox.widget({
 				{
 					widget = require("widgets.volume"),
@@ -58,6 +55,9 @@ awful.screen.connect_for_each_screen(function(s)
 				},
 				layout = wibox.layout.fixed.horizontal,
 			})),
+			{
+				widget = require("widgets.systray"),
+			},
 			{
 				widget = require("widgets.layout")(s),
 			},

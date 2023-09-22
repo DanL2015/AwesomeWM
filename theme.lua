@@ -25,8 +25,10 @@ end)
 
 theme.colors = xresources.get_current_theme()
 
-theme.font = "Iosevka Nerd Font Medium 12"
-theme.font_small = "Iosevka Nerd Font Bold 11"
+-- theme.font = "Iosevka Nerd Font Medium 12"
+-- theme.font_small = "Iosevka Nerd Font Bold 11"
+theme.font = "Roboto Regular 12"
+theme.font_small = "RobotoCondensed 11"
 theme.font_icon = "Iosevka Nerd Font Mono 18"
 
 -- Old Mountain Colorscheme
@@ -47,6 +49,10 @@ theme.font_icon = "Iosevka Nerd Font Mono 18"
 -- theme.white1 = "#bfbfbf"
 -- theme.white2 = "#a0a0a0"
 -- theme.bg_blur = "#0f0f0f"
+
+theme.rounded_rect = function (radius)
+return function(cr, width, height) gears.shape.rounded_rect(cr, width, height, radius) end
+end
 
 theme.bg0 = theme.colors.color0
 theme.bg1 = theme.colors.color8
@@ -80,7 +86,7 @@ theme.fg_minimize = theme.fg0
 theme.clickable_active_bg = theme.a00
 theme.clickable_inactive_bg = theme.bg1
 
-theme.useless_gap = dpi(8)
+theme.useless_gap = dpi(4)
 
 -- OSD
 theme.osd_width = dpi(200)
@@ -97,7 +103,7 @@ theme.osd_bar_handle_color = theme.fg0
 theme.osd_bar_handle_width = dpi(20)
 
 -- Bar
-theme.bar_height = dpi(32)
+theme.bar_height = dpi(36)
 theme.bar_bg = theme.bg0
 
 -- Sliders
@@ -170,7 +176,7 @@ theme.thumbnail_scale = false
 theme.window_switcher_name_margins = dpi(10)
 theme.window_switcher_name_valign = "center"
 theme.window_switcher_name_forced_width = dpi(200)
-theme.window_switcher_name_font = "Iosevka Nerd Font Mono 12"
+theme.window_switcher_name_font = theme.font
 theme.window_switcher_name_normal_color = theme.fg1
 theme.window_switcher_name_bg_color = theme.bg0
 theme.window_switcher_name_focus_color = theme.fg0
@@ -192,21 +198,21 @@ theme.bat_bg_color = theme.bg0
 -- Notifications
 theme.notification_bg = theme.bg0
 theme.notification_fg = theme.fg0
-theme.notification_close_size = dpi(12)
+theme.notification_close_size = dpi(20)
 theme.notification_trash_size = dpi(20)
 theme.notification_padding = dpi(10)
-theme.notification_icon_size = dpi(48)
+theme.notification_icon_size = dpi(16)
 theme.notification_inner_margin = theme.xlarge_space
 theme.notification_border_width = dpi(2)
 theme.notification_border_color = theme.bg1
-theme.notification_text_width = dpi(300)
+theme.notification_text_width = dpi(200)
 theme.notification_max_width = dpi(350)
 theme.notification_max_height = dpi(180)
 theme.notification_progress_height = dpi(5)
 theme.notification_progress_fg = theme.a00
 theme.notification_progress_bg = theme.bg1
-theme.notification_action_width = dpi(50)
-theme.notification_action_height = dpi(25)
+theme.notification_action_width = dpi(40)
+theme.notification_action_height = dpi(30)
 theme.notification_action_bg = theme.bg1
 theme.notification_shape = function(cr, width, height)
 	gears.shape.rounded_rect(cr, width, height, 10)
@@ -229,6 +235,7 @@ theme.panel_theme_bg_width = dpi(280)
 theme.panel_border_color = theme.bg1
 
 -- Menu
+theme.menu_padding = theme.xlarge_space
 theme.menu_submenu_icon = ""
 theme.menu_height = dpi(20)
 theme.menu_width = dpi(100)
@@ -236,7 +243,7 @@ theme.menu_border_width = dpi(2)
 theme.menu_fg_normal = theme.fg0
 theme.menu_bg_normal = theme.bg0
 
--- Systray
+-- systray
 theme.bg_systray = theme.bg0
 theme.systray_icon_size = dpi(20)
 

@@ -276,6 +276,19 @@ awful.keyboard.append_global_keybindings({
 	}),
 })
 
+awful.mouse.append_global_mousebindings({
+    awful.button({ }, 1, function()
+    local menu = require("components.menu")
+    menu.visible = false
+  end),
+    awful.button({ }, 3, function()
+    local menu = require("components.menu")
+    awful.placement.next_to_mouse(menu)
+    menu.visible = true
+  end),
+    awful.button({ }, 4, awful.tag.viewprev),
+    awful.button({ }, 5, awful.tag.viewnext),
+})
 client.connect_signal("request::default_mousebindings", function()
 	awful.mouse.append_client_mousebindings({
 		awful.button({}, 1, function(c)

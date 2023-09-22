@@ -1,0 +1,76 @@
+local awful = require("awful")
+local gears = require("gears")
+local wibox = require("wibox")
+local naughty = require("naughty")
+local beautiful = require("beautiful")
+
+local entries = {
+	{ beautiful.icon_globe, "firefox", "Firefox" },
+	{ beautiful.icon_terminal, "kitty", "Kitty" },
+	{ beautiful.icon_folder, "thunar", "Thunar" },
+	{ beautiful.icon_settings, "xfce4-settings-manager", "Settings" },
+	{ beautiful.icon_edit, "kitty -e nvim "..gears.filesystem.get_configuration_dir().."rc.lua", "Edit Config" },
+	{ beautiful.icon_refresh_ccw, "systemctl reboot", "Reboot" },
+	{ beautiful.icon_moon, "systemctl suspend", "Suspend" },
+	{ beautiful.icon_power, "systemctl poweroff", "Poweroff" },
+}
+
+local function create_menu()
+	local widget = wibox.widget({
+    {
+      valign = "center",
+      halign = "center",
+      markup = "<b>Menu</b>",
+      widget = wibox.widget.textbox,
+    },
+		layout = wibox.layout.fixed.vertical,
+    spacing = beautiful.xlarge_space,
+	})
+
+	for _, entry in ipairs(entries) do
+		local icon = wibox.widget({
+			image = entry[1],
+			forced_width = 20,
+			forced_height = 20,
+			widget = wibox.widget.imagebox,
+		})
+
+		local title = wibox.widget({
+			markup = entry[3],
+			widget = wibox.widget.textbox,
+		})
+
+		local template = require("widgets.clickable_widget")(wibox.widget({
+			icon,
+			title,
+			layout = wibox.layout.fixed.horizontal,
+      spacing = beautiful.medium_space,
+		}))
+
+		template:buttons(gears.table.join(awful.button({}, 1, function()
+      awful.spawn(entry[2])
+    end)))
+
+		widget:add(template)
+	end
+
+	local menu = awful.popup({
+		widget = {
+			widget,
+			margins = beautiful.menu_padding,
+			layout = wibox.container.margin,
+		},
+		shape = beautiful.rounded_rect(8),
+    border_width = beautiful.border_width,
+    border_color = beautiful.border_color_normal,
+		ontop = true,
+		visible = false,
+		hide_on_right_click = true,
+	})
+
+	return menu
+end
+
+local menu = create_menu()
+
+return menu

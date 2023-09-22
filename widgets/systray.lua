@@ -4,7 +4,7 @@ local beautiful = require("beautiful")
 
 local function create_widget()
 	local systray = wibox.widget({
-		base_size = beautiful.systray_icon_size,
+		-- base_size = beautiful.systray_icon_size,
 		widget = wibox.widget.systray(),
 	})
 

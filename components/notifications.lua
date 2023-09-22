@@ -58,10 +58,8 @@ local function create_widget()
 			valign = "center",
 			forced_height = beautiful.notification_icon_size,
 			forced_width = beautiful.notification_icon_size,
-			clip_shape = function(cr, width, height)
-				gears.shape.rounded_rect(cr, width, height, 4)
-			end,
-			widget = wibox.widget.imagebox,
+      clip_shape = beautiful.rounded_rect(2),
+			widget = wibox.widget.imagebox
 		})
 
 		local notif_time = wibox.widget({
@@ -95,23 +93,21 @@ local function create_widget()
 		local notif_template = add_background(wibox.widget({
 			{
 				{
+					{
+						notif_icon,
+						right = beautiful.notification_inner_margin,
+						left = beautiful.notification_inner_margin,
+						layout = wibox.container.margin,
+					},
 					notif_app_name,
 					notif_time,
-					layout = wibox.layout.flex.horizontal,
+					layout = wibox.layout.align.horizontal,
 				},
 				{
 					{
-						{
-							notif_icon,
-							right = beautiful.notification_inner_margin,
-							widget = wibox.container.margin,
-						},
-						{
-							notif_title,
-							notif_message,
-							layout = wibox.layout.fixed.vertical,
-						},
-						layout = wibox.layout.fixed.horizontal,
+						notif_title,
+						notif_message,
+						layout = wibox.layout.fixed.vertical,
 					},
 					margins = beautiful.notification_inner_margin,
 					widget = wibox.container.margin,

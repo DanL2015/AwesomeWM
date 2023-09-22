@@ -22,17 +22,15 @@ naughty.connect_signal("request::display", function(n)
 		widget = wibox.widget.imagebox,
 	})
 
-	local icon = wibox.widget{
+	local icon = wibox.widget({
 		image = n.icon or beautiful.icon_bell,
-    resize = true,
+		resize = true,
 		forced_height = beautiful.notification_icon_size,
 		halign = "center",
 		valign = "center",
-		clip_shape = function(cr, width, height)
-			gears.shape.rounded_rect(cr, width, height, 4)
-		end,
+		clip_shape = beautiful.rounded_rect(2),
 		widget = wibox.widget.imagebox,
-	}
+	})
 
 	local title = wibox.widget({
 		layout = wibox.container.scroll.horizontal,
@@ -97,12 +95,12 @@ naughty.connect_signal("request::display", function(n)
 
 	close_button:buttons(gears.table.join(awful.button({}, 1, function()
 		n:destroy(naughty.notification_closed_reason.dismissed_by_user)
-  end)))
+	end)))
 
 	local actions = wibox.widget({
 		notification = n,
 		base_layout = wibox.widget({
-			spacing = beautiful.small_space,
+			spacing = beautiful.xlarge_space,
 			layout = wibox.layout.flex.horizontal,
 		}),
 		widget_template = {
@@ -121,6 +119,7 @@ naughty.connect_signal("request::display", function(n)
 			bg = beautiful.notification_action_bg,
 			forced_height = beautiful.notification_action_height,
 			forced_width = beautiful.notification_action_width,
+			shape = beautiful.rounded_rect(4),
 			widget = wibox.container.background,
 		},
 		style = {
@@ -143,23 +142,21 @@ naughty.connect_signal("request::display", function(n)
 				{
 					{
 						{
+							{
+								icon,
+								right = beautiful.notification_inner_margin,
+								left = beautiful.notification_inner_margin,
+								layout = wibox.container.margin,
+							},
 							app_name,
 							close_button,
-							layout = wibox.layout.flex.horizontal,
+							layout = wibox.layout.align.horizontal,
 						},
 						{
 							{
-								{
-									icon,
-									right = beautiful.notification_inner_margin,
-									widget = wibox.container.margin,
-								},
-								{
-									title,
-									message,
-									layout = wibox.layout.fixed.vertical,
-								},
-								layout = wibox.layout.fixed.horizontal,
+								title,
+								message,
+								layout = wibox.layout.fixed.vertical,
 							},
 							margins = beautiful.notification_inner_margin,
 							widget = wibox.container.margin,
@@ -176,12 +173,12 @@ naughty.connect_signal("request::display", function(n)
 							layout = wibox.container.margin,
 							visible = n.actions and #n.actions > 0,
 						},
+						progressbar,
 						layout = wibox.layout.fixed.vertical,
 					},
 					margins = beautiful.notification_padding,
 					widget = wibox.container.margin,
 				},
-				progressbar,
 				layout = wibox.layout.fixed.vertical,
 			},
 			id = "background_role",
