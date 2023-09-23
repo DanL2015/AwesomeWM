@@ -50,8 +50,8 @@ theme.font_icon = "Iosevka Nerd Font Mono 18"
 -- theme.white2 = "#a0a0a0"
 -- theme.bg_blur = "#0f0f0f"
 
-theme.rounded_rect = function (radius)
-return function(cr, width, height) gears.shape.rounded_rect(cr, width, height, radius) end
+theme.rounded_rect = function(radius)
+    return function(cr, width, height) gears.shape.rounded_rect(cr, width, height, radius) end
 end
 
 -- theme.bg0 = theme.colors.color0
@@ -145,10 +145,16 @@ theme.search_prompt_fg_color = theme.fg0
 theme.search_prompt_cursor_color = theme.a20
 
 -- Taglist
-theme.taglist_spacing = dpi(8)
+theme.taglist_spacing = dpi(2)
 theme.taglist_active_fg = theme.fg0
 theme.taglist_occupied_fg = theme.a01
 theme.taglist_inactive_fg = theme.bg0
+theme.taglist_margin_height = dpi(20)
+theme.taglist_margin_width = dpi(20)
+theme.taglist_height = dpi(10)
+theme.taglist_inactive_width = dpi(10)
+theme.taglist_occupied_width = dpi(15)
+theme.taglist_active_width = dpi(20)
 
 -- Tasklist
 theme.tasklist_bg_normal = theme.bg0
@@ -221,9 +227,9 @@ theme.notification_progress_fg = theme.a00
 theme.notification_progress_bg = theme.bg0
 theme.notification_action_width = dpi(40)
 theme.notification_action_height = dpi(30)
-theme.notification_action_bg = theme.a00
+theme.notification_action_bg = theme.bg1
 theme.notification_shape = function(cr, width, height)
-	gears.shape.rounded_rect(cr, width, height, 10)
+    gears.shape.rounded_rect(cr, width, height, 10)
 end
 
 -- Panel
@@ -265,12 +271,17 @@ theme.titlebar_bg_focus = theme.bg0
 
 theme.titlebar_close_button_normal = gears.color.recolor_image(themes_path .. "titlebar/close_normal.png", theme.bg0)
 theme.titlebar_close_button_focus = gears.color.recolor_image(themes_path .. "titlebar/close_focus.png", theme.a00)
-theme.titlebar_minimize_button_normal = gears.color.recolor_image(themes_path .. "titlebar/minimize_normal.png", theme.bg0)
+theme.titlebar_minimize_button_normal = gears.color.recolor_image(themes_path .. "titlebar/minimize_normal.png",
+    theme.bg0)
 theme.titlebar_minimize_button_focus = gears.color.recolor_image(themes_path .. "titlebar/minimize_focus.png", theme.a20)
-theme.titlebar_maximized_button_normal_inactive = gears.color.recolor_image(themes_path .. "titlebar/maximized_normal_inactive.png", theme.bg0)
-theme.titlebar_maximized_button_focus_inactive = gears.color.recolor_image(themes_path .. "titlebar/maximized_focus_inactive.png", theme.a40)
-theme.titlebar_maximized_button_normal_active = gears.color.recolor_image(themes_path .. "titlebar/maximized_normal_active.png", theme.bg0)
-theme.titlebar_maximized_button_focus_active = gears.color.recolor_image(themes_path .. "titlebar/maximized_focus_active.png", theme.a40)
+theme.titlebar_maximized_button_normal_inactive = gears.color.recolor_image(
+    themes_path .. "titlebar/maximized_normal_inactive.png", theme.bg0)
+theme.titlebar_maximized_button_focus_inactive = gears.color.recolor_image(
+    themes_path .. "titlebar/maximized_focus_inactive.png", theme.a40)
+theme.titlebar_maximized_button_normal_active = gears.color.recolor_image(
+    themes_path .. "titlebar/maximized_normal_active.png", theme.bg0)
+theme.titlebar_maximized_button_focus_active = gears.color.recolor_image(
+    themes_path .. "titlebar/maximized_focus_active.png", theme.a40)
 
 -- Layout
 theme.layout_fairh = themes_path .. "layouts/fairhw.png"
@@ -340,12 +351,10 @@ theme.icon_wind = themes_path .. "icons/wind.svg"
 
 -- Set different colors for urgent notifications.
 rnotification.connect_signal("request::rules", function()
-	rnotification.append_rule({
-		rule = { urgency = "critical" },
-		properties = { bg = theme.a51, fg = theme.bg0 },
-	})
+    rnotification.append_rule({
+        rule = { urgency = "critical" },
+        properties = { bg = theme.a51, fg = theme.bg0 },
+    })
 end)
 
 return theme
-
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

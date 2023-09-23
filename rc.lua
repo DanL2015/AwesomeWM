@@ -9,15 +9,15 @@ require("awful.hotkeys_popup.keys")
 beautiful.init("~/.config/awesome/theme.lua")
 
 apps = {
-	terminal = "kitty",
-	editor = "nvim",
-	browser = "firefox",
-	file_manager = "thunar",
-	volume_manager = "pavucontrol",
-	network_manager = "nm-connection-editor",
-	power_manager = "xfce4-power-manager-settings",
-	bluetooth_manager = "blueman-manager",
-	settings = "xfce4-settings-manager",
+    terminal = "kitty",
+    editor = "nvim",
+    browser = "firefox",
+    file_manager = "thunar",
+    volume_manager = "pavucontrol",
+    network_manager = "nm-connection-editor",
+    power_manager = "xfce4-power-manager-settings",
+    bluetooth_manager = "blueman-manager",
+    settings = "xfce4-settings-manager",
 }
 
 modkey = "Mod4"

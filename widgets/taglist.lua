@@ -20,23 +20,32 @@ local taglist_buttons = gears.table.join(
     awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
 )
 
-local function update_tag(widget, tag, index, taglist)
-    local text = ""
+local function update_tag(self, tag, index, taglist)
+    local widget = wibox.widget({
+        forced_height = beautiful.taglist_height,
+        shape = gears.shape.rounded_bar,
+        widget = wibox.container.background
+    })
     local color = beautiful.taglist_inactive_fg
     if tag.selected and #tag:clients() > 0 then
-        text = ""
+        widget.forced_width = beautiful.taglist_active_width
         color = beautiful.taglist_active_fg
     elseif tag.selected then
-        text = ""
+        widget.forced_width = beautiful.taglist_active_width
         color = beautiful.taglist_active_fg
     elseif #tag:clients() > 0 then
-        text = ""
+        widget.forced_width = beautiful.taglist_occupied_width
         color = beautiful.taglist_occupied_fg
     else
-        text = ""
+        widget.forced_width = beautiful.taglist_inactive_width
     end
+    widget.bg = color
 
-    widget.markup = "<span foreground='" .. color .. "'>" .. text .. "</span>"
+    self:set_widget(wibox.widget({
+        widget,
+        valign = "center",
+        layout = wibox.container.place
+    }))
 end
 
 local function create_widget(s)
@@ -52,9 +61,9 @@ local function create_widget(s)
             layout = wibox.layout.fixed.horizontal,
             spacing = beautiful.taglist_spacing,
             widget_template = {
-                widget = wibox.widget.textbox,
-                text = "taglist_widget",
-                font = beautiful.font_icon,
+                widget = wibox.container.margin,
+                forced_height = beautiful.taglist_margin_height,
+                forced_width = beautiful.taglist_margin_width,
                 valign = "center",
                 align = "center",
                 create_callback = update_tag,

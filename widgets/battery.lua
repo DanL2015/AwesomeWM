@@ -33,19 +33,19 @@ local function update_widget(image, progressbar, tooltip, res)
 
     -- Edit progressbar
     if percentage ~= nil then
-      progressbar.value = percentage
-      if percentage < 20 then
-          progressbar.color = beautiful.bat_danger_color
-      elseif percentage < 40 then
-          progressbar.color = beautiful.bat_low_color
-      elseif percentage < 60 then
-          progressbar.color = beautiful.bat_mid_color
-      else
-          progressbar.color = beautiful.bat_high_color
-      end
-      tooltip.markup = "<b>" .. status .. "</b>: " .. tostring(percentage) .. "%"
+        progressbar.value = percentage
+        if percentage < 20 then
+            progressbar.color = beautiful.bat_danger_color
+        elseif percentage < 40 then
+            progressbar.color = beautiful.bat_low_color
+        elseif percentage < 60 then
+            progressbar.color = beautiful.bat_mid_color
+        else
+            progressbar.color = beautiful.bat_high_color
+        end
+        tooltip.markup = "<b>" .. status .. "</b>: " .. tostring(percentage) .. "%"
     else
-      tooltip.markup = "<b>Unknown</b>"
+        tooltip.markup = "<b>Unknown</b>"
     end
 
     -- Edit tooltip
