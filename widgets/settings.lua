@@ -6,7 +6,7 @@ local naughty = require("naughty")
 
 local function buttons()
 	return gears.table.join(awful.button({}, 1, function()
-		awesome.emit_signal("panel::settings")
+		awesome.emit_signal("panel::toggle")
 	end))
 end
 
@@ -27,7 +27,7 @@ local function create_widget()
 		markup = "<b>Settings</b>",
 	})
 
-	awesome.connect_signal("panel::settings", function()
+	awesome.connect_signal("panel::toggle", function()
 		image.state = not image.state
 		if image.state then
 			image.image = beautiful.icon_chevron_down
