@@ -5,32 +5,38 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 
 local function buttons()
-    return gears.table.join(
-        awful.button(
-            {}, 1,
-            function()
-                awesome.emit_signal("panel::settings")
-            end
-        )
-    )
+	return gears.table.join(awful.button({}, 1, function()
+		awesome.emit_signal("panel::settings")
+	end))
 end
 
 local function create_widget()
-    local image = wibox.widget {
-        image = beautiful.icon_settings,
-        widget = wibox.widget.imagebox,
-    }
+	local image = wibox.widget({
+		image = beautiful.icon_chevron_down,
+		widget = wibox.widget.imagebox,
+	})
 
-    local widget = require("widgets.clickable_widget")(image)
+	image.state = true
 
-    widget:buttons(buttons())
+	local widget = require("widgets.clickable_widget")(image)
 
-    local tooltip = awful.tooltip {
-        objects = { widget },
-        markup = "<b>Settings</b>"
-    }
+	widget:buttons(buttons())
 
-    return widget
+	local tooltip = awful.tooltip({
+		objects = { widget },
+		markup = "<b>Settings</b>",
+	})
+
+	awesome.connect_signal("panel::settings", function()
+		image.state = not image.state
+		if image.state then
+			image.image = beautiful.icon_chevron_down
+		else
+			image.image = beautiful.icon_chevron_up
+		end
+	end)
+
+	return widget
 end
 
 return create_widget

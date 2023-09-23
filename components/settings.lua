@@ -87,7 +87,7 @@ local function create_widget()
 		}
 	end
 
-	local function create_small_button(image, command, description, simple)
+	local function create_small_button(image, command, description)
 		local icon = wibox.widget({
 			image = image,
 			widget = wibox.widget.imagebox,
@@ -115,20 +115,11 @@ local function create_widget()
 			layout = wibox.container.background,
 		})
 		background:buttons(buttons)
-		local widget
-		if simple == true then
-			widget = wibox.widget({
-				background,
-				margins = beautiful.panel_button_icon_padding,
-				layout = wibox.container.margin,
-			})
-		else
-			widget = add_background(wibox.widget({
-				background,
-				margins = beautiful.panel_button_icon_padding,
-				layout = wibox.container.margin,
-			}))
-		end
+		local widget = wibox.widget({
+			background,
+			margins = beautiful.panel_internal_margin,
+			layout = wibox.container.margin,
+		})
 
 		local tooltip = awful.tooltip({
 			objects = { widget },
@@ -409,25 +400,35 @@ local function create_widget()
 	)
 	local power_widget = create_small_button(beautiful.icon_power, "systemctl hibernate", "Hibernate")
 
+	local small_widgets = wibox.widget({
+		{
+			screenshot_full_widget,
+			screenshot_select_widget,
+			power_widget,
+      spacing = beautiful.panel_internal_margin,
+			layout = wibox.layout.flex.horizontal,
+		},
+    bg = beautiful.panel_widget_bg,
+    shape = beautiful.rounded_rect(8),
+    layout = wibox.container.background
+	})
+
 	-- Theme switcher widget
 	local theme_id = 0
 	local theme_prev_button = create_small_button(
 		beautiful.icon_chevron_left,
 		"awesome-client 'awesome.emit_signal(\"theme::prev\")'",
-		"Previous Background",
-		true
+		"Previous Background"
 	)
 	local theme_set_button = create_small_button(
 		beautiful.icon_check,
 		"awesome-client 'awesome.emit_signal(\"theme::set\")'",
-		"Set Background",
-		true
+		"Set Background"
 	)
 	local theme_next_button = create_small_button(
 		beautiful.icon_chevron_right,
 		"awesome-client 'awesome.emit_signal(\"theme::next\")'",
-		"Next Background",
-		true
+		"Next Background"
 	)
 
 	local theme_name = wibox.widget({
@@ -483,7 +484,6 @@ local function create_widget()
 		layout = wibox.container.margin,
 	}))
 
-
 	-- Control panel widget
 	local control = wibox.widget({
 		homogeneous = true,
@@ -497,9 +497,7 @@ local function create_widget()
 	})
 
 	control:add_widget_at(left_buttons_widget, 1, 1, 6, 3)
-	control:add_widget_at(screenshot_full_widget, 1, 4, 2, 1)
-	control:add_widget_at(screenshot_select_widget, 1, 5, 2, 1)
-	control:add_widget_at(power_widget, 1, 6, 2, 1)
+	control:add_widget_at(small_widgets, 1, 4, 2, 3)
 	control:add_widget_at(weather, 3, 4, 4, 3)
 	control:add_widget_at(brightness, 7, 1, 3, 6)
 	control:add_widget_at(volume, 10, 1, 3, 6)
@@ -609,6 +607,6 @@ local function create_widget()
 			toggle_button.image = beautiful.icon_play
 		end
 	end)
-  return control
+	return control
 end
 return create_widget

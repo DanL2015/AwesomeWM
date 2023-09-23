@@ -65,73 +65,57 @@ client.connect_signal("request::titlebars", function(c)
 		{ --Left
 			{
 				{
-					widget = wibox.container.margin(
+					{
 						awful.titlebar.widget.iconwidget(c),
-						beautiful.bmargin,
-						beautiful.bmargin,
-						beautiful.bmargin,
-						beautiful.bmargin
-					),
+						{
+							halign = "left",
+							valign = "center",
+							-- widget = awful.titlebar.widget.titlewidget(c),
+							markup = "<b>" .. c.class:gsub("^%l", string.upper) .. "</b>",
+							widget = wibox.widget.textbox,
+							font = beautiful.font_small,
+						},
+						buttons = buttons,
+						spacing = beautiful.xlarge_space,
+						layout = wibox.layout.fixed.horizontal,
+					},
+					left = beautiful.xlarge_space,
+					top = beautiful.medium_space,
+					bottom = beautiful.medium_space,
+					right = beautiful.xlarge_space,
+					layout = wibox.container.margin,
 				},
-				{
-					halign = "left",
-					valign = "center",
-					-- widget = awful.titlebar.widget.titlewidget(c),
-					markup = "<b>" .. c.class:gsub("^%l", string.upper) .. "</b>",
-					widget = wibox.widget.textbox,
-					font = beautiful.font_small,
-				},
-				buttons = buttons,
-				spacing = beautiful.xlarge_space,
-				layout = wibox.layout.fixed.horizontal,
+				bg = beautiful.titlebar_button_bg,
+				shape = beautiful.rounded_rect(8),
+				layout = wibox.container.background,
 			},
-			top = beautiful.xlarge_space,
-			bottom = beautiful.xlarge_space,
-			left = beautiful.xlarge_space,
+			margins = beautiful.medium_space,
 			layout = wibox.container.margin,
 		},
 		nil,
 		{ -- Right
 			{
 				{
-					widget = wibox.container.margin(
+					{
 						awful.titlebar.widget.minimizebutton(c),
-						beautiful.bmargin,
-						beautiful.bmargin,
-						beautiful.bmargin,
-						beautiful.bmargin
-					),
-				},
-				{
-					widget = wibox.container.margin(
 						awful.titlebar.widget.maximizedbutton(c),
-						beautiful.bmargin,
-						beautiful.bmargin,
-						beautiful.bmargin,
-						beautiful.bmargin
-					),
-				},
-				{
-					widget = wibox.container.margin(
 						awful.titlebar.widget.closebutton(c),
-						beautiful.bmargin,
-						beautiful.bmargin,
-						beautiful.bmargin,
-						beautiful.bmargin
-					),
+						spacing = beautiful.bmargin,
+						layout = wibox.layout.fixed.horizontal,
+					},
+					margins = beautiful.medium_space,
+					layout = wibox.container.margin,
 				},
-				layout = wibox.layout.fixed.horizontal,
+				bg = beautiful.titlebar_button_bg,
+				shape = beautiful.rounded_rect(8),
+				layout = wibox.container.background,
 			},
-			top = beautiful.xlarge_space,
-			bottom = beautiful.xlarge_space,
-			right = beautiful.xlarge_space,
+			margins = beautiful.medium_space,
 			layout = wibox.container.margin,
 		},
-		expand = "none",
 		layout = wibox.layout.align.horizontal,
 	}
 end)
-
 
 -- Enable sloppy focus, so that focus follows mouse.
 -- client.connect_signal("mouse::enter", function(c)

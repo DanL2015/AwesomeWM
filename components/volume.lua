@@ -24,6 +24,40 @@ local function update_widget(image, text, slider, res)
   slider.value = res
 end
 
+local function update_volume(image, text, slider, vol)
+	vol = vol or 0
+  slider.value = vol
+
+	if text.mute == nil or text.mute == "true" then
+    return
+	end
+
+	local status = "<b>Volume</b>: " .. tostring(vol) .. "%"
+
+	-- Edit Icon
+	if not vol or vol == 0 then
+		image.image = beautiful.icon_volume_x
+	elseif vol < 20 then
+		image.image = beautiful.icon_volume
+	elseif vol < 60 then
+		image.image = beautiful.icon_volume_1
+	else
+		image.image = beautiful.icon_volume_2
+	end
+
+  text.markup = status
+end
+
+local function update_mute(image, text, slider, mute)
+	mute = mute or "false"
+  text.mute = mute
+	-- Edit Icon
+	if mute == "true" then
+		image.image = beautiful.icon_volume_x
+		text.markup = "<b>Muted</b>"
+	end
+end
+
 local function create_widget()
 	local image = wibox.widget({
 		image = beautiful.icon_volume_1,
@@ -85,8 +119,12 @@ local function create_widget()
 		end,
 	})
 
-	awesome.connect_signal("daemon::volume::status", function(...)
-		update_widget(image, text, slider, ...)
+	awesome.connect_signal("daemon::volume::status", function(vol)
+		update_volume(image, text, slider, vol)
+	end)
+
+	awesome.connect_signal("daemon::mute::status", function(mute)
+		update_mute(image, text, slider, mute)
 	end)
 
   -- slider:connect_signal("property::value", function(_, new_value)

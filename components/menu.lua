@@ -9,22 +9,25 @@ local entries = {
 	{ beautiful.icon_terminal, "kitty", "Kitty" },
 	{ beautiful.icon_folder, "thunar", "Thunar" },
 	{ beautiful.icon_settings, "xfce4-settings-manager", "Settings" },
-	{ beautiful.icon_edit, "kitty -e nvim "..gears.filesystem.get_configuration_dir().."rc.lua", "Edit Config" },
+	{ beautiful.icon_edit, "kitty -e nvim " .. gears.filesystem.get_configuration_dir() .. "rc.lua", "Edit Config" },
 	{ beautiful.icon_refresh_ccw, "systemctl reboot", "Reboot" },
 	{ beautiful.icon_moon, "systemctl suspend", "Suspend" },
+	{ beautiful.icon_log_out, "awesome-client 'awesome.quit()'", "Quit" },
 	{ beautiful.icon_power, "systemctl poweroff", "Poweroff" },
 }
 
+local menu = {}
+
 local function create_menu()
 	local widget = wibox.widget({
-    {
-      valign = "center",
-      halign = "center",
-      markup = "<b>Menu</b>",
-      widget = wibox.widget.textbox,
-    },
+		{
+			valign = "center",
+			halign = "center",
+			markup = "<b>Menu</b>",
+			widget = wibox.widget.textbox,
+		},
 		layout = wibox.layout.fixed.vertical,
-    spacing = beautiful.xlarge_space,
+		spacing = beautiful.xlarge_space,
 	})
 
 	for _, entry in ipairs(entries) do
@@ -44,12 +47,12 @@ local function create_menu()
 			icon,
 			title,
 			layout = wibox.layout.fixed.horizontal,
-      spacing = beautiful.medium_space,
+			spacing = beautiful.medium_space,
 		}))
 
 		template:buttons(gears.table.join(awful.button({}, 1, function()
-      awful.spawn(entry[2])
-    end)))
+			awful.spawn(entry[2])
+		end)))
 
 		widget:add(template)
 	end
@@ -61,8 +64,8 @@ local function create_menu()
 			layout = wibox.container.margin,
 		},
 		shape = beautiful.rounded_rect(8),
-    border_width = beautiful.border_width,
-    border_color = beautiful.border_color_normal,
+		border_width = beautiful.border_width,
+		border_color = beautiful.border_color_normal,
 		ontop = true,
 		visible = false,
 		hide_on_right_click = true,
@@ -71,6 +74,19 @@ local function create_menu()
 	return menu
 end
 
-local menu = create_menu()
+menu.widget = create_menu()
+
+function menu:set_pos()
+  local coords = mouse.coords()
+  menu.widget.x = coords.x
+  menu.widget.y = coords.y
+end
+
+function menu:toggle()
+	menu.widget.visible = not menu.widget.visible
+	if menu.widget.visible == true then
+		self:set_pos()
+	end
+end
 
 return menu

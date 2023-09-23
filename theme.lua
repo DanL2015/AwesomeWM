@@ -54,10 +54,17 @@ theme.rounded_rect = function (radius)
 return function(cr, width, height) gears.shape.rounded_rect(cr, width, height, radius) end
 end
 
-theme.bg0 = theme.colors.color0
-theme.bg1 = theme.colors.color8
-theme.fg0 = theme.colors.color15
-theme.fg1 = theme.colors.color7
+-- theme.bg0 = theme.colors.color0
+-- theme.bg1 = theme.colors.color8
+-- theme.fg0 = theme.colors.color15
+-- theme.fg1 = theme.colors.color7
+
+-- Manually theme fg and bg, let pywal theme accents
+theme.bg0 = "#0f0f0f"
+theme.bg1 = "#202020"
+theme.fg0 = "#cacaca"
+theme.fg1 = "#bfbfbf"
+
 
 -- Accents
 theme.a00 = theme.colors.color1
@@ -110,7 +117,7 @@ theme.bar_bg = theme.bg0
 theme.slider_handle_color = theme.a30
 theme.slider_bar_active_color = theme.a20
 theme.slider_bar_height = dpi(10)
-theme.slider_bar_color = theme.bg1
+theme.slider_bar_color = theme.bg0
 theme.slider_handle_width = dpi(20)
 
 -- Spacing
@@ -184,10 +191,10 @@ theme.window_switcher_icon_valign = "center"
 theme.window_switcher_icon_width = dpi(40)
 
 -- Battery
-theme.bat_top_space = dpi(8)
-theme.bat_bottom_space = dpi(8)
+theme.bat_top_space = dpi(9)
+theme.bat_bottom_space = dpi(9)
 theme.bat_left_space = dpi(3)
-theme.bat_right_space = dpi(7)
+theme.bat_right_space = dpi(8)
 theme.bat_danger_color = theme.a50
 theme.bat_low_color = theme.a40
 theme.bat_mid_color = theme.a30
@@ -205,15 +212,16 @@ theme.notification_icon_size = dpi(16)
 theme.notification_inner_margin = theme.xlarge_space
 theme.notification_border_width = dpi(2)
 theme.notification_border_color = theme.bg1
-theme.notification_text_width = dpi(200)
-theme.notification_max_width = dpi(350)
+theme.notification_text_width = dpi(300)
+theme.notification_max_width = dpi(400)
 theme.notification_max_height = dpi(180)
-theme.notification_progress_height = dpi(5)
+theme.notification_progress_height = dpi(20)
+theme.notification_progress_width = dpi(2)
 theme.notification_progress_fg = theme.a00
-theme.notification_progress_bg = theme.bg1
+theme.notification_progress_bg = theme.bg0
 theme.notification_action_width = dpi(40)
 theme.notification_action_height = dpi(30)
-theme.notification_action_bg = theme.bg1
+theme.notification_action_bg = theme.a00
 theme.notification_shape = function(cr, width, height)
 	gears.shape.rounded_rect(cr, width, height, 10)
 end
@@ -249,18 +257,19 @@ theme.systray_icon_size = dpi(20)
 
 -- Titlebar
 theme.titlebar_height = dpi(40)
+theme.titlebar_button_bg = theme.bg1
 theme.titlebar_fg_normal = theme.fg1
 theme.titlebar_bg_normal = theme.bg0
 theme.titlebar_fg_focus = theme.fg0
 theme.titlebar_bg_focus = theme.bg0
 
-theme.titlebar_close_button_normal = gears.color.recolor_image(themes_path .. "titlebar/close_normal.png", theme.bg1)
+theme.titlebar_close_button_normal = gears.color.recolor_image(themes_path .. "titlebar/close_normal.png", theme.bg0)
 theme.titlebar_close_button_focus = gears.color.recolor_image(themes_path .. "titlebar/close_focus.png", theme.a00)
-theme.titlebar_minimize_button_normal = gears.color.recolor_image(themes_path .. "titlebar/minimize_normal.png", theme.bg1)
+theme.titlebar_minimize_button_normal = gears.color.recolor_image(themes_path .. "titlebar/minimize_normal.png", theme.bg0)
 theme.titlebar_minimize_button_focus = gears.color.recolor_image(themes_path .. "titlebar/minimize_focus.png", theme.a20)
-theme.titlebar_maximized_button_normal_inactive = gears.color.recolor_image(themes_path .. "titlebar/maximized_normal_inactive.png", theme.bg1)
+theme.titlebar_maximized_button_normal_inactive = gears.color.recolor_image(themes_path .. "titlebar/maximized_normal_inactive.png", theme.bg0)
 theme.titlebar_maximized_button_focus_inactive = gears.color.recolor_image(themes_path .. "titlebar/maximized_focus_inactive.png", theme.a40)
-theme.titlebar_maximized_button_normal_active = gears.color.recolor_image(themes_path .. "titlebar/maximized_normal_active.png", theme.bg1)
+theme.titlebar_maximized_button_normal_active = gears.color.recolor_image(themes_path .. "titlebar/maximized_normal_active.png", theme.bg0)
 theme.titlebar_maximized_button_focus_active = gears.color.recolor_image(themes_path .. "titlebar/maximized_focus_active.png", theme.a40)
 
 -- Layout

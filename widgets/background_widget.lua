@@ -15,9 +15,7 @@ local function create_widget(widget, hspace, vspace)
 			},
 			layout = wibox.container.background,
 			bg = beautiful.bg1,
-			shape = function(cr, width, height)
-				gears.shape.rounded_rect(cr, width, height, 4)
-			end,
+      shape = beautiful.rounded_rect(8)
 		},
 		layout = wibox.container.margin,
 		left = hspace,

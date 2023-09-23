@@ -21,8 +21,7 @@ local function create_widget()
 	}))
 
 	widget:buttons(gears.table.join(awful.button({}, 1, function()
-    menu.visible = not menu.visible
-    awful.placement.next_to_mouse(menu)
+    menu:toggle()
 	end)))
 
 	return widget

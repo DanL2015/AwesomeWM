@@ -50,7 +50,7 @@ local function update_mute(image, tooltip, mute)
 	if mute == "true" then
 		image.image = beautiful.icon_volume_x
 		tooltip.markup = "<b>Muted</b>"
-	end
+  end
 end
 
 local function create_widget()

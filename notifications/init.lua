@@ -55,7 +55,8 @@ naughty.connect_signal("request::display", function(n)
 		{
 			halign = "left",
 			valign = "center",
-			widget = naughty.widget.message,
+      markup = n.message,
+			widget = wibox.widget.textbox,
 		},
 	})
 
@@ -68,7 +69,6 @@ naughty.connect_signal("request::display", function(n)
 
 	local progressbar = wibox.widget({
 		max_value = 1,
-		forced_height = beautiful.notification_progress_height,
 		shape = function(cr, width, height)
 			gears.shape.rounded_rect(cr, width, height, 8)
 		end,
@@ -119,7 +119,7 @@ naughty.connect_signal("request::display", function(n)
 			bg = beautiful.notification_action_bg,
 			forced_height = beautiful.notification_action_height,
 			forced_width = beautiful.notification_action_width,
-			shape = beautiful.rounded_rect(4),
+			shape = beautiful.rounded_rect(40),
 			widget = wibox.container.background,
 		},
 		style = {
@@ -139,13 +139,13 @@ naughty.connect_signal("request::display", function(n)
 		maximum_height = beautiful.notification_max_height,
 		widget_template = {
 			{
+        nil,
 				{
 					{
 						{
 							{
 								icon,
 								right = beautiful.notification_inner_margin,
-								left = beautiful.notification_inner_margin,
 								layout = wibox.container.margin,
 							},
 							app_name,
@@ -158,28 +158,31 @@ naughty.connect_signal("request::display", function(n)
 								message,
 								layout = wibox.layout.fixed.vertical,
 							},
-							margins = beautiful.notification_inner_margin,
-							widget = wibox.container.margin,
-						},
-						{
 							{
 								actions,
 								shape = function(cr, width, height)
 									gears.shape.rounded_rect(cr, width, height, 8)
 								end,
 								widget = wibox.container.background,
+								visible = n.actions and #n.actions > 0,
 							},
-							margins = beautiful.notification_inner_margin,
-							layout = wibox.container.margin,
-							visible = n.actions and #n.actions > 0,
+							spacing = beautiful.notification_inner_margin,
+							layout = wibox.layout.fixed.vertical,
 						},
-						progressbar,
+						spacing = beautiful.large_space,
 						layout = wibox.layout.fixed.vertical,
 					},
 					margins = beautiful.notification_padding,
-					widget = wibox.container.margin,
+					layout = wibox.container.margin,
 				},
-				layout = wibox.layout.fixed.vertical,
+				{
+					progressbar,
+					direction = "east",
+					forced_width = beautiful.notification_progress_width,
+					forced_height = beautiful.notification_progress_height,
+					layout = wibox.container.rotate,
+				},
+				layout = wibox.layout.align.horizontal,
 			},
 			id = "background_role",
 			widget = naughty.container.background,

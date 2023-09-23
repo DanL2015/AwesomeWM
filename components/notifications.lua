@@ -45,6 +45,7 @@ local function create_widget()
 		margins = beautiful.panel_internal_margin,
 		layout = wibox.container.margin,
 	})
+
 	naughty.connect_signal("request::display", function(n)
 		local notif_image = n.icon or n.app_icon
 		if not notif_image then
@@ -58,8 +59,8 @@ local function create_widget()
 			valign = "center",
 			forced_height = beautiful.notification_icon_size,
 			forced_width = beautiful.notification_icon_size,
-      clip_shape = beautiful.rounded_rect(2),
-			widget = wibox.widget.imagebox
+			clip_shape = beautiful.rounded_rect(2),
+			widget = wibox.widget.imagebox,
 		})
 
 		local notif_time = wibox.widget({
@@ -77,17 +78,63 @@ local function create_widget()
 		})
 
 		local notif_title = wibox.widget({
-			markup = "<b>" .. n.title .. "</b>",
-			halign = "left",
-			valign = "center",
-			widget = wibox.widget.textbox,
+			layout = wibox.container.scroll.horizontal,
+			step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
+			fps = 60,
+			speed = 75,
+			forced_width = beautiful.notification_text_width,
+			{
+				halign = "left",
+				valign = "center",
+				markup = "<b>" .. n.title .. "</b>",
+				widget = wibox.widget.textbox,
+			},
 		})
 
 		local notif_message = wibox.widget({
-			markup = n.message,
-			halign = "left",
-			valign = "center",
-			widget = wibox.widget.textbox,
+			layout = wibox.container.scroll.horizontal,
+			step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
+			fps = 60,
+			speed = 75,
+			forced_width = beautiful.notification_text_width,
+			{
+				halign = "left",
+				valign = "center",
+        markup = n.message,
+				widget = wibox.widget.textbox,
+			},
+		})
+
+		local notif_actions = wibox.widget({
+			notification = n,
+			base_layout = wibox.widget({
+				spacing = beautiful.xlarge_space,
+				layout = wibox.layout.flex.horizontal,
+			}),
+			widget_template = {
+				{
+					{
+						{
+							id = "text_role",
+							widget = wibox.widget.textbox,
+						},
+						left = beautiful.xlarge_space,
+						right = beautiful.xlarge_space,
+						widget = wibox.container.margin,
+					},
+					widget = wibox.container.place,
+				},
+				bg = beautiful.notification_action_bg,
+				forced_height = beautiful.notification_action_height,
+				forced_width = beautiful.notification_action_width,
+				shape = beautiful.rounded_rect(40),
+				widget = wibox.container.background,
+			},
+			style = {
+				underline_normal = false,
+				underline_selected = true,
+			},
+			widget = naughty.list.actions,
 		})
 
 		local notif_template = add_background(wibox.widget({
@@ -112,18 +159,18 @@ local function create_widget()
 					margins = beautiful.notification_inner_margin,
 					widget = wibox.container.margin,
 				},
-				-- {
-				-- 	{
-				-- 		actions,
-				-- 		shape = function(cr, width, height)
-				-- 			gears.shape.rounded_rect(cr, width, height, 8)
-				-- 		end,
-				-- 		widget = wibox.container.background,
-				-- 	},
-				-- 	margins = beautiful.notification_inner_margin,
-				-- 	layout = wibox.container.margin,
-				-- 	visible = n.actions and #n.actions > 0,
-				-- },
+				{
+					{
+						notif_actions,
+						shape = function(cr, width, height)
+							gears.shape.rounded_rect(cr, width, height, 8)
+						end,
+						widget = wibox.container.background,
+					},
+					margins = beautiful.notification_inner_margin,
+					layout = wibox.container.margin,
+					visible = n.actions and #n.actions > 0,
+				},
 				layout = wibox.layout.fixed.vertical,
 			},
 			margins = beautiful.notification_padding,
