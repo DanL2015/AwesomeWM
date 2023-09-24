@@ -4,7 +4,6 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 
 -- settings panel widget
-local current_panel = 0
 local settings = require("components.settings")()
 local panel = wibox({
     width = beautiful.panel_width,

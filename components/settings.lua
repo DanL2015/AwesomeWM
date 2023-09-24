@@ -361,8 +361,6 @@ local function create_widget()
 				layout = wibox.container.margin,
 			},
 			{
-				-- {
-				-- {
 				{
 					{
 						prev_button,
@@ -381,15 +379,6 @@ local function create_widget()
 					},
 					layout = wibox.layout.flex.horizontal,
 				},
-				--      margins = beautiful.panel_internal_margin,
-				--      layout = wibox.container.margin,
-				--  },
-				--  shape = function(cr, width, height)
-				--      gears.shape.rounded_rect(cr, width, height, 8)
-				--  end,
-				--  bg = beautiful.panel_button_active_bg,
-				--  layout = wibox.container.background,
-				-- },
 				margins = beautiful.panel_internal_margin,
 				layout = wibox.container.margin,
 			},
@@ -502,7 +491,7 @@ local function create_widget()
 		spacing = beautiful.panel_internal_margin,
 		min_cols_size = 10,
 		min_rows_size = 10,
-		forced_num_rows = 22,
+		forced_num_rows = 30,
 		forced_num_cols = 6,
 		expand = true,
 		layout = wibox.layout.grid,
@@ -514,7 +503,8 @@ local function create_widget()
 	control:add_widget_at(brightness, 7, 1, 3, 6)
 	control:add_widget_at(volume, 10, 1, 3, 6)
 	control:add_widget_at(media, 13, 1, 3, 6)
-	control:add_widget_at(theme, 16, 1, 7, 6)
+	control:add_widget_at(require("components.notifications")(), 16, 1, 8, 6)
+	control:add_widget_at(theme, 24, 1, 7, 6)
 
 	awesome.connect_signal("theme::load", function()
 		theme_bg.image = gears.surface.load_uncached(beautiful.backgrounds_path .. beautiful.backgrounds[theme_id])

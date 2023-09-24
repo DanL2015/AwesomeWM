@@ -22,13 +22,35 @@ naughty.connect_signal("request::display", function(n)
 		widget = wibox.widget.imagebox,
 	})
 
-	local icon = wibox.widget({
+	local icon
+	if n.clients[1] ~= nil then
+		icon = wibox.widget({
+			client = n.clients[1],
+			forced_height = beautiful.notification_icon_size,
+			forced_width = beautiful.notification_icon_size,
+			widget = awful.widget.clienticon,
+		})
+	else
+		icon = wibox.widget({
+			image = n.app_icon or beautiful.icon_bell,
+			resize = true,
+			forced_height = beautiful.notification_icon_size,
+			forced_width = beautiful.notification_icon_size,
+			halign = "center",
+			valign = "center",
+			clip_shape = beautiful.rounded_rect(2),
+			widget = wibox.widget.imagebox,
+		})
+	end
+
+	local image = wibox.widget({
 		image = n.icon or beautiful.icon_bell,
 		resize = true,
-		forced_height = beautiful.notification_icon_size,
-		halign = "center",
+		forced_height = beautiful.notification_image_size,
+		forced_width = beautiful.notification_image_size,
+		halign = "right",
 		valign = "center",
-		clip_shape = beautiful.rounded_rect(2),
+		clip_shape = beautiful.rounded_rect(4),
 		widget = wibox.widget.imagebox,
 	})
 
@@ -55,7 +77,7 @@ naughty.connect_signal("request::display", function(n)
 		{
 			halign = "left",
 			valign = "center",
-      markup = n.message,
+			markup = n.message,
 			widget = wibox.widget.textbox,
 		},
 	})
@@ -139,7 +161,7 @@ naughty.connect_signal("request::display", function(n)
 		maximum_height = beautiful.notification_max_height,
 		widget_template = {
 			{
-        nil,
+				nil,
 				{
 					{
 						{
@@ -154,20 +176,30 @@ naughty.connect_signal("request::display", function(n)
 						},
 						{
 							{
-								title,
-								message,
+								{
+									title,
+									message,
+									layout = wibox.layout.fixed.vertical,
+								},
+								{
+									actions,
+									shape = function(cr, width, height)
+										gears.shape.rounded_rect(cr, width, height, 8)
+									end,
+									widget = wibox.container.background,
+									visible = n.actions and #n.actions > 0,
+								},
+								spacing = beautiful.notification_inner_margin,
 								layout = wibox.layout.fixed.vertical,
 							},
 							{
-								actions,
-								shape = function(cr, width, height)
-									gears.shape.rounded_rect(cr, width, height, 8)
-								end,
-								widget = wibox.container.background,
-								visible = n.actions and #n.actions > 0,
+								image,
+                margins = beautiful.notification_inner_margin,
+                layout = wibox.container.margin,
 							},
+							fill_space = true,
 							spacing = beautiful.notification_inner_margin,
-							layout = wibox.layout.fixed.vertical,
+							layout = wibox.layout.align.horizontal,
 						},
 						spacing = beautiful.large_space,
 						layout = wibox.layout.fixed.vertical,

@@ -214,13 +214,14 @@ theme.notification_fg = theme.fg0
 theme.notification_close_size = dpi(20)
 theme.notification_trash_size = dpi(20)
 theme.notification_padding = dpi(10)
-theme.notification_icon_size = dpi(16)
+theme.notification_icon_size = dpi(20)
+theme.notification_image_size = dpi(60)
 theme.notification_inner_margin = theme.xlarge_space
 theme.notification_border_width = dpi(2)
 theme.notification_border_color = theme.bg1
-theme.notification_text_width = dpi(300)
+theme.notification_text_width = dpi(250)
 theme.notification_max_width = dpi(400)
-theme.notification_max_height = dpi(180)
+theme.notification_max_height = dpi(250)
 theme.notification_progress_height = dpi(20)
 theme.notification_progress_width = dpi(2)
 theme.notification_progress_fg = theme.a00
@@ -234,7 +235,7 @@ end
 
 -- Panel
 theme.panel_bg = theme.bg0
-theme.panel_height = dpi(720)
+theme.panel_height = dpi(1000)
 theme.panel_width = dpi(400)
 theme.panel_widget_bg = theme.bg1
 theme.panel_button_inactive_bg = theme.bg0
