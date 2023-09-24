@@ -27,7 +27,7 @@ theme.colors = xresources.get_current_theme()
 
 -- theme.font = "Iosevka Nerd Font Medium 12"
 -- theme.font_small = "Iosevka Nerd Font Bold 11"
-theme.font = "Dosis Regular 12"
+theme.font = "Dosis Medium 12"
 theme.font_small = "Dosis Light 11"
 theme.font_icon = "Iosevka Nerd Font Mono 18"
 

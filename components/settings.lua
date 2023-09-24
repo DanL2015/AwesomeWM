@@ -326,9 +326,7 @@ local function create_widget()
 		{
 			{
 				art,
-				left = beautiful.panel_internal_margin,
-				top = beautiful.panel_internal_margin,
-				bottom = beautiful.panel_internal_margin,
+        margins = beautiful.panel_internal_margin,
 				layout = wibox.container.margin,
 			},
 			{
