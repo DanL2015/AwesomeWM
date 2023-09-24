@@ -78,8 +78,19 @@ menu.widget = create_menu()
 
 function menu:set_pos()
   local coords = mouse.coords()
+  local workarea = mouse.screen.workarea
   menu.widget.x = coords.x
   menu.widget.y = coords.y
+
+  -- Check if needs to be spawned above mouse
+  if menu.widget.y + menu.widget.height - workarea.y >= workarea.height then
+    menu.widget.y = menu.widget.y - menu.widget.height
+  end
+
+  -- Check if needs to be spawned to left of mouse
+  if menu.widget.x + menu.widget.width - workarea.x >= workarea.width then
+    menu.widget.x = menu.widget.x - menu.widget.width
+  end
 end
 
 function menu:toggle()
