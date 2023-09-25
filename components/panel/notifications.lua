@@ -3,7 +3,7 @@ local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local add_background = require("components.add_background")
+local add_background = require("components.panel.add_background")
 
 local function create_widget()
 	local title = wibox.widget({
@@ -202,7 +202,7 @@ local function create_widget()
 					spacing = beautiful.notification_inner_margin,
 					layout = wibox.layout.fixed.horizontal,
 				},
-        layout = wibox.layout.fixed.vertical,
+				layout = wibox.layout.fixed.vertical,
 			},
 			margins = beautiful.notification_padding,
 			widget = wibox.container.margin,

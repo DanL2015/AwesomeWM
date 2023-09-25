@@ -1,0 +1,47 @@
+local awful = require("awful")
+local gears = require("gears")
+local wibox = require("wibox")
+local beautiful = require("beautiful")
+
+local function create_small_button(image, command, description)
+    local icon = wibox.widget({
+        image = image,
+        widget = wibox.widget.imagebox,
+        forced_height = beautiful.panel_button_icon_size,
+        forced_width = beautiful.panel_button_icon_size,
+        resize = true,
+        halign = "center",
+        valign = "center",
+    })
+    local buttons = gears.table.join(awful.button({}, 1, function()
+        awful.spawn.with_shell(command)
+    end))
+    local background = wibox.widget({
+        {
+            icon,
+            margins = beautiful.panel_button_icon_padding,
+            layout = wibox.container.margin,
+        },
+        fill_horizontal = false,
+        fill_vertical = false,
+        bg = beautiful.panel_button_active_bg,
+        shape = function(cr, width, height)
+            gears.shape.rounded_rect(cr, width, height, 8)
+        end,
+        layout = wibox.container.background,
+    })
+    background:buttons(buttons)
+    local widget = wibox.widget({
+        background,
+        margins = beautiful.panel_internal_margin,
+        layout = wibox.container.margin,
+    })
+
+    local tooltip = awful.tooltip({
+        objects = { widget },
+        markup = description,
+    })
+    return widget
+end
+
+return create_small_button
