@@ -91,9 +91,7 @@ naughty.connect_signal("request::display", function(n)
 
 	local progressbar = wibox.widget({
 		max_value = 1,
-		shape = function(cr, width, height)
-			gears.shape.rounded_rect(cr, width, height, 8)
-		end,
+    shape = beautiful.rounded_rect(8),
 		color = beautiful.notification_progress_fg,
 		background_color = beautiful.notification_progress_bg,
 		widget = wibox.widget.progressbar,
@@ -154,10 +152,8 @@ naughty.connect_signal("request::display", function(n)
 	local widget = naughty.layout.box({
 		notification = n,
 		type = "notification",
-		shape = function(cr, width, height)
-			gears.shape.rounded_rect(cr, width, height, 8)
-		end,
-		maximum_width = beautiful.notification_max_width,
+		shape = beautiful.rounded_rect(8),
+    maximum_width = beautiful.notification_max_width,
 		maximum_height = beautiful.notification_max_height,
 		widget_template = {
 			{
@@ -183,9 +179,7 @@ naughty.connect_signal("request::display", function(n)
 								},
 								{
 									actions,
-									shape = function(cr, width, height)
-										gears.shape.rounded_rect(cr, width, height, 8)
-									end,
+                  shape = beautiful.rounded_rect(8),
 									widget = wibox.container.background,
 									visible = n.actions and #n.actions > 0,
 								},

@@ -19,9 +19,7 @@ panel:setup({
         layout = wibox.container.margin,
     },
     bg = beautiful.panel_bg,
-    shape = function(cr, width, height)
-        gears.shape.rounded_rect(cr, width, height, 8)
-    end,
+    shape = beautiful.rounded_rect(8),
     border_color = beautiful.panel_border_color,
     border_width = beautiful.border_width,
     widget = wibox.container.background,
@@ -29,9 +27,9 @@ panel:setup({
 
 -- Signals
 awesome.connect_signal("panel::toggle", function()
-    awful.placement.top_right(panel, {
+    awful.placement.right(panel, {
         parent = awful.screen.focused(),
-        margins = { top = beautiful.bar_height + beautiful.useless_gap, right = beautiful.useless_gap },
+        margins = { right = beautiful.useless_gap },
     })
     panel.visible = not panel.visible
 end)
