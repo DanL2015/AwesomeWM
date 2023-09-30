@@ -32,9 +32,6 @@ awful.screen.connect_for_each_screen(function(s)
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
 			-- {
-			--     widget = require("widgets.wifi")
-			-- },
-			-- {
 			--     widget = require("widgets.search")
 			-- },
 			-- {
@@ -44,11 +41,14 @@ awful.screen.connect_for_each_screen(function(s)
 				widget = require("widgets.systray"),
 			},
 			require("widgets.background_widget")(wibox.widget({
-        {
-          widget = require("widgets.systray_button")(s),
-        },
+				{
+					widget = require("widgets.systray_button")(s),
+				},
 				{
 					widget = require("widgets.volume"),
+				},
+				{
+					widget = require("widgets.wifi"),
 				},
 				{
 					widget = require("widgets.battery"),

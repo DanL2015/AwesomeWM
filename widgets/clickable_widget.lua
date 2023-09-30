@@ -5,7 +5,7 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 
 local function create_widget(widget, hspace, vspace)
-    hspace = hspace or beautiful.xlarge_space
+    hspace = hspace or beautiful.medium_space
     vspace = vspace or beautiful.medium_space
     local background = wibox.widget {
         widget = wibox.container.background,
