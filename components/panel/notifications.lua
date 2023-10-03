@@ -22,7 +22,10 @@ local function create_widget()
 
 	local notifications = wibox.widget({
 		spacing = beautiful.panel_internal_margin,
-		layout = wibox.layout.fixed.vertical,
+		layout = wibox.layout.overflow.vertical,
+		forced_height = 600,
+		scrollbar_width = 10,
+		step = 50,
 	})
 
 	erase:buttons(awful.util.table.join(awful.button({}, 1, function()
@@ -182,9 +185,7 @@ local function create_widget()
 						{
 							{
 								notif_actions,
-								shape = function(cr, width, height)
-									gears.shape.rounded_rect(cr, width, height, 8)
-								end,
+								shape = beautiful.rounded_rect(8),
 								widget = wibox.container.background,
 							},
 							margins = beautiful.notification_inner_margin,
@@ -204,11 +205,12 @@ local function create_widget()
 				},
 				layout = wibox.layout.fixed.vertical,
 			},
+			forced_height = beautiful.notification_height,
 			margins = beautiful.notification_padding,
 			widget = wibox.container.margin,
 		}))
 
-		notifications:add(notif_template)
+		notifications:insert(1, notif_template)
 
 		notif_template:buttons(awful.util.table.join(awful.button({}, 1, function()
 			notifications:remove_widgets(notif_template, true)

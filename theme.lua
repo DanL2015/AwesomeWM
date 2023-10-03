@@ -222,13 +222,14 @@ theme.notification_border_color = theme.bg1
 theme.notification_text_width = dpi(250)
 theme.notification_max_width = dpi(400)
 theme.notification_max_height = dpi(250)
+theme.notification_height = dpi(150)
 theme.notification_progress_height = dpi(20)
 theme.notification_progress_width = dpi(2)
 theme.notification_progress_fg = theme.a00
 theme.notification_progress_bg = theme.bg0
 theme.notification_action_width = dpi(40)
 theme.notification_action_height = dpi(30)
-theme.notification_action_bg = theme.bg1
+theme.notification_action_bg = theme.a00
 theme.notification_shape = function(cr, width, height)
     gears.shape.rounded_rect(cr, width, height, 10)
 end
