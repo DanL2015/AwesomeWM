@@ -27,8 +27,8 @@ theme.colors = xresources.get_current_theme()
 
 -- theme.font = "Iosevka Nerd Font Medium 12"
 -- theme.font_small = "Iosevka Nerd Font Bold 11"
-theme.font = "Dosis Medium 12"
-theme.font_small = "Dosis Light 11"
+theme.font = "RobotoCondensed Medium 12"
+theme.font_small = "RobotoCondensed Light 11"
 theme.font_icon = "Iosevka Nerd Font Mono 18"
 
 -- Old Mountain Colorscheme
@@ -190,7 +190,7 @@ theme.window_switcher_name_margins = dpi(10)
 theme.window_switcher_name_valign = "center"
 theme.window_switcher_name_forced_width = dpi(200)
 theme.window_switcher_name_font = theme.font
-theme.window_switcher_name_normal_color = theme.fg1
+theme.window_switcher_name_normal_color = theme.bg1
 theme.window_switcher_name_bg_color = theme.bg0
 theme.window_switcher_name_focus_color = theme.fg0
 theme.window_switcher_icon_valign = "center"

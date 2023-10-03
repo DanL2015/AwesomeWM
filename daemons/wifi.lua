@@ -3,7 +3,7 @@ local gears = require("gears")
 local naughty = require("naughty")
 
 local update_interval = 2
-local wifi_script = "iwgetid -r"
+local wifi_script = "nmcli -t -f active,ssid dev wifi | grep -E '^yes' | cut -d\\' -f2 | cut -b 5-"
 
 local function update_wifi()
     awful.spawn.easy_async_with_shell(wifi_script, function(stdout)

@@ -4,9 +4,10 @@ local awful = require("awful")
 require("awful.autofocus")
 local beautiful = require("beautiful")
 local menubar = require("menubar")
+local gears  = require("gears")
 require("awful.hotkeys_popup.keys")
 
-beautiful.init("~/.config/awesome/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir().."theme.lua")
 
 apps = {
     terminal = "kitty",
