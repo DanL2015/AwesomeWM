@@ -3,7 +3,7 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local gears = require("gears")
-local add_background = require("components.panel.add_background")
+local add_background = require("helpers.background_widget")
 
 local function create_widget()
 	local function create_large_button(image, text, on_command, off_command)
@@ -117,7 +117,7 @@ local function create_widget()
 		bluetooth.button,
 		alerts.button,
 		layout = wibox.layout.flex.vertical,
-	}))
+	}), 0, 0)
 
 	awesome.connect_signal("daemon::wifi::status", function(stdout)
 		if stdout ~= nil and stdout ~= "" then

@@ -1,24 +1,17 @@
 local awful = require("awful")
+local gears = require("gears")
 local wibox = require("wibox")
-local naughty = require("naughty")
 local beautiful = require("beautiful")
 
 local function create_widget()
-    local textbox = wibox.widget {
-        markup = "<b>Daniel Liu</b>",
-        widget = wibox.widget.textbox
-    }
-
     local widget = wibox.widget {
         widget = wibox.container.margin,
         left = beautiful.xlarge_space,
         right = beautiful.xlarge_space,
         top = beautiful.large_space,
         bottom = beautiful.large_space,
-        textbox,
+        wibox.widget.textclock('%a %b %d %l:%M %p'),
     }
-
-    return widget
+    return require("helpers.background_widget")(widget)
 end
-
 return create_widget

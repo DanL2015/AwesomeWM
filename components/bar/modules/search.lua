@@ -8,26 +8,24 @@ local function buttons()
     return gears.table.join(
         awful.button(
             {}, 1,
-            function()
-                awesome.emit_signal("panel::notifications")
-            end
+            function() app_menu:toggle() end
         )
     )
 end
 
 local function create_widget()
     local image = wibox.widget {
-        image = beautiful.icon_bell,
+        image = beautiful.icon_search,
         widget = wibox.widget.imagebox,
     }
 
-    local widget = require("widgets.clickable_widget")(image)
+    local widget = require("helpers.clickable_widget")(image)
 
     widget:buttons(buttons())
 
     local tooltip = awful.tooltip {
         objects = { widget },
-        markup = "<b>Notifications</b>"
+        markup = "<b>Search</b>"
     }
 
     return widget

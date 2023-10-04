@@ -26,9 +26,7 @@ local function create_small_button(image, command, description)
 		fill_horizontal = false,
 		fill_vertical = false,
 		bg = beautiful.panel_button_active_bg,
-		shape = function(cr, width, height)
-			gears.shape.rounded_rect(cr, width, height, 8)
-		end,
+		shape = beautiful.rounded_rect(8),
 		layout = wibox.container.background,
 	})
 	background:buttons(buttons)

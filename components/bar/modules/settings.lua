@@ -18,7 +18,7 @@ local function create_widget()
 
 	image.state = true
 
-	local widget = require("widgets.clickable_widget")(image)
+	local widget = require("helpers.clickable_widget")(image)
 
 	widget:buttons(buttons())
 

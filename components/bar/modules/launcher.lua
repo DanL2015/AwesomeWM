@@ -14,7 +14,7 @@ local function create_widget()
 		widget = wibox.widget.imagebox,
 	}
 
-	local widget = require("widgets.clickable_widget")(wibox.widget({
+	local widget = require("helpers.clickable_widget")(wibox.widget({
 		image,
 		margins = beautiful.medium_space,
 		layout = wibox.container.margin,

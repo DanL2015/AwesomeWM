@@ -59,7 +59,7 @@ local function create_widget()
 		widget = wibox.widget.imagebox,
 	})
 
-	local widget = require("widgets.clickable_widget")(image)
+	local widget = require("helpers.clickable_widget")(image)
 
 	widget:buttons(buttons())
 

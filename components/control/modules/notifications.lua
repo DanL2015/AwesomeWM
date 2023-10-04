@@ -3,7 +3,7 @@ local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local add_background = require("components.panel.add_background")
+local add_background = require("helpers.background_widget")
 
 local function create_widget()
 	local title = wibox.widget({
@@ -30,7 +30,6 @@ local function create_widget()
 
 	erase:buttons(awful.util.table.join(awful.button({}, 1, function()
 		notifications:reset()
-		collectgarbage("collect")
 	end)))
 
 	local widget = wibox.widget({
@@ -208,7 +207,7 @@ local function create_widget()
 			forced_height = beautiful.notification_height,
 			margins = beautiful.notification_padding,
 			widget = wibox.container.margin,
-		}))
+		}), 0, 0)
 
 		notifications:insert(1, notif_template)
 

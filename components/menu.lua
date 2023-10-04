@@ -43,7 +43,7 @@ local function create_menu()
 			widget = wibox.widget.textbox,
 		})
 
-		local template = require("widgets.clickable_widget")(wibox.widget({
+		local template = require("helpers.clickable_widget")(wibox.widget({
 			icon,
 			title,
 			layout = wibox.layout.fixed.horizontal,

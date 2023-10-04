@@ -1,7 +1,7 @@
 local wibox = require("wibox")
 local gears = require("gears")
 local beautiful = require("beautiful")
-local add_background = require("components.panel.add_background")
+local add_background = require("helpers.background_widget")
 
 local function create_widget()
 	-- Volume widget
@@ -31,7 +31,7 @@ local function create_widget()
 		},
 		margins = beautiful.panel_internal_margin,
 		layout = wibox.container.margin,
-	}))
+	}), 0, 0)
 
 	awesome.connect_signal("daemon::volume::status", function(stdout)
 		volume_widget.value = stdout

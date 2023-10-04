@@ -3,8 +3,8 @@ local wibox = require("wibox")
 local gears = require("gears")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
-local add_background = require("components.panel.add_background")
-local create_small_button = require("components.panel.small_button_widget")
+local add_background = require("helpers.background_widget")
+local create_small_button = require("helpers.small_button_widget")
 local apply_theme = require("themes")
 
 local function create_widget()
@@ -66,7 +66,7 @@ local function create_widget()
 						theme_name,
 						margins = beautiful.xlarge_space,
 						layout = wibox.container.margin,
-					})),
+					}), 0, 0),
 					margins = beautiful.xlarge_space,
 					layout = wibox.container.margin,
 				},
@@ -77,7 +77,7 @@ local function create_widget()
 			layout = wibox.layout.stack,
 		},
 		layout = wibox.container.margin,
-	}))
+	}), 0, 0)
 
 	awesome.connect_signal("theme::load", function()
 		theme_bg.image = gears.surface.load_uncached(beautiful.backgrounds_path .. beautiful.backgrounds[theme_id])

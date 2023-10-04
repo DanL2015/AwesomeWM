@@ -3,7 +3,7 @@ local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 
-local systray = require("widgets.systray").children[1]
+local systray = require("components.bar.modules.systray").children[1]
 
 local function create_widget(s)
   local button = wibox.widget({
@@ -27,7 +27,7 @@ local function create_widget(s)
     end
   end)
 
-  local widget = require("widgets.clickable_widget")(button)
+  local widget = require("helpers.clickable_widget")(button)
   return widget
 end
 

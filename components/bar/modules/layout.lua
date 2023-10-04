@@ -23,7 +23,7 @@ local function create_widget(s)
 		},
 	})
 
-	local widget = require("widgets.clickable_widget")(layout_box)
+	local widget = require("helpers.clickable_widget")(layout_box)
 	return widget
 end
 return create_widget

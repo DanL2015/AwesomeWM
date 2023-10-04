@@ -1,6 +1,6 @@
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local create_small_button = require("components.panel.small_button_widget")
+local create_small_button = require("helpers.small_button_widget")
 
 local function create_widget()
 	-- Small buttons

@@ -4,7 +4,7 @@ local beautiful = require("beautiful")
 local gears = require("gears")
 local bling = require("bling")
 local playerctl = bling.signal.playerctl.lib()
-local add_background = require("components.panel.add_background")
+local add_background = require("helpers.background_widget")
 
 local function create_widget()
     -- Media widget
@@ -138,7 +138,7 @@ local function create_widget()
         },
         margins = beautiful.panel_internal_margin,
         layout = wibox.container.margin,
-    }))
+    }), 0, 0)
 
     playerctl:connect_signal("metadata", function(_, title, artist, album_path, album, new, player_name)
         art:set_image(gears.surface.load_uncached(album_path))

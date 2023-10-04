@@ -46,7 +46,7 @@ local function update_tag(self, tag, index, taglist)
 end
 
 local function create_widget(s)
-	return require("widgets.background_widget")(wibox.widget({
+	return require("helpers.background_widget")(wibox.widget({
 		widget = wibox.container.margin,
 		left = beautiful.xlarge_space,
 		right = beautiful.xlarge_space,

@@ -83,7 +83,7 @@ local function create_widget()
 		widget = wibox.widget.progressbar,
 	})
 
-	local widget = require("widgets.clickable_widget")({
+	local widget = require("helpers.clickable_widget")({
 		progressbar,
 		image,
 		layout = wibox.layout.stack,
