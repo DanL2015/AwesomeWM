@@ -5,91 +5,105 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 
 local function buttons()
-    return gears.table.join(
-        awful.button(
-            {}, 1,
-            function() awful.spawn(apps.power_manager, false) end
-        )
-    )
+	return gears.table.join(awful.button({}, 1, function()
+		awful.spawn(apps.power_manager, false)
+	end))
+end
+
+local function update_colors(progressbar)
+  local percentage = progressbar.value
+	if percentage < 20 then
+		progressbar.color = beautiful.bat_danger_color
+	elseif percentage < 40 then
+		progressbar.color = beautiful.bat_low_color
+	elseif percentage < 60 then
+		progressbar.color = beautiful.bat_mid_color
+	else
+		progressbar.color = beautiful.bat_high_color
+	end
 end
 
 local function update_widget(image, progressbar, tooltip, res)
-    local percentage
-    local status
-    if res == nil then
-        percentage = 0
-        status = "Unknown"
-    else
-        status = res[1]
-        percentage = tonumber(res[2])
-    end
+	local percentage
+	local status
+	if res == nil then
+		percentage = 0
+		status = "Unknown"
+	else
+		status = res[1]
+		percentage = tonumber(res[2])
+	end
 
-    -- Edit battery icon
-    if status == "Charging" or status == "Full" then
-        image.image = beautiful.icon_battery_charging
-    else
-        image.image = beautiful.icon_battery
-    end
+	-- Edit battery icon
+	if status == "Charging" or status == "Full" then
+		image.image = beautiful.icon_battery_charging
+	else
+		image.image = beautiful.icon_battery
+	end
 
-    -- Edit progressbar
-    if percentage ~= nil then
-        progressbar.value = percentage
-        if percentage < 20 then
-            progressbar.color = beautiful.bat_danger_color
-        elseif percentage < 40 then
-            progressbar.color = beautiful.bat_low_color
-        elseif percentage < 60 then
-            progressbar.color = beautiful.bat_mid_color
-        else
-            progressbar.color = beautiful.bat_high_color
-        end
-        tooltip.markup = "<b>" .. status .. "</b>: " .. tostring(percentage) .. "%"
-    else
-        tooltip.markup = "<b>Unknown</b>"
-    end
+	-- Edit progressbar
+	if percentage ~= nil then
+		progressbar.value = percentage
+		if percentage < 20 then
+			progressbar.color = beautiful.bat_danger_color
+		elseif percentage < 40 then
+			progressbar.color = beautiful.bat_low_color
+		elseif percentage < 60 then
+			progressbar.color = beautiful.bat_mid_color
+		else
+			progressbar.color = beautiful.bat_high_color
+		end
+		tooltip.markup = "<b>" .. status .. "</b>: " .. tostring(percentage) .. "%"
+	else
+		tooltip.markup = "<b>Unknown</b>"
+	end
 
-    -- Edit tooltip
+	-- Edit tooltip
 end
 
 local function create_widget()
-    local image = wibox.widget {
-        image = beautiful.icon_battery,
-        widget = wibox.widget.imagebox,
-    }
+	local image = wibox.widget({
+		image = beautiful.icon_battery,
+		widget = wibox.widget.imagebox,
+	})
 
-    local progressbar = wibox.widget {
-        max_value        = 100,
-        value            = 100,
-        forced_width     = 10,
-        border_width     = 0,
-        color            = beautiful.bat_fg_color,
-        background_color = beautiful.bat_bg_color,
-        margins          = {
-            top = beautiful.bat_top_space,
-            bottom = beautiful.bat_bottom_space,
-            left = beautiful.bat_left_space,
-            right = beautiful.bat_right_space,
-        },
-        widget           = wibox.widget.progressbar,
-    }
+	local progressbar = wibox.widget({
+		max_value = 100,
+		value = 100,
+		forced_width = 10,
+		border_width = 0,
+		color = beautiful.bat_fg_color,
+		background_color = beautiful.bat_bg_color,
+		margins = {
+			top = beautiful.bat_top_space,
+			bottom = beautiful.bat_bottom_space,
+			left = beautiful.bat_left_space,
+			right = beautiful.bat_right_space,
+		},
+		widget = wibox.widget.progressbar,
+	})
 
-    local widget = require("widgets.clickable_widget")({
-        progressbar,
-        image,
-        layout = wibox.layout.stack
-    }, beautiful.xlarge_space, beautiful.small_space)
+	local widget = require("widgets.clickable_widget")({
+		progressbar,
+		image,
+		layout = wibox.layout.stack,
+	}, beautiful.xlarge_space, beautiful.small_space)
 
-    widget:buttons(buttons())
+	widget:buttons(buttons())
 
-    local tooltip = awful.tooltip {
-        objects = { widget },
-        markup = "Unknown",
-    }
+	local tooltip = awful.tooltip({
+		objects = { widget },
+		markup = "<b>Unknown</b>",
+	})
 
-    awesome.connect_signal("daemon::battery::status", function(...)
-        update_widget(image, progressbar, tooltip, ...)
-    end)
+	awesome.connect_signal("daemon::battery::status", function(...)
+		update_widget(image, progressbar, tooltip, ...)
+	end)
 
-    return widget
+	awesome.connect_signal("theme::reload", function()
+    update_colors(progressbar)
+  end)
+
+	return widget
 end
 return create_widget

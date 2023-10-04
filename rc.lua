@@ -2,12 +2,12 @@ pcall(require, "luarocks.loader")
 
 local awful = require("awful")
 require("awful.autofocus")
-local beautiful = require("beautiful")
 local menubar = require("menubar")
 local gears  = require("gears")
 require("awful.hotkeys_popup.keys")
 
-beautiful.init(gears.filesystem.get_configuration_dir().."theme.lua")
+-- Beautiful
+require("themes")()
 
 apps = {
     terminal = "kitty",
@@ -47,3 +47,10 @@ require("notifications")
 awful.spawn.single_instance("xfsettingsd", false)
 awful.spawn.single_instance("picom", false)
 awful.spawn.single_instance("nm-applet", false)
+
+-- Run garbage collector regularly to prevent memory leaks
+gears.timer {
+       timeout = 30,
+       autostart = true,
+       callback = function() collectgarbage("collect") end
+}

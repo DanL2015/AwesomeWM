@@ -33,3 +33,7 @@ awesome.connect_signal("panel::toggle", function()
     })
     panel.visible = not panel.visible
 end)
+
+awesome.connect_signal("theme::reload", function()
+  panel.bg = beautiful.panel_bg
+end)

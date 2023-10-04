@@ -9,31 +9,27 @@ naughty.connect_signal("request::display_error", function(message, startup)
     naughty.notification({
         urgency = "critical",
         title = "Oops, an error happened" .. (startup and " during startup!" or "!"),
-        message = message,
+        message = message
     })
 end)
 
 -- Tags
 tag.connect_signal("request::default_layouts", function()
-    awful.layout.append_default_layouts({
-        awful.layout.suit.tile,
-        awful.layout.suit.floating,
-        -- awful.layout.suit.tile.left,
-        -- awful.layout.suit.tile.bottom,
-        -- awful.layout.suit.tile.top,
-        -- awful.layout.suit.fair,
-        -- awful.layout.suit.fair.horizontal,
-        awful.layout.suit.spiral,
-        awful.layout.suit.spiral.dwindle,
-        -- awful.layout.suit.max,
-        -- awful.layout.suit.max.fullscreen,
-        -- awful.layout.suit.magnifier,
-        -- awful.layout.suit.corner.nw,
+    awful.layout.append_default_layouts({awful.layout.suit.tile, awful.layout.suit.floating,
+    -- awful.layout.suit.tile.left,
+    -- awful.layout.suit.tile.bottom,
+    -- awful.layout.suit.tile.top,
+    -- awful.layout.suit.fair,
+    -- awful.layout.suit.fair.horizontal,
+                                         awful.layout.suit.spiral, awful.layout.suit.spiral.dwindle -- awful.layout.suit.max,
+    -- awful.layout.suit.max.fullscreen,
+    -- awful.layout.suit.magnifier,
+    -- awful.layout.suit.corner.nw,
     })
 end)
 
 awful.screen.connect_for_each_screen(function(s)
-    awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
+    awful.tag({"1", "2", "3", "4", "5"}, s, awful.layout.layouts[1])
 end)
 
 -- Signal function to execute when a new client appears.
@@ -51,19 +47,29 @@ client.connect_signal("manage", function(c)
 end)
 
 -- Titlebars
+
 client.connect_signal("request::titlebars", function(c)
     -- buttons for the titlebar
-    local buttons = {
-        awful.button({}, 1, function()
-            c:activate({ context = "titlebar", action = "mouse_move" })
-        end),
-        awful.button({}, 3, function()
-            c:activate({ context = "titlebar", action = "mouse_resize" })
-        end),
-    }
+    local buttons = {awful.button({}, 1, function()
+        c:activate({
+            context = "titlebar",
+            action = "mouse_move"
+        })
+    end), awful.button({}, 3, function()
+        c:activate({
+            context = "titlebar",
+            action = "mouse_resize"
+        })
+    end)}
 
-    awful.titlebar(c, { size = beautiful.titlebar_height }).widget = {
-        { --Left
+    local minimizebutton = awful.titlebar.widget.minimizebutton(c)
+    local maximizebutton = awful.titlebar.widget.maximizedbutton(c)
+    local closebutton = awful.titlebar.widget.closebutton(c)
+
+    awful.titlebar(c, {
+        size = beautiful.titlebar_height
+    }).widget = {
+        { -- Left
             {
                 {
                     {
@@ -74,47 +80,51 @@ client.connect_signal("request::titlebars", function(c)
                             -- widget = awful.titlebar.widget.titlewidget(c),
                             markup = "<b>" .. c.class:gsub("^%l", string.upper) .. "</b>",
                             widget = wibox.widget.textbox,
-                            font = beautiful.font_small,
+                            font = beautiful.font_small
                         },
                         buttons = buttons,
                         spacing = beautiful.xlarge_space,
-                        layout = wibox.layout.fixed.horizontal,
+                        layout = wibox.layout.fixed.horizontal
                     },
                     left = beautiful.xlarge_space,
                     top = beautiful.medium_space,
                     bottom = beautiful.medium_space,
                     right = beautiful.xlarge_space,
-                    layout = wibox.container.margin,
+                    layout = wibox.container.margin
                 },
                 bg = beautiful.titlebar_button_bg,
-                shape = function(cr, width, height) gears.shape.rounded_rect(cr, width, height, 8) end,
-                layout = wibox.container.background,
+                shape = function(cr, width, height)
+                    gears.shape.rounded_rect(cr, width, height, 8)
+                end,
+                layout = wibox.container.background
             },
             margins = beautiful.medium_space,
-            layout = wibox.container.margin,
+            layout = wibox.container.margin
         },
         nil,
         { -- Right
             {
                 {
                     {
-                        awful.titlebar.widget.minimizebutton(c),
-                        awful.titlebar.widget.maximizedbutton(c),
-                        awful.titlebar.widget.closebutton(c),
+                        minimizebutton,
+                        maximizebutton,
+                        closebutton,
                         spacing = beautiful.bmargin,
-                        layout = wibox.layout.fixed.horizontal,
+                        layout = wibox.layout.fixed.horizontal
                     },
                     margins = beautiful.medium_space,
-                    layout = wibox.container.margin,
+                    layout = wibox.container.margin
                 },
                 bg = beautiful.titlebar_button_bg,
-                shape = function(cr, width, height) gears.shape.rounded_rect(cr, width, height, 8) end,
-                layout = wibox.container.background,
+                shape = function(cr, width, height)
+                    gears.shape.rounded_rect(cr, width, height, 8)
+                end,
+                layout = wibox.container.background
             },
             margins = beautiful.medium_space,
-            layout = wibox.container.margin,
+            layout = wibox.container.margin
         },
-        layout = wibox.layout.align.horizontal,
+        layout = wibox.layout.align.horizontal
     }
 end)
 
@@ -123,15 +133,19 @@ end)
 --    c:activate { context = "mouse_enter", raise = false }
 -- end)
 
-awesome.connect_signal("wallpaper::load", function()
+awesome.connect_signal("theme::wallpaper", function()
     awful.spawn.easy_async_with_shell("cat ~/.cache/wal/wal", function(stdout)
         stdout = stdout:gsub("[\n\r]", "")
         bling.module.wallpaper.setup({
             screen = screen,
             position = "maximized",
-            wallpaper = stdout,
+            wallpaper = stdout
         })
     end)
 end)
 
-awesome.emit_signal("wallpaper::load")
+screen.connect_signal('request::desktop_decoration', function(s)
+    awesome.emit_signal("theme::wallpaper")
+end)
+
+awesome.emit_signal("theme::wallpaper")
