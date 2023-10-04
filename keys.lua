@@ -2,7 +2,7 @@ local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local gears = require("gears")
 
-local brightness_osd = require("components.brightness")()
+local brightness_osd = require("components.popups.brightness")()
 local brightness_timer = gears.timer({
     timeout = 2,
     autostart = false,
@@ -20,7 +20,7 @@ brightness_osd:connect_signal("mouse::leave", function()
     brightness_timer:again()
 end)
 
-local volume_osd = require("components.volume")()
+local volume_osd = require("components.popups.volume")()
 local volume_timer = gears.timer({
     timeout = 2,
     autostart = false,

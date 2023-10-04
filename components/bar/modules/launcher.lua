@@ -5,7 +5,7 @@ local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 
-local menu = require("components.menu")
+local menu = require("components.popups.menu")
 
 local function create_widget()
 	local image = wibox.widget {
