@@ -200,14 +200,18 @@ local function set_theme(colors)
 
 	-- Panel
 	theme.panel_bg = theme.bg0
-	theme.panel_height = dpi(1000)
+	theme.panel_height = dpi(720)
 	theme.panel_width = dpi(400)
+	theme.panel_minimize_height = dpi(56)
+	theme.panel_minimize_width = dpi(400)
 	theme.panel_widget_bg = theme.bg1
 	theme.panel_button_inactive_bg = theme.bg0
 	theme.panel_button_active_bg = theme.colors[2]
 	theme.panel_button_fg = theme.fg0
 	theme.panel_fg = theme.fg0
 	theme.panel_button_icon_size = dpi(24)
+	theme.panel_title_button_icon_size = dpi(16)
+	theme.panel_title_height = dpi(40)
 	theme.panel_button_icon_padding = dpi(10)
 	theme.panel_internal_margin = dpi(8)
 	theme.panel_art_size = dpi(80)
