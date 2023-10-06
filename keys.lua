@@ -278,7 +278,7 @@ awful.keyboard.append_global_keybindings({
 
 awful.mouse.append_global_mousebindings({
     awful.button({}, 3, function()
-        local menu = require("components.menu")
+        local menu = require("components.popups.menu")
         menu:toggle()
     end),
     awful.button({}, 4, awful.tag.viewprev),
