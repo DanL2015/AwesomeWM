@@ -24,7 +24,7 @@ local function apply_colors()
 	colors[8] = "#cacaca"
 	colors[16] = "#bfbfbf"
 	set_theme(colors)
-	awful.spawn.with_shell("echo one_dark > "..last_theme_file)
+	awful.spawn.with_shell("echo mountain > "..last_theme_file)
   return 1
 end
 

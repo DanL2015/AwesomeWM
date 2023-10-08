@@ -66,66 +66,79 @@ client.connect_signal("request::titlebars", function(c)
     local maximizebutton = awful.titlebar.widget.maximizedbutton(c)
     local closebutton = awful.titlebar.widget.closebutton(c)
 
-    awful.titlebar(c, {
-        size = beautiful.titlebar_height
-    }).widget = {
-        { -- Left
+    local left_widget = wibox.widget({
+        {
             {
+                awful.titlebar.widget.iconwidget(c),
                 {
-                    {
-                        awful.titlebar.widget.iconwidget(c),
-                        {
-                            halign = "left",
-                            valign = "center",
-                            -- widget = awful.titlebar.widget.titlewidget(c),
-                            markup = "<b>" .. c.class:gsub("^%l", string.upper) .. "</b>",
-                            widget = wibox.widget.textbox,
-                            font = beautiful.font_small
-                        },
-                        buttons = buttons,
-                        spacing = beautiful.xlarge_space,
-                        layout = wibox.layout.fixed.horizontal
-                    },
-                    left = beautiful.xlarge_space,
-                    top = beautiful.medium_space,
-                    bottom = beautiful.medium_space,
-                    right = beautiful.xlarge_space,
-                    layout = wibox.container.margin
+                    halign = "left",
+                    valign = "center",
+                    markup = "<b>" .. c.class:gsub("^%l", string.upper) .. "</b>",
+                    widget = wibox.widget.textbox,
+                    font = beautiful.font_small
                 },
-                bg = beautiful.titlebar_button_bg,
-                shape = function(cr, width, height)
-                    gears.shape.rounded_rect(cr, width, height, 8)
-                end,
-                layout = wibox.container.background
+                buttons = buttons,
+                spacing = beautiful.xlarge_space,
+                layout = wibox.layout.fixed.horizontal
             },
+            left = beautiful.xlarge_space,
+            top = beautiful.medium_space,
+            bottom = beautiful.medium_space,
+            right = beautiful.xlarge_space,
+            layout = wibox.container.margin
+        },
+        bg = beautiful.titlebar_button_bg,
+        shape = function(cr, width, height)
+            gears.shape.rounded_rect(cr, width, height, 8)
+        end,
+        layout = wibox.container.background
+    })
+
+    local right_widget = wibox.widget({
+        {
+            {
+                minimizebutton,
+                maximizebutton,
+                closebutton,
+                spacing = beautiful.bmargin,
+                layout = wibox.layout.fixed.horizontal
+            },
+            margins = beautiful.medium_space,
+            layout = wibox.container.margin
+        },
+        bg = beautiful.titlebar_button_bg,
+        shape = function(cr, width, height)
+            gears.shape.rounded_rect(cr, width, height, 8)
+        end,
+        layout = wibox.container.background
+    })
+
+    local titlebar_widget = wibox.widget({
+        { -- Left
+            left_widget,
             margins = beautiful.medium_space,
             layout = wibox.container.margin
         },
         nil,
         { -- Right
-            {
-                {
-                    {
-                        minimizebutton,
-                        maximizebutton,
-                        closebutton,
-                        spacing = beautiful.bmargin,
-                        layout = wibox.layout.fixed.horizontal
-                    },
-                    margins = beautiful.medium_space,
-                    layout = wibox.container.margin
-                },
-                bg = beautiful.titlebar_button_bg,
-                shape = function(cr, width, height)
-                    gears.shape.rounded_rect(cr, width, height, 8)
-                end,
-                layout = wibox.container.background
-            },
+            right_widget,
             margins = beautiful.medium_space,
             layout = wibox.container.margin
         },
         layout = wibox.layout.align.horizontal
-    }
+    })
+
+    local titlebar = awful.titlebar(c, {
+        size = beautiful.titlebar_height,
+    })
+
+    titlebar.widget = titlebar_widget
+
+    awesome.connect_signal("theme::reload", function()
+        left_widget.bg = beautiful.titlebar_button_bg
+        right_widget.bg = beautiful.titlebar_button_bg
+        titlebar.bg = beautiful.titlebar_bg_normal
+    end)
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.
@@ -136,6 +149,9 @@ end)
 awesome.connect_signal("theme::wallpaper", function()
     awful.spawn.easy_async_with_shell("cat ~/.cache/wal/wal", function(stdout)
         stdout = stdout:gsub("[\n\r]", "")
+        if stdout == "" then
+            stdout = beautiful.backgrounds_path .. beautiful.backgrounds[1]
+        end
         bling.module.wallpaper.setup({
             screen = screen,
             position = "maximized",

@@ -4,7 +4,9 @@ local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 
-local function create_small_button(image, command, description)
+local function create_small_button(image, command, description, padding, margin)
+	padding = padding or beautiful.panel_button_icon_padding
+	margin = margin or beautiful.panel_internal_margin
 	local icon = wibox.widget({
 		image = image,
 		widget = wibox.widget.imagebox,
@@ -20,7 +22,7 @@ local function create_small_button(image, command, description)
 	local background = wibox.widget({
 		{
 			icon,
-			margins = beautiful.panel_button_icon_padding,
+			margins = padding,
 			layout = wibox.container.margin,
 		},
 		fill_horizontal = false,
@@ -33,7 +35,7 @@ local function create_small_button(image, command, description)
 
 	local widget = wibox.widget({
 		background,
-		margins = beautiful.panel_internal_margin,
+		margins = margin,
 		layout = wibox.container.margin,
 	})
 

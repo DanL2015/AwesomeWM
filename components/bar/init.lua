@@ -42,7 +42,7 @@ awful.screen.connect_for_each_screen(function(s)
 					widget = require("components.bar.modules.battery"),
 				},
 				{
-					widget = require("components.bar.modules.settings"),
+					widget = require("components.bar.modules.panel"),
 				},
 				layout = wibox.layout.fixed.horizontal,
 			})),
@@ -51,4 +51,7 @@ awful.screen.connect_for_each_screen(function(s)
 			},
 		},
 	})
+	awesome.connect_signal("theme::reload", function()
+		s.bar.bg = beautiful.bar_bg
+	end)
 end)

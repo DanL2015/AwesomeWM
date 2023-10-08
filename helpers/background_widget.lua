@@ -7,14 +7,14 @@ local beautiful = require("beautiful")
 local function create_widget(widget, hspace, vspace, bg_color)
     hspace = hspace or beautiful.xlarge_space
     vspace = vspace or beautiful.small_space
-    bg_color = bg_color or beautiful.bg1
+    local bg = bg_color or beautiful.bg1
     local background = wibox.widget({
         {
             widget,
             layout = wibox.container.margin
         },
         layout = wibox.container.background,
-        bg = bg_color,
+        bg = bg,
         shape = beautiful.rounded_rect(8)
     })
     local widget = wibox.widget({
@@ -27,7 +27,7 @@ local function create_widget(widget, hspace, vspace, bg_color)
     })
 
     awesome.connect_signal("theme::reload", function()
-        background.bg = bg_color
+        background.bg = bg_color or beautiful.bg1
     end)
 
     return widget

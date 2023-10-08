@@ -4,6 +4,7 @@ local gears = require("gears")
 local apply_pywal = require("themes.pywal")
 local apply_mountain = require("themes.mountain")
 local apply_one_dark = require("themes.one_dark")
+local apply_oxocarbon = require("themes.oxocarbon")
 
 local apply_fallback = apply_one_dark
 
@@ -26,6 +27,8 @@ local function apply_theme()
 			status = apply_mountain()
 		elseif last_theme == "one_dark" then
 			status = apply_one_dark()
+		elseif last_theme == "oxocarbon" then
+			status = apply_oxocarbon()
 		else
 			apply_fallback()
 		end

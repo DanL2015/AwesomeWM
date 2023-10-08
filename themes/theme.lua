@@ -13,7 +13,7 @@ local function set_theme(colors)
 
 	theme.backgrounds_path = themes_path .. "backgrounds/"
 	theme.backgrounds = {}
-	theme.background_num = 0
+	theme.background_num = 1
 	local cmd = "bash -c 'ls " .. theme.backgrounds_path .. "'"
 	awful.spawn.easy_async_with_shell(cmd, function(stdout)
 		for s in stdout:gmatch("[^\r\n]+") do
@@ -21,8 +21,12 @@ local function set_theme(colors)
 			theme.backgrounds[theme.background_num] = s
 			theme.background_num = theme.background_num + 1
 		end
+		theme.background_num = theme.background_num - 1
 		awesome.emit_signal("theme::load")
 	end)
+
+	theme.themes = {"pywal", "mountain", "one_dark", "oxocarbon"}
+	theme.theme_num = 4
 
 	theme.font = "RobotoCondensed Medium 12"
 	theme.font_small = "RobotoCondensed Light 11"
@@ -200,7 +204,7 @@ local function set_theme(colors)
 
 	-- Panel
 	theme.panel_bg = theme.bg0
-	theme.panel_height = dpi(720)
+	theme.panel_height = dpi(540)
 	theme.panel_width = dpi(400)
 	theme.panel_minimize_height = dpi(56)
 	theme.panel_minimize_width = dpi(400)
@@ -302,6 +306,7 @@ local function set_theme(colors)
 	theme.icon_refresh_ccw = themes_path .. "icons/refresh-ccw.svg"
 	theme.icon_search = themes_path .. "icons/search.svg"
 	theme.icon_settings = themes_path .. "icons/settings.svg"
+	theme.icon_sidebar = themes_path .. "icons/sidebar.svg"
 	theme.icon_skip_back = themes_path .. "icons/skip-back.svg"
 	theme.icon_skip_forward = themes_path .. "icons/skip-forward.svg"
 	theme.icon_terminal = themes_path .. "icons/terminal.svg"

@@ -12,11 +12,9 @@ end
 
 local function create_widget()
 	local image = wibox.widget({
-		image = beautiful.icon_chevron_down,
+		image = beautiful.icon_sidebar,
 		widget = wibox.widget.imagebox,
 	})
-
-	image.state = true
 
 	local widget = require("helpers.clickable_widget")(image)
 
@@ -26,15 +24,6 @@ local function create_widget()
 		objects = { widget },
 		markup = "<b>Settings</b>",
 	})
-
-	awesome.connect_signal("panel::toggle", function()
-		image.state = not image.state
-		if image.state then
-			image.image = beautiful.icon_chevron_down
-		else
-			image.image = beautiful.icon_chevron_up
-		end
-	end)
 
 	return widget
 end
