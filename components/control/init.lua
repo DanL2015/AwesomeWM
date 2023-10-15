@@ -60,6 +60,7 @@ function M.new()
     M.min_height = beautiful.panel_minimize_height
     M.max_height = beautiful.panel_height
     M.is_minimized = false
+    M.is_visible = false
 
     M.fly_timer = rubato.timed({
         duration = 1 / 2,
@@ -69,6 +70,13 @@ function M.new()
 
     M.fly_timer:subscribe(function(pos)
         M.wibox.y = pos
+        if pos == M.fly_timer.target then
+            if M.is_visible then
+                M.add_widgets()
+            else
+                M.wibox.visible = false
+            end
+        end
     end)
 
     M.minmax_timer = rubato.timed({
@@ -105,13 +113,14 @@ end
 
 function M.flyin()
     M.maximize()
-    M.add_widgets()
+    M.is_visible = true
     M.wibox.visible = true
     M.fly_timer.pos = -M.max_height
     M.fly_timer.target = beautiful.bar_height + beautiful.useless_gap
 end
 
 function M.flyout()
+    M.is_visible = false
     M.fly_timer.pos = beautiful.bar_height + beautiful.useless_gap
     M.fly_timer.target = -M.max_height
 end

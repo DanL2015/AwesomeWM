@@ -1,12 +1,11 @@
 local awful = require("awful")
 local beautiful = require("beautiful")
 local rubato = require("rubato")
+local naughty = require("naughty")
 
 local notifs = require("components.notifications")
-
 local control = require("components.control")
 
-local active_panel = 1
 local panel_visible = false
 
 awesome.connect_signal("panel::toggle", function()

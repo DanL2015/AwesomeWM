@@ -2,6 +2,7 @@ local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
+local naughty = require("naughty")
 local helpers = require("helpers")
 local rubato = require("rubato")
 
@@ -31,16 +32,18 @@ function M.new()
         widget = wibox.container.background
     })
 
+    M.min_height = awful.screen.focused().geometry.height - beautiful.bar_height - beautiful.useless_gap - beautiful.panel_height - beautiful.panel_internal_margin
+    M.max_height = awful.screen.focused().geometry.height - beautiful.bar_height - beautiful.useless_gap - beautiful.panel_minimize_height - beautiful.panel_internal_margin
+
     M.wibox = wibox({
         width = beautiful.panel_minimize_width,
-        height = beautiful.panel_minimize_height,
+        height = beautiful.panel_height,
         widget = panel_widget,
         ontop = true
     })
 
-    M.min_height = awful.screen.focused().geometry.height - beautiful.bar_height - beautiful.useless_gap - beautiful.panel_height - beautiful.panel_internal_margin
-    M.max_height = awful.screen.focused().geometry.height - beautiful.bar_height - beautiful.useless_gap - beautiful.panel_minimize_height - beautiful.panel_internal_margin
-    M.is_minimized = false
+    M.is_minimized = true
+    M.is_visible = false
 
     M.fly_timer = rubato.timed({
         duration = 1 / 2,
@@ -50,51 +53,50 @@ function M.new()
 
     M.fly_timer:subscribe(function(pos)
         M.wibox.y = pos
+        if not M.is_visible and pos == M.fly_timer.target then
+            M.wibox.visible = false
+        end
     end)
 
     M.minmax_timer = rubato.timed({
         duration = 1/2,
         intro = 1/6,
-        override_dt = true
+        override_dt = true,
+        pos = 1
     })
 
     M.minmax_timer:subscribe(function(pos)
-        M.wibox.y = beautiful.bar_height + beautiful.useless_gap + beautiful.panel_height + beautiful.panel_internal_margin - pos
-        M.wibox.height = M.min_height + pos
-        if pos == M.minmax_timer.target then
-            M.add_widgets()
-        end
+        M.wibox.y = awful.screen.focused().geometry.height - beautiful.useless_gap - pos
+        M.wibox.height = pos
     end)
 
     M.wibox.x = awful.screen.focused().geometry.width - beautiful.useless_gap - M.wibox.width
-    M.wibox.height = M.min_height
-
+    M.add_widgets()
     return M
 end
 
 function M.minimize()
     M.is_minimized = true
-    M.reset()
-    M.minmax_timer.pos = M.max_height - M.min_height
-    M.minmax_timer.target = 0
+    M.minmax_timer.pos = M.max_height
+    M.minmax_timer.target = M.min_height
 end
 
 function M.maximize()
     M.is_minimized = false
-    M.reset()
-    M.minmax_timer.pos = 0
-    M.minmax_timer.target = M.max_height - M.min_height
+    M.minmax_timer.pos = M.min_height
+    M.minmax_timer.target = M.max_height
 end
 
 function M.flyin()
     M.minimize()
-    M.add_widgets()
+    M.is_visible = true
     M.wibox.visible = true
     M.fly_timer.pos = awful.screen.focused().geometry.height + M.min_height
     M.fly_timer.target = awful.screen.focused().geometry.height - M.min_height
 end
 
 function M.flyout()
+    M.is_visible = false
     M.fly_timer.pos = awful.screen.focused().geometry.height - M.min_height
     M.fly_timer.target = awful.screen.focused().geometry.height + M.min_height
 end
