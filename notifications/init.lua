@@ -5,6 +5,7 @@ local wibox = require("wibox")
 local gears = require("gears")
 local beautiful = require("beautiful")
 local rubato = require("rubato")
+local helpers = require("helpers")
 
 -- Notifications
 naughty.connect_signal("request::display", function(n)
@@ -38,7 +39,7 @@ naughty.connect_signal("request::display", function(n)
 			forced_width = beautiful.notification_icon_size,
 			halign = "center",
 			valign = "center",
-			clip_shape = beautiful.rounded_rect(2),
+			clip_shape = helpers.rounded_rect(2),
 			widget = wibox.widget.imagebox,
 		})
 	end
@@ -50,7 +51,7 @@ naughty.connect_signal("request::display", function(n)
 		forced_width = beautiful.notification_image_size,
 		halign = "right",
 		valign = "center",
-		clip_shape = beautiful.rounded_rect(4),
+		clip_shape = helpers.rounded_rect(4),
 		widget = wibox.widget.imagebox,
 	})
 
@@ -91,7 +92,7 @@ naughty.connect_signal("request::display", function(n)
 
 	local progressbar = wibox.widget({
 		max_value = 1,
-    shape = beautiful.rounded_rect(8),
+    shape = helpers.rounded_rect(8),
 		color = beautiful.notification_progress_fg,
 		background_color = beautiful.notification_progress_bg,
 		widget = wibox.widget.progressbar,
@@ -139,7 +140,7 @@ naughty.connect_signal("request::display", function(n)
 			bg = beautiful.notification_action_bg,
 			forced_height = beautiful.notification_action_height,
 			forced_width = beautiful.notification_action_width,
-			shape = beautiful.rounded_rect(40),
+			shape = helpers.rounded_rect(40),
 			widget = wibox.container.background,
 		},
 		style = {
@@ -152,7 +153,7 @@ naughty.connect_signal("request::display", function(n)
 	local widget = naughty.layout.box({
 		notification = n,
 		type = "notification",
-		shape = beautiful.rounded_rect(8),
+		shape = helpers.rounded_rect(8),
     maximum_width = beautiful.notification_max_width,
 		maximum_height = beautiful.notification_max_height,
 		widget_template = {
@@ -179,7 +180,7 @@ naughty.connect_signal("request::display", function(n)
 								},
 								{
 									actions,
-                  shape = beautiful.rounded_rect(8),
+                  shape = helpers.rounded_rect(8),
 									widget = wibox.container.background,
 									visible = n.actions and #n.actions > 0,
 								},

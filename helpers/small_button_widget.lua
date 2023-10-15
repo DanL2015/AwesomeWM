@@ -3,6 +3,7 @@ local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
+local helpers = require("helpers")
 
 local function create_small_button(image, command, description, padding, margin)
 	padding = padding or beautiful.panel_button_icon_padding
@@ -28,7 +29,7 @@ local function create_small_button(image, command, description, padding, margin)
 		fill_horizontal = false,
 		fill_vertical = false,
 		bg = beautiful.panel_button_active_bg,
-		shape = beautiful.rounded_rect(8),
+		shape = helpers.rounded_rect(8),
 		layout = wibox.container.background,
 	})
 	background:buttons(buttons)

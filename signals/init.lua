@@ -4,6 +4,9 @@ local wibox = require("wibox")
 local gears = require("gears")
 local beautiful = require("beautiful")
 local bling = require("bling")
+local helpers = require("helpers")
+local cairo = require("lgi").cairo
+local delayed_call = require("gears.timer").delayed_call
 
 naughty.connect_signal("request::display_error", function(message, startup)
     naughty.notification({
@@ -47,7 +50,6 @@ client.connect_signal("manage", function(c)
 end)
 
 -- Titlebars
-
 client.connect_signal("request::titlebars", function(c)
     -- buttons for the titlebar
     local buttons = {awful.button({}, 1, function()
@@ -129,39 +131,19 @@ client.connect_signal("request::titlebars", function(c)
     })
 
     local titlebar = awful.titlebar(c, {
-        size = beautiful.titlebar_height,
+        size = beautiful.titlebar_height
     })
 
     titlebar.widget = titlebar_widget
+end)
 
-    awesome.connect_signal("theme::reload", function()
-        left_widget.bg = beautiful.titlebar_button_bg
-        right_widget.bg = beautiful.titlebar_button_bg
-        titlebar.bg = beautiful.titlebar_bg_normal
-    end)
+client.connect_signal("property::geometry", function(c)
+    c.shape = helpers.rounded_rect(8)
+    c.shape_clip = helpers.rounded_rect(8)
+    c.shape_bounding = helpers.rounded_rect(8)
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.
 -- client.connect_signal("mouse::enter", function(c)
 --    c:activate { context = "mouse_enter", raise = false }
 -- end)
-
-awesome.connect_signal("theme::wallpaper", function()
-    awful.spawn.easy_async_with_shell("cat ~/.cache/wal/wal", function(stdout)
-        stdout = stdout:gsub("[\n\r]", "")
-        if stdout == "" then
-            stdout = beautiful.backgrounds_path .. beautiful.backgrounds[1]
-        end
-        bling.module.wallpaper.setup({
-            screen = screen,
-            position = "maximized",
-            wallpaper = stdout
-        })
-    end)
-end)
-
-screen.connect_signal('request::desktop_decoration', function(s)
-    awesome.emit_signal("theme::wallpaper")
-end)
-
-awesome.emit_signal("theme::wallpaper")

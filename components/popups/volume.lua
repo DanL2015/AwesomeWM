@@ -57,17 +57,14 @@ local function create_widget()
 	})
 
 	local slider = wibox.widget({
+		shape = gears.shape.rounded_rect,
 		bar_shape = gears.shape.rounded_rect,
 		bar_height = beautiful.osd_bar_height,
-		bar_color = beautiful.osd_bar_color,
-		bar_active_color = beautiful.osd_bar_active_color,
-		handle_shape = gears.shape.circle,
-		handle_width = beautiful.osd_bar_handle_width,
-		handle_color = beautiful.osd_bar_handle_color,
+		background_color = beautiful.osd_bar_color,
+		color = beautiful.osd_bar_active_color,
 		forced_height = beautiful.osd_bar_height,
-		widget = wibox.widget.slider,
-		minimum = 0,
-		maximum = 100,
+		widget = wibox.widget.progressbar,
+		max_value = 100,
 		value = 0,
 	})
 
@@ -107,11 +104,12 @@ local function create_widget()
 		update_mute(image, text, slider, mute)
 	end)
 
-	-- slider:connect_signal("property::value", function(_, new_value)
-	--  text.markup = "<b>Volume</b>: " .. tostring(new_value) .. "%"
-	--  awful.spawn.with_shell("pamixer --set-volume " .. tostring(new_value))
-	--   awesome.emit_signal("daemon::volume::update")
-	-- end)
+    awesome.connect_signal("theme::reload", function()
+        slider.background_color = beautiful.osd_bar_color
+        slider.color = beautiful.osd_bar_active_color
+        window.border_color = beautiful.border_color_normal
+		window.bg = beautiful.osd_bg
+    end)
 
 	return window
 end

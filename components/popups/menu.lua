@@ -3,6 +3,7 @@ local gears = require("gears")
 local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
+local helpers = require("helpers")
 
 local entries = {{beautiful.icon_globe, "firefox", "Firefox"}, {beautiful.icon_terminal, "kitty", "Kitty"},
                  {beautiful.icon_folder, "thunar", "Thunar"},
@@ -60,7 +61,7 @@ local function create_menu()
             margins = beautiful.menu_padding,
             layout = wibox.container.margin
         },
-        shape = beautiful.rounded_rect(8),
+        shape = helpers.rounded_rect(8),
         border_width = beautiful.border_width,
         border_color = beautiful.border_color_normal,
         ontop = true,

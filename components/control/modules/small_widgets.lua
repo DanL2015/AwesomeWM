@@ -1,6 +1,7 @@
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local create_small_button = require("helpers.small_button_widget")
+local helpers = require("helpers")
 
 local function create_widget()
 	-- Small buttons
@@ -25,7 +26,7 @@ local function create_widget()
 			layout = wibox.layout.flex.horizontal,
 		},
 		bg = beautiful.panel_widget_bg,
-		shape = beautiful.rounded_rect(8),
+		shape = helpers.rounded_rect(8),
 		layout = wibox.container.background,
 	})
 

@@ -1,9 +1,5 @@
 local awful = require("awful")
 local naughty = require("naughty")
-local set_theme = require("themes.theme")
-local gears = require("gears")
-
-local last_theme_file = gears.filesystem.get_cache_dir() .. "last_theme"
 
 local function apply_colors()
 	local colors = {}
@@ -23,9 +19,7 @@ local function apply_colors()
 	colors[15] = "#56b6c2"
 	colors[8] = "#abb2bf"
 	colors[16] = "#5c6370"
-	set_theme(colors)
-	awful.spawn.with_shell("echo one_dark > "..last_theme_file)
-	return 1
+	return colors
 end
 
 return apply_colors

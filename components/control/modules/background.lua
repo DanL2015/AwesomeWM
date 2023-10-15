@@ -3,11 +3,14 @@ local wibox = require("wibox")
 local gears = require("gears")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
+local backgrounds = require("themes.wallpaper")
+local colorscheme = require("themes.colorscheme")
+
 local add_background = require("helpers.background_widget")
 local create_small_button = require("helpers.small_button_widget")
-local apply_theme = require("themes")
 
 local last_theme_file = gears.filesystem.get_cache_dir() .. "last_theme"
+local is_ready = false
 
 local function create_widget()
     -- Background and theme switcher widget
@@ -37,7 +40,6 @@ local function create_widget()
     local theme_name = wibox.widget({
         halign = "center",
         valign = "center",
-        markup = beautiful.themes[theme_id],
         widget = wibox.widget.textbox
     })
 
@@ -104,7 +106,7 @@ local function create_widget()
                     layout = wibox.container.margin
                 },
                 halign = "left",
-                valign = "top",
+                valign = "bottom",
                 layout = wibox.container.place
             },
             layout = wibox.layout.stack
@@ -112,54 +114,48 @@ local function create_widget()
         layout = wibox.container.margin
     }), 0, 0)
 
-    awesome.connect_signal("theme::load", function()
-        background_bg.image = gears.surface.load_uncached(beautiful.backgrounds_path ..
-                                                              beautiful.backgrounds[background_id])
-        background_name.markup = tostring(beautiful.backgrounds[background_id])
+    awesome.connect_signal("theme::wallpaper::load", function()
+        background_bg.image = gears.surface.load_uncached(backgrounds.get_wallpaper_path(background_id))
+        background_name.markup = backgrounds.get_wallpaper_name(background_id)
+    end)
+
+    awesome.connect_signal("theme::colorscheme::load", function()
+        theme_name.markup = colorscheme.get_color_name(theme_id)
     end)
     awesome.connect_signal("theme::background::prev", function()
         background_id = background_id - 1
         if background_id < 1 then
-            background_id = background_id + beautiful.background_num
+            background_id = background_id + backgrounds.background_num
         end
-        background_name.markup = tostring(beautiful.backgrounds[background_id])
-        awesome.emit_signal("theme::load")
+        background_name.markup = backgrounds.get_wallpaper_name(background_id)
+        awesome.emit_signal("theme::wallpaper::load")
     end)
     awesome.connect_signal("theme::background::next", function()
         background_id = background_id + 1
-        if background_id > beautiful.background_num then
-            background_id = background_id - beautiful.background_num
+        if background_id > backgrounds.background_num then
+            background_id = background_id - backgrounds.background_num
         end
-        background_name.markup = tostring(beautiful.backgrounds[background_id])
-        awesome.emit_signal("theme::load")
+        background_name.markup = backgrounds.get_wallpaper_name(background_id)
+        awesome.emit_signal("theme::wallpaper::load")
     end)
     awesome.connect_signal("theme::colorscheme::prev", function()
         theme_id = theme_id - 1
         if theme_id < 1 then
-            theme_id = theme_id + beautiful.theme_num
+            theme_id = theme_id + colorscheme.colors_num
         end
-        theme_name.markup = tostring(beautiful.themes[theme_id])
+        theme_name.markup = colorscheme.get_color_name(theme_id)
     end)
     awesome.connect_signal("theme::colorscheme::next", function()
         theme_id = theme_id + 1
-        if theme_id > beautiful.theme_num then
-            theme_id = theme_id - beautiful.theme_num
+        if theme_id > colorscheme.colors_num then
+            theme_id = theme_id - colorscheme.colors_num
         end
-        theme_name.markup = tostring(beautiful.themes[theme_id])
+        theme_name.markup = colorscheme.get_color_name(theme_id)
     end)
     awesome.connect_signal("theme::set", function()
-        if beautiful.themes[theme_id] == "pywal" then
-            awful.spawn.easy_async_with_shell("echo " .. beautiful.themes[theme_id] .. " > " .. last_theme_file .. " & wal --cols16 -nq -i '" .. beautiful.backgrounds_path ..
-                                                  beautiful.backgrounds[background_id] .. "'", function()
-                awesome.emit_signal("theme::wallpaper")
-                apply_theme()
-            end)
-		else
-			awful.spawn.easy_async_with_shell("echo " .. beautiful.backgrounds_path .. beautiful.backgrounds[background_id] .. " > ~/.cache/wal/wal & echo " .. beautiful.themes[theme_id] .. " > " .. last_theme_file, function()
-                awesome.emit_signal("theme::wallpaper")
-				apply_theme()
-			end)
-        end
+        backgrounds.set_wallpaper(background_id)
+        colorscheme.set_color(theme_id)
+        awesome.restart()
     end)
 
     return background

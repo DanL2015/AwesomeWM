@@ -3,6 +3,7 @@ local gears = require("gears")
 local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
+local helpers = require("helpers")
 
 local function create_widget(widget, hspace, vspace, bg_color)
     hspace = hspace or beautiful.xlarge_space
@@ -15,7 +16,7 @@ local function create_widget(widget, hspace, vspace, bg_color)
         },
         layout = wibox.container.background,
         bg = bg,
-        shape = beautiful.rounded_rect(8)
+        shape = helpers.rounded_rect(8)
     })
     local widget = wibox.widget({
         background,

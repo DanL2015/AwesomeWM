@@ -1,13 +1,8 @@
-biscuit
-oxocarbon
 aquarium
-mountain
 ashes
 kanagawa
 radium
 chocolate
-yoru
-onedark
 gruvbox
 everblush
 serenade

@@ -4,6 +4,7 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local add_background = require("helpers.background_widget")
+local helpers = require("helpers")
 
 local function create_widget()
 
@@ -17,7 +18,7 @@ local function create_widget()
     local notifications = wibox.widget({
         spacing = beautiful.panel_internal_margin,
         layout = wibox.layout.overflow.vertical,
-        forced_height = 10000,
+        forced_height = 1000,
         scrollbar_width = 10,
         step = 50
     })
@@ -56,7 +57,7 @@ local function create_widget()
                 forced_width = beautiful.notification_icon_size,
                 halign = "center",
                 valign = "center",
-                clip_shape = beautiful.rounded_rect(2),
+                clip_shape = helpers.rounded_rect(2),
                 widget = wibox.widget.imagebox
             })
         end
@@ -68,7 +69,7 @@ local function create_widget()
             forced_width = beautiful.notification_image_size,
             halign = "right",
             valign = "center",
-            clip_shape = beautiful.rounded_rect(4),
+            clip_shape = helpers.rounded_rect(4),
             widget = wibox.widget.imagebox
         })
 
@@ -114,31 +115,33 @@ local function create_widget()
             }
         })
 
+        local notif_action_widget = wibox.widget({
+            {
+                {
+                    {
+                        id = "text_role",
+                        widget = wibox.widget.textbox
+                    },
+                    left = beautiful.xlarge_space,
+                    right = beautiful.xlarge_space,
+                    widget = wibox.container.margin
+                },
+                widget = wibox.container.place
+            },
+            bg = beautiful.notification_action_bg,
+            forced_height = beautiful.notification_action_height,
+            forced_width = beautiful.notification_action_width,
+            shape = helpers.rounded_rect(40),
+            widget = wibox.container.background
+        })
+
         local notif_actions = wibox.widget({
             notification = n,
             base_layout = wibox.widget({
                 spacing = beautiful.xlarge_space,
                 layout = wibox.layout.flex.horizontal
             }),
-            widget_template = {
-                {
-                    {
-                        {
-                            id = "text_role",
-                            widget = wibox.widget.textbox
-                        },
-                        left = beautiful.xlarge_space,
-                        right = beautiful.xlarge_space,
-                        widget = wibox.container.margin
-                    },
-                    widget = wibox.container.place
-                },
-                bg = beautiful.notification_action_bg,
-                forced_height = beautiful.notification_action_height,
-                forced_width = beautiful.notification_action_width,
-                shape = beautiful.rounded_rect(40),
-                widget = wibox.container.background
-            },
+            widget_template = notif_action_widget,
             style = {
                 underline_normal = false,
                 underline_selected = true
@@ -173,7 +176,7 @@ local function create_widget()
                         {
                             {
                                 notif_actions,
-                                shape = beautiful.rounded_rect(8),
+                                shape = helpers.rounded_rect(8),
                                 widget = wibox.container.background
                             },
                             margins = beautiful.notification_inner_margin,
@@ -196,7 +199,13 @@ local function create_widget()
             forced_height = beautiful.notification_height,
             margins = beautiful.notification_padding,
             widget = wibox.container.margin
-        }), 0, 0, beautiful.bg0)
+        }), 0, 0)
+
+        notif_template.children[1].bg = beautiful.bg0
+
+        awesome.connect_signal("theme::reload", function()
+            notif_template.children[1].bg = beautiful.bg0
+        end)
 
         notifications:insert(1, notif_template)
 

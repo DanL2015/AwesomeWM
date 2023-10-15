@@ -1,13 +1,14 @@
 pcall(require, "luarocks.loader")
 
 local awful = require("awful")
+local beautiful = require("beautiful")
 require("awful.autofocus")
 local menubar = require("menubar")
 local gears  = require("gears")
 require("awful.hotkeys_popup.keys")
 
 -- Beautiful
-require("themes")()
+require("themes")
 
 apps = {
     terminal = "kitty",

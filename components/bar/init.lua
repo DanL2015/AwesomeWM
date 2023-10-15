@@ -4,8 +4,8 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 
 awful.screen.connect_for_each_screen(function(s)
-	s.bar = awful.wibar({ position = "top", screen = s, bg = beautiful.bar_bg, height = beautiful.bar_height })
-	s.bar:setup({
+	local bar = awful.wibar({ position = "top", screen = s, bg = beautiful.bar_bg, height = beautiful.bar_height })
+	bar:setup({
 		layout = wibox.layout.align.horizontal,
 		expand = "none",
 		{ -- Left widgets
@@ -52,6 +52,6 @@ awful.screen.connect_for_each_screen(function(s)
 		},
 	})
 	awesome.connect_signal("theme::reload", function()
-		s.bar.bg = beautiful.bar_bg
+		bar.bg = beautiful.bar_bg
 	end)
 end)

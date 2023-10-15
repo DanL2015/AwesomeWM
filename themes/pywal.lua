@@ -1,3 +1,6 @@
+-- This file does work, but I don't really use pywal anymore for the following reasons:
+-- a. Pywal doesn't generate great colorschemes
+-- b. Pywal uses a command, Awesome must wait for the Pywal colors to generate before continuing
 local awful = require("awful")
 local naughty = require("naughty")
 local gears = require("gears")
