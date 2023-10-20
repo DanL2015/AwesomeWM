@@ -8,6 +8,9 @@ local colors = require("themes.colors")()
 local dpi = beautiful.xresources.apply_dpi
 local helpers = require("helpers")
 local theme_assets = require("beautiful.theme_assets")
+local lgi = require("lgi")
+local Gio = lgi.Gio
+local Gtk = lgi.require("Gtk", "3.0")
 local rnotification = require("ruled.notification")
 
 wallpaper.init()
@@ -184,6 +187,7 @@ theme.notification_action_width = dpi(40)
 theme.notification_action_height = dpi(30)
 theme.notification_action_bg = theme.accent0
 theme.notification_shape = helpers.rounded_rect(10)
+
 -- Panel
 theme.panel_bg = theme.bg0
 theme.panel_height = dpi(760)
@@ -216,6 +220,15 @@ theme.menu_bg_normal = theme.bg0
 -- systray
 theme.bg_systray = theme.bg0
 theme.systray_icon_size = dpi(20)
+
+-- Dock
+theme.dock_focused_bg = theme.accent1
+theme.dock_unfocused_bg = theme.bg1
+theme.dock_icon_size = dpi(48)
+theme.dock_app_margin = dpi(8)
+theme.dock_app_width = dpi(72)
+theme.dock_app_height = dpi(84)
+theme.dock_indicator_height = dpi(4)
 
 -- Titlebar
 theme.titlebar_height = dpi(40)
@@ -311,6 +324,73 @@ theme.icon_cloud_lightning = themes_path .. "icons/cloud-lightning.svg"
 theme.icon_cloud_rain = themes_path .. "icons/cloud-rain.svg"
 theme.icon_cloud_snow = themes_path .. "icons/cloud-snow.svg"
 theme.icon_wind = themes_path .. "icons/wind.svg"
+
+-- Theme icons
+theme.icon_size = 48
+theme.gtk_theme = Gtk.IconTheme.get_default()
+theme.apps = Gio.AppInfo.get_all()
+
+function theme.get_gicon_path(gicon)
+    if gicon == nil then
+        return ""
+    end
+
+    local icon_info = theme.gtk_theme:lookup_by_gicon(gicon, theme.icon_size, 0);
+    if icon_info then
+        local icon_path = icon_info:get_filename()
+        if icon_path then
+            return icon_path
+        end
+    end
+
+    return ""
+end
+
+function theme.choose_icon(icons_names)
+    local icon_info = theme.gtk_theme:choose_icon(icons_names, theme.icon_size, 0);
+    if icon_info then
+        local icon_path = icon_info:get_filename()
+        if icon_path then
+            return icon_path
+        end
+    end
+
+    return ""
+end
+
+function theme.get_icon(client_name)
+    if client_name ~= nil then
+        for _, app in ipairs(theme.apps) do
+            local name = app:get_name():lower()
+            local id = app:get_id():lower()
+            local display = app:get_display_name():lower()
+            if (name and (string.find(client_name, name) or string.find(name, client_name))) or (display and (string.find(client_name, display) or string.find(display, client_name))) then
+                local icon_path = theme.get_gicon_path(app:get_icon())
+                if icon_path and icon_path ~= "" then
+                    return icon_path
+                end
+            end
+        end
+    end
+    return nil
+end
+
+function theme.get_executable(client_name)
+    if client_name ~= nil then
+        for _, app in ipairs(theme.apps) do
+            local name = app:get_name():lower()
+            local id = app:get_id():lower()
+            local display = app:get_display_name():lower()
+            if (name and (string.find(client_name, name) or string.find(name, client_name))) or (display and (string.find(client_name, display) or string.find(display, client_name))) then
+                local exec = app:get_executable()
+                if exec and exec ~= "" then
+                    return exec
+                end
+            end
+        end
+    end
+    return nil
+end
 
 -- Set different colors for urgent notifications.
 rnotification.connect_signal("request::rules", function()

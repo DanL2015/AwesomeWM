@@ -3,6 +3,7 @@ local gears = require("gears")
 local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
+local helpers = require("helpers")
 
 local function create_widget(widget, hspace, vspace)
 	hspace = hspace or beautiful.large_space
@@ -17,9 +18,7 @@ local function create_widget(widget, hspace, vspace)
 			bottom = vspace,
 			widget,
 		},
-		shape = function(cr, width, height)
-			gears.shape.rounded_rect(cr, width, height, 4)
-		end,
+		shape = helpers.rounded_rect(4),
 	})
 
 	background:connect_signal("mouse::enter", function()

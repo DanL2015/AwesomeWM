@@ -11,6 +11,8 @@ local panel_visible = false
 awesome.connect_signal("panel::toggle", function()
     panel_visible = not panel_visible
     if panel_visible then
+        notifs.update_screen()
+        control.update_screen()
         notifs.flyin()
         control.flyin()
     else

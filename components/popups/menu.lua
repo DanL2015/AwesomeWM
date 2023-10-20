@@ -6,7 +6,7 @@ local beautiful = require("beautiful")
 local helpers = require("helpers")
 
 local entries = {{beautiful.icon_globe, "firefox", "Firefox"}, {beautiful.icon_terminal, "kitty", "Kitty"},
-                 {beautiful.icon_folder, "thunar", "Thunar"},
+                 {beautiful.icon_folder, "nemo", "Nemo"},
                  {beautiful.icon_settings, "xfce4-settings-manager", "Settings"},
                  {beautiful.icon_edit, "kitty -e nvim " .. gears.filesystem.get_configuration_dir() .. "rc.lua",
                   "Edit Config"}, {beautiful.icon_refresh_ccw, "systemctl reboot", "Reboot"},

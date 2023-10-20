@@ -101,6 +101,8 @@ local function create_widget()
             }
         })
 
+        notif_title:pause()
+
         local notif_message = wibox.widget({
             layout = wibox.container.scroll.horizontal,
             step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
@@ -114,6 +116,8 @@ local function create_widget()
                 widget = wibox.widget.textbox
             }
         })
+
+        notif_message:pause()
 
         local notif_action_widget = wibox.widget({
             {
@@ -200,12 +204,17 @@ local function create_widget()
             margins = beautiful.notification_padding,
             widget = wibox.container.margin
         }), 0, 0)
+        notif_template:connect_signal("mouse::enter", function()
+            notif_title:continue()
+            notif_message:continue()
+        end)
+
+        notif_template:connect_signal("mouse::leave", function()
+            notif_title:pause()
+            notif_message:pause()
+        end)
 
         notif_template.children[1].bg = beautiful.bg0
-
-        awesome.connect_signal("theme::reload", function()
-            notif_template.children[1].bg = beautiful.bg0
-        end)
 
         notifications:insert(1, notif_template)
 

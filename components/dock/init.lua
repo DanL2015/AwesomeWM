@@ -1,0 +1,259 @@
+local awful = require("awful")
+local gears = require("gears")
+local wibox = require("wibox")
+local beautiful = require("beautiful")
+local naughty = require("naughty")
+local helpers = require("helpers")
+local rubato = require("rubato")
+
+local add_background = require("helpers.background_widget")
+local add_clickable = require("helpers.clickable_widget")
+
+local M = {}
+
+M.pinned = {"firefox", "kitty", "nemo", "obsidian"}
+M.widgets = {}
+
+function M.place()
+    M.wibox.x = awful.screen.focused().geometry.x + (awful.screen.focused().geometry.width - M.wibox.width) / 2
+end
+
+function M.add_widget_by_name(client_class)
+    local icon = beautiful.get_icon(client_class)
+    local exec = beautiful.get_executable(client_class)
+    if not icon then
+        return
+    end
+
+    local indicator = wibox.widget({
+        forced_width = 40,
+        spacing = 2,
+        widget = wibox.layout.flex.horizontal
+    })
+
+    local icon = wibox.widget({
+        image = icon,
+        resize = false,
+        forced_height = beautiful.dock_icon_size,
+        forced_width = beautiful.dock_icon_size,
+        valign = "center",
+        halign = "center",
+        widget = wibox.widget.imagebox
+    })
+
+    local background = wibox.widget({
+        add_clickable(icon),
+        bg = beautiful.dock_unfocused_bg,
+        layout = wibox.container.background,
+        shape = helpers.rounded_rect(4)
+    })
+
+    local widget = wibox.widget({
+        {
+            background,
+            indicator,
+            spacing = beautiful.medium_space,
+            layout = wibox.layout.fixed.vertical
+        },
+        margins = beautiful.dock_app_margin,
+        layout = wibox.container.margin
+    })
+
+    M.widgets[client_class] = {icon, indicator, widget, background, exec}
+
+    icon:add_button(gears.table.join(awful.button({}, 1, function()
+        local class = client_class
+        if #M.widgets[class][2].children == 0 then
+            awful.spawn.easy_async(class, function(stdout, stderr)
+                if stderr then
+                    awful.spawn.easy_async("gtk-launch" .. M.widgets[class][5])
+                end
+            end)
+        elseif #M.widgets[class][2].children == 1 then
+            for _, c in ipairs(client.get()) do
+                if class == c.class:lower() then
+                    c:jump_to()
+                end
+            end
+        else
+            -- Badly written window cycling
+            local first = nil
+            local switch_next = false
+            local switched = false
+            for _, c in ipairs(client.get()) do
+                if not first and class == c.class:lower() and client.focus ~= c then
+                    first = c
+                end
+                if client.focus == c then
+                    switch_next = true
+                end
+                if switch_next and class == c.class:lower() and client.focus ~= c then
+                    c:jump_to()
+                    switched = true
+                    break
+                end
+            end
+            if not switched and first then
+                first:jump_to()
+            end
+        end
+    end)))
+
+    M.widget:add(widget)
+    M.wibox.width = M.wibox.width + beautiful.dock_app_width
+    M.place()
+end
+
+function M.add_widget_by_client(client)
+    if not client or not client.class then
+        return
+    end
+
+    local class = client.class:lower()
+
+    if not M.widgets[class] then
+        M.add_widget_by_name(class)
+    end
+
+    if M.widgets[class] and M.widgets[class][2] then
+        local indicator = M.widgets[class][2]
+        indicator:add(wibox.widget({
+            shape = helpers.rounded_rect(8),
+            thickness = beautiful.dock_indicator_height,
+            halign = "center",
+            valign = "center",
+            widget = wibox.widget.separator
+        }))
+    end
+end
+
+function M.remove_widget_by_client(client)
+    if not client or not client.class then
+        return
+    end
+
+    local class = client.class:lower()
+
+    if M.widgets[class] and M.widgets[class][2] then
+        local indicator = M.widgets[class][2]
+        if #indicator.children == 1 and M.widgets[class][3] then
+            local is_pinned = false
+            for _, i in ipairs(M.pinned) do
+                if class == i then
+                    is_pinned = true
+                    break
+                end
+            end
+            if not is_pinned then
+                M.widget:remove_widgets(M.widgets[class][3])
+                M.wibox.width = M.wibox.width - beautiful.dock_app_width
+                M.place()
+            else
+                indicator:remove(#indicator.children)
+            end
+        elseif #indicator.children > 1 then
+            M.widgets[class] = nil
+            indicator:remove(#indicator.children)
+        end
+    end
+end
+
+function M.add_pinned()
+    for _, name in ipairs(M.pinned) do
+        M.add_widget_by_name(name)
+    end
+end
+
+function M.focus(client)
+    if not client then
+        return
+    end
+
+    local class = client.class:lower()
+
+    for c, widget in pairs(M.widgets) do
+        if widget[4] then
+            if c == class then
+                widget[4].bg = beautiful.accent1
+            else
+                widget[4].bg = beautiful.bg1
+            end
+        end
+    end
+end
+
+function M.show()
+    M.timer.pos = M.y_pos_hide(awful.screen.focused())
+    M.timer.target = M.y_pos_show(awful.screen.focused())
+end
+
+function M.hide()
+    M.timer.pos = M.y_pos_show(awful.screen.focused())
+    M.timer.target = M.y_pos_hide(awful.screen.focused())
+end
+
+function M.y_pos_show(screen)
+    if not screen then
+        return
+    end
+    return screen.geometry.height - beautiful.useless_gap - M.wibox.height
+end
+
+function M.y_pos_hide(screen)
+    if not screen then
+        return
+    end
+    return screen.geometry.height - beautiful.useless_gap
+end
+
+function M.new()
+
+    M.widget = wibox.widget({
+        layout = wibox.layout.flex.horizontal
+    })
+
+    M.wibox = wibox({
+        widget = add_background(M.widget, 0, 0),
+        height = beautiful.dock_app_height,
+        ontop = true,
+        visible = true
+    })
+
+    awful.placement.bottom(M.wibox, {
+        margins = {
+            bottom = beautiful.useless_gap
+        }
+    })
+
+    M.add_pinned()
+
+    M.place()
+    M.timer = rubato.timed({
+        duration = 0.2,
+        subscribed = function(pos)
+            M.wibox.y = pos
+        end,
+        pos = M.y_pos_hide(awful.screen.focused())
+    })
+
+    client.connect_signal("request::manage", function(c)
+        M.add_widget_by_client(c)
+    end)
+    client.connect_signal("request::unmanage", function(c)
+        M.remove_widget_by_client(c)
+    end)
+    client.connect_signal("focus", function(c)
+        M.focus(c)
+    end)
+
+    M.widget:connect_signal("mouse::enter", function()
+        M.show()
+    end)
+    M.widget:connect_signal("mouse::leave", function()
+        M.hide()
+    end)
+
+    return M
+end
+
+return M.new()

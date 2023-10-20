@@ -69,6 +69,8 @@ naughty.connect_signal("request::display", function(n)
 		},
 	})
 
+	title:pause()
+
 	local message = wibox.widget({
 		layout = wibox.container.scroll.horizontal,
 		step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
@@ -82,6 +84,8 @@ naughty.connect_signal("request::display", function(n)
 			widget = wibox.widget.textbox,
 		},
 	})
+
+	message:pause()
 
 	local app_name = wibox.widget({
 		valign = "center",
@@ -219,10 +223,14 @@ naughty.connect_signal("request::display", function(n)
 	widget.buttons = {}
 
 	widget:connect_signal("mouse::enter", function()
+		title:continue()
+		message:continue()
 		timed.pause = true
 	end)
 
 	widget:connect_signal("mouse::leave", function()
+		title:pause()
+		message:pause()
 		timed.pause = false
 	end)
 end)

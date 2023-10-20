@@ -63,9 +63,9 @@ function M.new()
     M.is_visible = false
 
     M.fly_timer = rubato.timed({
-        duration = 1 / 2,
-        intro = 1 / 6,
-        override_dt = true
+        duration = 0.4,
+        override_dt = true,
+        clamp_position = true
     })
 
     M.fly_timer:subscribe(function(pos)
@@ -80,9 +80,9 @@ function M.new()
     end)
 
     M.minmax_timer = rubato.timed({
-        duration = 1 / 2,
-        intro = 1 / 6,
+        duration = 0.4,
         override_dt = true,
+        clamp_position = true,
         pos = 1
     })
 
@@ -93,8 +93,12 @@ function M.new()
         end
     end)
 
-    M.wibox.x = awful.screen.focused().geometry.width - beautiful.useless_gap - M.wibox.width
+    M.update_screen()
     return M
+end
+
+function M.update_screen()
+    M.wibox.x = awful.screen.focused().geometry.width + awful.screen.focused().geometry.x - beautiful.useless_gap - M.wibox.width
 end
 
 function M.minimize()
@@ -147,4 +151,4 @@ function M.add_widgets()
     M.widget:add_widget_at(M.background, 16, 1, 7, 6)
 end
 
-return M:new()
+return M.new()

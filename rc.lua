@@ -14,7 +14,7 @@ apps = {
     terminal = "kitty",
     editor = "nvim",
     browser = "firefox",
-    file_manager = "thunar",
+    file_manager = "nemo",
     volume_manager = "pavucontrol",
     network_manager = "nm-connection-editor",
     power_manager = "xfce4-power-manager-settings",
@@ -45,9 +45,8 @@ require("rules")
 require("notifications")
 
 -- Autostart Applications
-awful.spawn.single_instance("xfsettingsd", false)
+-- awful.spawn.single_instance("xfsettingsd", false)
 awful.spawn.single_instance("picom", false)
-awful.spawn.single_instance("nm-applet", false)
 
 -- Run garbage collector regularly to prevent memory leaks
 gears.timer {
