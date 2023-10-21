@@ -4,7 +4,7 @@ local naughty = require("naughty")
 local function apply_colors()
     local colors = {}
     colors[1] = "#0f0f0f"
-    colors[9] = "#202020"
+    colors[9] = "#191919"
     colors[2] = "#ac8a8c"
     colors[10] = "#c49ea0"
     colors[3] = "#8aac8b"

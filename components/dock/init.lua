@@ -63,6 +63,9 @@ function M.add_widget_by_name(client_class)
 
     icon:add_button(gears.table.join(awful.button({}, 1, function()
         local class = client_class
+        if not M.widgets[class] or not M.widgets[class][2] then
+            return
+        end
         if #M.widgets[class][2].children == 0 then
             awful.spawn.easy_async(class, function(stdout, stderr)
                 if stderr then
@@ -144,15 +147,18 @@ function M.remove_widget_by_client(client)
                     break
                 end
             end
+            naughty.notify({
+                text = tostring(is_pinned)
+            })
             if not is_pinned then
                 M.widget:remove_widgets(M.widgets[class][3])
+                M.widgets[class] = nil
                 M.wibox.width = M.wibox.width - beautiful.dock_app_width
                 M.place()
             else
                 indicator:remove(#indicator.children)
             end
         elseif #indicator.children > 1 then
-            M.widgets[class] = nil
             indicator:remove(#indicator.children)
         end
     end
@@ -180,6 +186,19 @@ function M.focus(client)
             end
         end
     end
+end
+
+function M.unfocus(client)
+    if not client then
+        return
+    end
+
+    local class = client.class:lower()
+    if not M.widgets[class] or not M.widgets[class][4] then
+        return
+    end
+
+    M.widgets[class][4].bg = beautiful.bg1
 end
 
 function M.show()
@@ -244,6 +263,9 @@ function M.new()
     end)
     client.connect_signal("focus", function(c)
         M.focus(c)
+    end)
+    client.connect_signal("unfocus", function(c)
+        M.unfocus(c)
     end)
 
     M.widget:connect_signal("mouse::enter", function()
