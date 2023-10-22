@@ -147,9 +147,6 @@ function M.remove_widget_by_client(client)
                     break
                 end
             end
-            naughty.notify({
-                text = tostring(is_pinned)
-            })
             if not is_pinned then
                 M.widget:remove_widgets(M.widgets[class][3])
                 M.widgets[class] = nil
@@ -247,6 +244,7 @@ function M.new()
     M.add_pinned()
 
     M.place()
+    M.display = true
     M.timer = rubato.timed({
         duration = 0.2,
         subscribed = function(pos)
@@ -256,9 +254,14 @@ function M.new()
     })
 
     client.connect_signal("request::manage", function(c)
+        M.display = false
         M.add_widget_by_client(c)
     end)
     client.connect_signal("request::unmanage", function(c)
+        -- if not c.screen.clients then
+        --     M.display = true
+        --     M.show()
+        -- end
         M.remove_widget_by_client(c)
     end)
     client.connect_signal("focus", function(c)
@@ -267,12 +270,32 @@ function M.new()
     client.connect_signal("unfocus", function(c)
         M.unfocus(c)
     end)
+    client.connect_signal("property::fullscreen", function(c)
+        if c.fullscreen and c.tag == awful.screen.focused().selected_tag then
+            M.wibox.visible = false
+        else
+            M.wibox.visible = true
+        end
+    end)
+    tag.connect_signal("property::selected", function(t)
+        if #t:clients() == 0 then
+            M.display = true
+            M.show()
+        else
+            M.display = false
+            M.hide()
+        end
+    end)
 
     M.widget:connect_signal("mouse::enter", function()
-        M.show()
+        if not M.display then
+            M.show()
+        end
     end)
     M.widget:connect_signal("mouse::leave", function()
-        M.hide()
+        if not M.display then
+            M.hide()
+        end
     end)
 
     return M
