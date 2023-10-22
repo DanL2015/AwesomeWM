@@ -190,7 +190,7 @@ theme.notification_shape = helpers.rounded_rect(10)
 
 -- Panel
 theme.panel_bg = theme.bg0
-theme.panel_height = dpi(760)
+theme.panel_height = dpi(650)
 theme.panel_width = dpi(400)
 theme.panel_minimize_height = dpi(56)
 theme.panel_minimize_width = dpi(400)

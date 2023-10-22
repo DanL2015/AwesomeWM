@@ -3,7 +3,7 @@ local gears = require("gears")
 local bling = require("bling")
 local naughty = require("naughty")
 
-local wall_file = gears.filesystem.get_cache_dir() .. "last_wall"
+local wall_file = gears.filesystem.get_cache_dir() .. "wallpaper"
 local themes_path = gears.filesystem.get_configuration_dir()
 
 local function wall_file_exists()
@@ -17,11 +17,15 @@ function M.init()
     M.backgrounds_path = themes_path .. "backgrounds/"
     M.backgrounds = {}
     M.background_num = 1
+    M.id = 1
     M.file = wall_file
     if not wall_file_exists() then
         awful.spawn.with_shell("echo > " .. wall_file)
     end
+
     local cmd = "bash -c 'ls " .. M.backgrounds_path .. "'"
+    local current_wall = io.popen("cat " .. wall_file):read("*all"):gsub("[\n\r]", "")
+    M.id = tonumber(current_wall) or M.id
     awful.spawn.easy_async_with_shell(cmd, function(stdout)
         for s in stdout:gmatch("[^\r\n]+") do
             s = s:gsub("[\n\r]", "")

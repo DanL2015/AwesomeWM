@@ -17,7 +17,8 @@ function M.new()
     M.brightness = require("components.control.modules.brightness")()
     M.volume = require("components.control.modules.volume")()
     M.media = require("components.control.modules.media")()
-    M.background = require("components.control.modules.background")()
+    M.background = require("components.control.modules.background")
+    M.colorscheme = require("components.control.modules.colorscheme")
 
     -- Control panel widget
     M.widget = wibox.widget({
@@ -139,7 +140,7 @@ function M.add_widgets()
     M.widget.spacing = beautiful.panel_internal_margin
     M.widget.min_cols_size = 10
     M.widget.min_rows_size = 10
-    M.widget.forced_num_rows = 22
+    M.widget.forced_num_rows = 18
     M.widget.forced_num_cols = 6
     M.widget.expand = true
     M.widget:add_widget_at(M.left_buttons_widget, 1, 1, 6, 3)
@@ -148,7 +149,8 @@ function M.add_widgets()
     M.widget:add_widget_at(M.brightness, 7, 1, 3, 6)
     M.widget:add_widget_at(M.volume, 10, 1, 3, 6)
     M.widget:add_widget_at(M.media, 13, 1, 3, 6)
-    M.widget:add_widget_at(M.background, 16, 1, 7, 6)
+    M.widget:add_widget_at(M.colorscheme, 16, 1, 3, 3)
+    M.widget:add_widget_at(M.background, 16, 4, 3, 3)
 end
 
 return M.new()
