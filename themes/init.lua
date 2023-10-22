@@ -227,7 +227,7 @@ theme.dock_unfocused_bg = theme.bg1
 theme.dock_icon_size = dpi(48)
 theme.dock_app_margin = dpi(8)
 theme.dock_app_width = dpi(72)
-theme.dock_app_height = dpi(84)
+theme.dock_app_height = dpi(72)
 theme.dock_indicator_height = dpi(4)
 
 -- Titlebar

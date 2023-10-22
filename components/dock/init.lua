@@ -51,9 +51,13 @@ function M.add_widget_by_name(client_class)
     local widget = wibox.widget({
         {
             background,
-            indicator,
-            spacing = beautiful.medium_space,
-            layout = wibox.layout.fixed.vertical
+            {
+                indicator,
+                valign = "bottom",
+                halign = "center",
+                layout = wibox.container.place
+            },
+            layout = wibox.layout.stack
         },
         margins = beautiful.dock_app_margin,
         layout = wibox.container.margin
@@ -123,8 +127,9 @@ function M.add_widget_by_client(client)
         indicator:add(wibox.widget({
             shape = helpers.rounded_rect(8),
             thickness = beautiful.dock_indicator_height,
+            forced_height = beautiful.dock_indicator_height,
             halign = "center",
-            valign = "center",
+            valign = "bottom",
             widget = wibox.widget.separator
         }))
     end
@@ -258,10 +263,6 @@ function M.new()
         M.add_widget_by_client(c)
     end)
     client.connect_signal("request::unmanage", function(c)
-        -- if not c.screen.clients then
-        --     M.display = true
-        --     M.show()
-        -- end
         M.remove_widget_by_client(c)
     end)
     client.connect_signal("focus", function(c)
@@ -271,7 +272,7 @@ function M.new()
         M.unfocus(c)
     end)
     client.connect_signal("property::fullscreen", function(c)
-        if c.fullscreen and c.tag == awful.screen.focused().selected_tag then
+        if c.fullscreen and c.tag == awful.screen.focused().tag then
             M.wibox.visible = false
         else
             M.wibox.visible = true
