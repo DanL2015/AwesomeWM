@@ -76,10 +76,6 @@ local function create_widget()
 
 		background:buttons(buttons)
 
-		awesome.connect_signal("theme::reload", function()
-			background.bg = beautiful.panel_button_active_bg
-		end)
-
 		return {
 			icon = icon,
 			text = text,

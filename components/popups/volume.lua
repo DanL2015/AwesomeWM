@@ -104,13 +104,6 @@ local function create_widget()
 		update_mute(image, text, slider, mute)
 	end)
 
-    awesome.connect_signal("theme::reload", function()
-        slider.background_color = beautiful.osd_bar_color
-        slider.color = beautiful.osd_bar_active_color
-        window.border_color = beautiful.border_color_normal
-		window.bg = beautiful.osd_bg
-    end)
-
 	return window
 end
 

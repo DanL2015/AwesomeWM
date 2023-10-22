@@ -51,7 +51,4 @@ awful.screen.connect_for_each_screen(function(s)
 			},
 		},
 	})
-	awesome.connect_signal("theme::reload", function()
-		bar.bg = beautiful.bar_bg
-	end)
 end)

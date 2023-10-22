@@ -272,7 +272,7 @@ function M.new()
     })
 
     client.connect_signal("request::manage", function(c)
-        M.display = false
+        M.update_display()
         M.add_widget_by_client(c)
     end)
     client.connect_signal("request::unmanage", function(c)

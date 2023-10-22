@@ -41,12 +41,6 @@ local function create_widget()
 		awesome.emit_signal("daemon::brightness::update", new_value)
 	end)
 
-	awesome.connect_signal("theme::reload", function()
-    brightness_widget.handle_color = beautiful.slider_handle_color
-	  brightness_widget.bar_active_color = beautiful.slider_bar_active_color
-	  brightness_widget.bar_color = beautiful.slider_bar_color
-  end)
-
 	return brightness
 end
 

@@ -44,10 +44,6 @@ local function create_small_button(image, command, description, padding, margin)
 		objects = { widget },
 		markup = description,
 	})
-  
-  awesome.connect_signal("theme::reload", function()
-    background.bg = beautiful.panel_button_active_bg
-  end)
 
 	return widget
 end

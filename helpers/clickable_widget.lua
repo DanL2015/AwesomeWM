@@ -29,12 +29,6 @@ local function create_widget(widget, hspace, vspace)
 		background.bg = "#00000000"
 	end)
 
-	awesome.connect_signal("theme::reload", function()
-		background:connect_signal("mouse::enter", function()
-			background.bg = beautiful.clickable_active_bg
-		end)
-	end)
-
 	return background
 end
 

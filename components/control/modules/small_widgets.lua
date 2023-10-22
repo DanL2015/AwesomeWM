@@ -30,10 +30,6 @@ local function create_widget()
 		layout = wibox.container.background,
 	})
 
-	awesome.connect_signal("theme::reload", function()
-		small_widgets.bg = beautiful.panel_widget_bg
-	end)
-
 	return small_widgets
 end
 

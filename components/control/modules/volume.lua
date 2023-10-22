@@ -42,12 +42,6 @@ local function create_widget()
 		awesome.emit_signal("daemon::volume::update", new_value)
 	end)
 
-	awesome.connect_signal("theme::reload", function()
-		volume_widget.handle_color = beautiful.slider_handle_color
-		volume_widget.bar_active_color = beautiful.slider_bar_active_color
-		volume_widget.bar_color = beautiful.slider_bar_color
-	end)
-
 	return volume
 end
 

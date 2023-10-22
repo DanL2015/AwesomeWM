@@ -24,10 +24,6 @@ local function create_widget(widget, hspace, vspace, bg_color)
         bottom = vspace
     })
 
-    awesome.connect_signal("theme::reload", function()
-        background.bg = bg_color or beautiful.bg1
-    end)
-
     return widget
 end
 

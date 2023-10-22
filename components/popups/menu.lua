@@ -68,10 +68,6 @@ local function create_menu()
         visible = false,
         hide_on_right_click = true
     })
-    awesome.connect_signal("theme::reload", function()
-        menu.bg = beautiful.bg0
-        menu.border_color = beautiful.border_color_normal
-    end)
 
     return menu
 end
