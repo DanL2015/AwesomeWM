@@ -227,6 +227,19 @@ function M.y_pos_hide(screen)
     return screen.geometry.height - beautiful.useless_gap
 end
 
+function M.update_display()
+    if not awful.screen.focused().selected_tag then
+        return
+    end
+    if #awful.screen.focused().selected_tag:clients() == 0 then
+        M.display = true
+        M.show()
+    else
+        M.display = false
+        M.hide()
+    end
+end
+
 function M.new()
 
     M.widget = wibox.widget({
@@ -263,6 +276,7 @@ function M.new()
         M.add_widget_by_client(c)
     end)
     client.connect_signal("request::unmanage", function(c)
+        M.update_display()
         M.remove_widget_by_client(c)
     end)
     client.connect_signal("focus", function(c)
@@ -279,13 +293,7 @@ function M.new()
         end
     end)
     tag.connect_signal("property::selected", function(t)
-        if #t:clients() == 0 then
-            M.display = true
-            M.show()
-        else
-            M.display = false
-            M.hide()
-        end
+        M.update_display()
     end)
 
     M.widget:connect_signal("mouse::enter", function()
