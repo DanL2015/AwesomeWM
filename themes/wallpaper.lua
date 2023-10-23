@@ -1,6 +1,5 @@
 local awful = require("awful")
 local gears = require("gears")
-local bling = require("bling")
 local naughty = require("naughty")
 
 local wall_file = gears.filesystem.get_cache_dir() .. "wallpaper"
@@ -49,11 +48,9 @@ end
 
 function M.set_wallpaper(i)
     if tonumber(i) ~= nil then
-        bling.module.wallpaper.setup({
-            screen = screen,
-            position = "maximized",
-            wallpaper = M.get_wallpaper_path(i)
-        })
+        for s in screen do
+            gears.wallpaper.maximized(M.get_wallpaper_path(i), s, true)
+        end
         awful.spawn.with_shell("echo " .. i .. " > " .. M.file)
     else
         awful.spawn.easy_async_with_shell("cat " .. wall_file, function(stdout)
@@ -62,11 +59,9 @@ function M.set_wallpaper(i)
                 stdout = 1
             end
             stdout = tonumber(stdout)
-            bling.module.wallpaper.setup({
-                screen = screen,
-                position = "maximized",
-                wallpaper = M.get_wallpaper_path(stdout)
-            })
+            for s in screen do
+                gears.wallpaper.maximized(M.get_wallpaper_path(stdout), s, true)
+            end
             awful.spawn.with_shell("echo " .. stdout .. " > " .. M.file)
         end)
     end
