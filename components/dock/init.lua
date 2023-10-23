@@ -11,16 +11,23 @@ local add_clickable = require("helpers.clickable_widget")
 
 local M = {}
 
-M.pinned = {"firefox", "kitty", "nemo", "obsidian"}
+M.pinned = {{
+    class = "firefox",
+    cmd = "firefox"
+}, {
+    class = "kitty",
+    cmd = "kitty"
+}, {
+    class = "nemo",
+    cmd = "nemo"
+}, {
+    class = "obsidian",
+    cmd = "obsidian"
+}}
 M.widgets = {}
 
-function M.place()
-    M.wibox.x = awful.screen.focused().geometry.x + (awful.screen.focused().geometry.width - M.wibox.width) / 2
-end
-
-function M.add_widget_by_name(client_class)
-    local icon = beautiful.get_icon(client_class)
-    local exec = beautiful.get_executable(client_class)
+function M.add_widget_by_name(client_class, client_icon)
+    local icon = beautiful.get_icon(client_class) or client_icon
     if not icon then
         return
     end
@@ -33,7 +40,7 @@ function M.add_widget_by_name(client_class)
 
     local icon = wibox.widget({
         image = icon,
-        resize = false,
+        resize = true,
         forced_height = beautiful.dock_icon_size,
         forced_width = beautiful.dock_icon_size,
         valign = "center",
@@ -63,20 +70,25 @@ function M.add_widget_by_name(client_class)
         layout = wibox.container.margin
     })
 
-    M.widgets[client_class] = {icon, indicator, widget, background, exec}
+    M.widgets[client_class] = {
+        icon = icon,
+        indicator = indicator,
+        widget = widget,
+        background = background
+    }
 
     icon:add_button(gears.table.join(awful.button({}, 1, function()
         local class = client_class
-        if not M.widgets[class] or not M.widgets[class][2] then
+        if not M.widgets[class] or not M.widgets[class].indicator then
             return
         end
-        if #M.widgets[class][2].children == 0 then
-            awful.spawn.easy_async(class, function(stdout, stderr)
-                if stderr then
-                    awful.spawn.easy_async("gtk-launch" .. M.widgets[class][5])
+        if #M.widgets[class].indicator.children == 0 then
+            for _, app in ipairs(M.pinned) do
+                if app.class == class then
+                    awful.spawn.with_shell(app.cmd)
                 end
-            end)
-        elseif #M.widgets[class][2].children == 1 then
+            end
+        elseif #M.widgets[class].indicator.children == 1 then
             for _, c in ipairs(client.get()) do
                 if class == c.class:lower() then
                     c:jump_to()
@@ -119,11 +131,11 @@ function M.add_widget_by_client(client)
     local class = client.class:lower()
 
     if not M.widgets[class] then
-        M.add_widget_by_name(class)
+        M.add_widget_by_name(class, client.icon)
     end
 
-    if M.widgets[class] and M.widgets[class][2] then
-        local indicator = M.widgets[class][2]
+    if M.widgets[class] and M.widgets[class].indicator then
+        local indicator = M.widgets[class].indicator
         indicator:add(wibox.widget({
             shape = helpers.rounded_rect(8),
             thickness = beautiful.dock_indicator_height,
@@ -133,6 +145,7 @@ function M.add_widget_by_client(client)
             widget = wibox.widget.separator
         }))
     end
+    M.place()
 end
 
 function M.remove_widget_by_client(client)
@@ -142,9 +155,9 @@ function M.remove_widget_by_client(client)
 
     local class = client.class:lower()
 
-    if M.widgets[class] and M.widgets[class][2] then
-        local indicator = M.widgets[class][2]
-        if #indicator.children == 1 and M.widgets[class][3] then
+    if M.widgets[class] and M.widgets[class].indicator then
+        local indicator = M.widgets[class].indicator
+        if #indicator.children == 1 and M.widgets[class].widget then
             local is_pinned = false
             for _, i in ipairs(M.pinned) do
                 if class == i then
@@ -153,7 +166,7 @@ function M.remove_widget_by_client(client)
                 end
             end
             if not is_pinned then
-                M.widget:remove_widgets(M.widgets[class][3])
+                M.widget:remove_widgets(M.widgets[class].widget)
                 M.widgets[class] = nil
                 M.wibox.width = M.wibox.width - beautiful.dock_app_width
                 M.place()
@@ -164,11 +177,12 @@ function M.remove_widget_by_client(client)
             indicator:remove(#indicator.children)
         end
     end
+    M.place()
 end
 
 function M.add_pinned()
-    for _, name in ipairs(M.pinned) do
-        M.add_widget_by_name(name)
+    for _, app in ipairs(M.pinned) do
+        M.add_widget_by_name(app.class)
     end
 end
 
@@ -180,14 +194,15 @@ function M.focus(client)
     local class = client.class:lower()
 
     for c, widget in pairs(M.widgets) do
-        if widget[4] then
+        if widget.background then
             if c == class then
-                widget[4].bg = beautiful.accent1
+                widget.background.bg = beautiful.accent1
             else
-                widget[4].bg = beautiful.bg1
+                widget.background.bg = beautiful.bg1
             end
         end
     end
+    M.place()
 end
 
 function M.unfocus(client)
@@ -196,21 +211,28 @@ function M.unfocus(client)
     end
 
     local class = client.class:lower()
-    if not M.widgets[class] or not M.widgets[class][4] then
+    if not M.widgets[class] or not M.widgets[class].background then
         return
     end
 
-    M.widgets[class][4].bg = beautiful.bg1
+    M.widgets[class].background.bg = beautiful.bg1
+    M.place()
 end
 
 function M.show()
-    M.timer.pos = M.y_pos_hide(awful.screen.focused())
-    M.timer.target = M.y_pos_show(awful.screen.focused())
+    if not M.timer then
+        return
+    end
+    M.timer.pos = M.y_pos_hide(M.screen)
+    M.timer.target = M.y_pos_show(M.screen)
 end
 
 function M.hide()
-    M.timer.pos = M.y_pos_show(awful.screen.focused())
-    M.timer.target = M.y_pos_hide(awful.screen.focused())
+    if not M.timer then
+        return
+    end
+    M.timer.pos = M.y_pos_show(M.screen)
+    M.timer.target = M.y_pos_hide(M.screen)
 end
 
 function M.y_pos_show(screen)
@@ -228,10 +250,10 @@ function M.y_pos_hide(screen)
 end
 
 function M.update_display()
-    if not awful.screen.focused().selected_tag then
+    if not M.screen.selected_tag then
         return
     end
-    if #awful.screen.focused().selected_tag:clients() == 0 then
+    if #M.screen.selected_tag:clients() == 0 then
         M.display = true
         M.show()
     else
@@ -240,7 +262,12 @@ function M.update_display()
     end
 end
 
+function M.place()
+    M.wibox.x = M.screen.geometry.x + (M.screen.geometry.width - M.wibox.width) / 2
+end
+
 function M.new()
+    M.screen = awful.screen.focused()
 
     M.widget = wibox.widget({
         layout = wibox.layout.flex.horizontal
@@ -268,7 +295,7 @@ function M.new()
         subscribed = function(pos)
             M.wibox.y = pos
         end,
-        pos = M.y_pos_hide(awful.screen.focused())
+        pos = M.y_pos_hide(M.screen)
     })
 
     client.connect_signal("request::manage", function(c)

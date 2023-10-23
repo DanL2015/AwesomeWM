@@ -4,9 +4,7 @@ kanagawa
 radium
 chocolate
 gruvbox
-everblush
 serenade
-decay
 meliora
 paradise
 outrun

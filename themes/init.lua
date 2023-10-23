@@ -330,65 +330,15 @@ theme.icon_size = 48
 theme.gtk_theme = Gtk.IconTheme.get_default()
 theme.apps = Gio.AppInfo.get_all()
 
-function theme.get_gicon_path(gicon)
-    if gicon == nil then
-        return ""
-    end
-
-    local icon_info = theme.gtk_theme:lookup_by_gicon(gicon, theme.icon_size, 0);
-    if icon_info then
-        local icon_path = icon_info:get_filename()
-        if icon_path then
-            return icon_path
-        end
-    end
-
-    return ""
-end
-
-function theme.choose_icon(icons_names)
-    local icon_info = theme.gtk_theme:choose_icon(icons_names, theme.icon_size, 0);
-    if icon_info then
-        local icon_path = icon_info:get_filename()
-        if icon_path then
-            return icon_path
-        end
-    end
-
-    return ""
-end
-
 function theme.get_icon(client_name)
-    if client_name ~= nil then
-        for _, app in ipairs(theme.apps) do
-            local name = app:get_name():lower()
-            local id = app:get_id():lower()
-            local display = app:get_display_name():lower()
-            if (name and (string.find(client_name, name) or string.find(name, client_name))) or (display and (string.find(client_name, display) or string.find(display, client_name))) then
-                local icon_path = theme.get_gicon_path(app:get_icon())
-                if icon_path and icon_path ~= "" then
-                    return icon_path
-                end
-            end
+    local icon_info = theme.gtk_theme:lookup_icon(client_name, theme.icon_size, 0)
+    if icon_info then
+        local icon_path = icon_info:get_filename()
+        if icon_path then
+            return icon_path
         end
     end
-    return nil
-end
 
-function theme.get_executable(client_name)
-    if client_name ~= nil then
-        for _, app in ipairs(theme.apps) do
-            local name = app:get_name():lower()
-            local id = app:get_id():lower()
-            local display = app:get_display_name():lower()
-            if (name and (string.find(client_name, name) or string.find(name, client_name))) or (display and (string.find(client_name, display) or string.find(display, client_name))) then
-                local exec = app:get_executable()
-                if exec and exec ~= "" then
-                    return exec
-                end
-            end
-        end
-    end
     return nil
 end
 
