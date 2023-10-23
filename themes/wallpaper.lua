@@ -39,11 +39,20 @@ function M.init()
 end
 
 function M.get_wallpaper_name(i)
+    i = i or 1
+    if not M.backgrounds then
+        return nil
+    end
     return tostring(M.backgrounds[i])
 end
 
 function M.get_wallpaper_path(i)
-    return tostring(M.backgrounds_path .. M.get_wallpaper_name(i))
+    i = i or 1
+    local name = M.get_wallpaper_name(i)
+    if name then
+        return tostring(M.backgrounds_path .. name)
+    end
+    return nil
 end
 
 function M.set_wallpaper(i)
@@ -58,11 +67,14 @@ function M.set_wallpaper(i)
             if stdout == "" or tonumber(stdout) == nil then
                 stdout = 1
             end
-            stdout = tonumber(stdout)
-            for s in screen do
-                gears.wallpaper.maximized(M.get_wallpaper_path(stdout), s, true)
+            stdout = tonumber(stdout) or 1
+            local path = M.get_wallpaper_path(stdout)
+            if path then
+                for s in screen do
+                    gears.wallpaper.maximized(M.get_wallpaper_path(stdout), s, true)
+                end
+                awful.spawn.with_shell("echo " .. stdout .. " > " .. M.file)
             end
-            awful.spawn.with_shell("echo " .. stdout .. " > " .. M.file)
         end)
     end
 end

@@ -322,6 +322,10 @@ function M.new()
     tag.connect_signal("property::selected", function(t)
         M.update_display()
     end)
+    screen.connect_signal("property::removed", function()
+        M.screen = awful.screen.focused()
+        M.hide()
+    end)
 
     M.widget:connect_signal("mouse::enter", function()
         if not M.display then
