@@ -160,7 +160,7 @@ function M.remove_widget_by_client(client)
         if #indicator.children == 1 and M.widgets[class].widget then
             local is_pinned = false
             for _, i in ipairs(M.pinned) do
-                if class == i then
+                if class == i.class then
                     is_pinned = true
                     break
                 end
