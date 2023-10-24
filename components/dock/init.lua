@@ -48,18 +48,15 @@ function M.add_widget_by_name(client_class, client_icon)
         widget = wibox.widget.imagebox
     })
 
-    local background = wibox.widget({
-        add_clickable(icon),
-        bg = beautiful.dock_unfocused_bg,
-        layout = wibox.container.background,
-        shape = helpers.rounded_rect(4)
-    })
-
     local widget = wibox.widget({
         {
-            background,
+            add_clickable(icon),
             {
-                indicator,
+                {
+                    indicator,
+                    margins = beautiful.small_space,
+                    layout = wibox.container.margin
+                },
                 valign = "bottom",
                 halign = "center",
                 layout = wibox.container.place
@@ -73,8 +70,7 @@ function M.add_widget_by_name(client_class, client_icon)
     M.widgets[client_class] = {
         icon = icon,
         indicator = indicator,
-        widget = widget,
-        background = background
+        widget = widget
     }
 
     icon:add_button(gears.table.join(awful.button({}, 1, function()
@@ -144,6 +140,9 @@ function M.add_widget_by_client(client)
             valign = "bottom",
             widget = wibox.widget.separator
         }))
+        for _, i in pairs(M.widgets[class].indicator.children) do
+            i.color = beautiful.accent0
+        end
     end
     M.place()
 end
@@ -194,11 +193,15 @@ function M.focus(client)
     local class = client.class:lower()
 
     for c, widget in pairs(M.widgets) do
-        if widget.background then
+        if widget.indicator then
             if c == class then
-                widget.background.bg = beautiful.accent1
+                for _, i in pairs(widget.indicator.children) do
+                    i.color = beautiful.accent0
+                end
             else
-                widget.background.bg = beautiful.bg1
+                for _, i in pairs(widget.indicator.children) do
+                    i.color = beautiful.fg0
+                end
             end
         end
     end
@@ -211,11 +214,14 @@ function M.unfocus(client)
     end
 
     local class = client.class:lower()
-    if not M.widgets[class] or not M.widgets[class].background then
+    if not M.widgets[class] or not M.widgets[class].indicator then
         return
     end
 
-    M.widgets[class].background.bg = beautiful.bg1
+    for _, i in pairs(M.widgets[class].indicator.children) do
+        i.color = beautiful.fg0
+    end
+
     M.place()
 end
 
