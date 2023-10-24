@@ -322,8 +322,8 @@ function M.new()
     tag.connect_signal("property::selected", function(t)
         M.update_display()
     end)
-    screen.connect_signal("property::removed", function()
-        M.screen = awful.screen.focused()
+    screen.connect_signal("primary::changed", function()
+        M.screen = awful.screen.primary
         M.hide()
     end)
 
