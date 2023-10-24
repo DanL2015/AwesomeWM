@@ -80,8 +80,8 @@ naughty.connect_signal("request::display", function(n)
 		{
 			halign = "left",
 			valign = "center",
-			markup = n.message,
-			widget = wibox.widget.textbox,
+			-- markup = n.message,
+			widget = naughty.widget.message,
 		},
 	})
 

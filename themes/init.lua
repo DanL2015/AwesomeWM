@@ -350,8 +350,7 @@ rnotification.connect_signal("request::rules", function()
             urgency = "critical"
         },
         properties = {
-            bg = theme.colors[2],
-            fg = theme.bg0
+            fg = theme.colors[2]
         }
     })
 end)
