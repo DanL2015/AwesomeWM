@@ -322,7 +322,11 @@ function M.new()
     tag.connect_signal("property::selected", function(t)
         M.update_display()
     end)
-    screen.connect_signal("primary::changed", function()
+    screen.connect_signal("added", function()
+        M.screen = awful.screen.primary
+        M.hide()
+    end)
+    screen.connect_signal("removed", function()
         M.screen = awful.screen.primary
         M.hide()
     end)

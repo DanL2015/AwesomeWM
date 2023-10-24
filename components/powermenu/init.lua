@@ -6,6 +6,8 @@ local naughty = require("naughty")
 local helpers = require("helpers")
 local rubato = require("rubato")
 
+local backgrounds = require("themes.wallpaper")
+
 local add_background = require("helpers.background_widget")
 local add_clickable = require("helpers.clickable_widget")
 
@@ -31,6 +33,13 @@ M.buttons = {{
 function M.toggle()
     M.wibox.visible = not M.wibox.visible
     if M.wibox.visible then
+        awful.spawn.easy_async("uptime -p", function(stdout)
+            M.uptime.markup = (stdout:gsub("^%l", string.upper))
+        end)
+        awful.spawn.easy_async_with_shell("echo $USER", function(stdout)
+            stdout = stdout:gsub("[\n\r]", ""):gsub("^%l", string.upper)
+            M.greeting.markup = "<b>Welcome " .. stdout .. "!</b>"
+        end)
         M.keygrabber:start()
     else
         M.keygrabber:stop()
@@ -47,8 +56,8 @@ function M.add_button(icon, description, cmd)
         resize = true,
         valign = "center",
         halign = "center",
-        forced_width = 48,
-        forced_height = 48,
+        forced_width = 32,
+        forced_height = 32,
         widget = wibox.widget.imagebox
     })
 
@@ -70,8 +79,8 @@ function M.add_button(icon, description, cmd)
             halign = "center",
             layout = wibox.container.place
         },
-        forced_height = 100,
-        forced_width = 100,
+        forced_height = 75,
+        forced_width = 75,
         layout = wibox.container.background
     })
 
@@ -80,24 +89,87 @@ function M.add_button(icon, description, cmd)
         awful.spawn.with_shell(cmd)
     end))
 
-    M.widget:add(add_clickable(button, 0, 0))
+    M.button_group:add(add_clickable(button, 0, 0))
 end
 
 function M.new()
-    M.widget = wibox.widget({
+    M.button_group = wibox.widget({
         layout = wibox.layout.fixed.horizontal
     })
+
+    M.image = wibox.widget({
+        halign = "center",
+        valign = "center",
+        vertical_fit_policy = true,
+        resize = true,
+        opacity = 0.4,
+        clip_shape = helpers.rounded_rect(8),
+        widget = wibox.widget.imagebox
+    })
+
+    M.pfp = wibox.widget({
+        image = gears.filesystem.get_configuration_dir() .. "/pfp.jpg",
+        halign = "center",
+        valign = "center",
+        forced_height = 64,
+        forced_width = 64,
+        resize = true,
+        clip_shape = gears.shape.circle,
+        widget = wibox.widget.imagebox
+    })
+
+    M.uptime = wibox.widget({
+        halign = "center",
+        valign = "center",
+        widget = wibox.widget.textbox
+    })
+
+    M.greeting = wibox.widget({
+        halign = "center",
+        valign = "center",
+        markup = "<b>Welcome!</b>",
+        widget = wibox.widget.textbox
+    })
+
+    awesome.connect_signal("theme::wallpaper::init", function()
+        M.image.image = gears.surface.load_uncached(backgrounds.get_wallpaper_path(backgrounds.id))
+    end)
 
     for _, i in ipairs(M.buttons) do
         M.add_button(i.icon, i.description, i.cmd)
     end
 
     M.wibox = wibox({
-        widget = add_background(M.widget, 0, 0),
+        widget = wibox.widget({
+            M.image,
+            {
+                {
+                    M.pfp,
+                    {
+                        M.greeting,
+                        M.uptime,
+                        spacing = beautiful.large_space,
+                        layout = wibox.layout.fixed.vertical
+                    },
+                    spacing = beautiful.large_space,
+                    layout = wibox.layout.fixed.vertical
+                },
+                halign = "center",
+                valign = "center",
+                layout = wibox.container.place
+            },
+            {
+                add_background(M.button_group, beautiful.xlarge_space, beautiful.xlarge_space),
+                halign = "center",
+                valign = "bottom",
+                layout = wibox.container.place
+            },
+            layout = wibox.layout.stack
+        }),
         screen = awful.screen.focused(),
         shape = helpers.rounded_rect(8),
-        width = 400,
-        height = 100,
+        width = 600,
+        height = 400,
         ontop = true
     })
 

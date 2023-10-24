@@ -15,7 +15,7 @@ local function create_widget()
 		"maim -su | xclip -selection clipboard -t image/png",
 		"Screenshot Selected"
 	)
-	local power_widget = create_small_button(beautiful.icon_power, "awesome-client 'awesome.emit_signal(\"powermenu::toggle\")'", "Hibernate")
+	local power_widget = create_small_button(beautiful.icon_power, "awesome-client 'awesome.emit_signal(\"powermenu::toggle\")'", "Powermenu")
 
 	local small_widgets = wibox.widget({
 		{
