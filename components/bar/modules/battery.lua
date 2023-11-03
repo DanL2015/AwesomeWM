@@ -3,6 +3,9 @@ local gears = require("gears")
 local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
+local helpers = require("helpers")
+
+local create_clickable = require("helpers.clickable_widget")
 
 local function buttons()
     return gears.table.join(awful.button({}, 1, function()
@@ -36,9 +39,9 @@ local function update_widget(image, progressbar, tooltip, res)
 
     -- Edit battery icon
     if status == "Charging" or status == "Full" then
-        image.image = beautiful.icon_battery_charging
+        image.markup = ""
     else
-        image.image = beautiful.icon_battery
+        image.markup = ""
     end
 
     -- Edit progressbar
@@ -62,34 +65,39 @@ local function update_widget(image, progressbar, tooltip, res)
 end
 
 local function create_widget()
+
     local image = wibox.widget({
-        image = beautiful.icon_battery,
-        widget = wibox.widget.imagebox
+        font = beautiful.font_icon,
+        widget = wibox.widget.textbox,
+        align = "center",
+        valign = "center"
+    })
+
+    local background = wibox.widget({
+        image,
+        fg = beautiful.bg0,
+        layout = wibox.container.background
     })
 
     local progressbar = wibox.widget({
         max_value = 100,
         value = 100,
-        forced_width = 10,
+        forced_width = beautiful.bat_width,
         border_width = 0,
         color = beautiful.bat_fg_color,
         background_color = beautiful.bat_bg_color,
-        margins = {
-            top = beautiful.bat_top_space,
-            bottom = beautiful.bat_bottom_space,
-            left = beautiful.bat_left_space,
-            right = beautiful.bat_right_space
-        },
         widget = wibox.widget.progressbar
     })
 
-    local widget = require("helpers.clickable_widget")({
-        progressbar,
-        image,
-        layout = wibox.layout.stack
-    }, beautiful.xlarge_space, beautiful.small_space)
-
-    widget:buttons(buttons())
+    local widget = wibox.widget({
+        {
+            progressbar,
+            background,
+            layout = wibox.layout.stack
+        },
+        margins = beautiful.bat_margins,
+        layout = wibox.container.margin
+    })
 
     local tooltip = awful.tooltip({
         objects = {widget},

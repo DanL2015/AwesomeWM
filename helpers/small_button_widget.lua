@@ -5,47 +5,36 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
 
-local function create_small_button(image, command, description, padding, margin)
-	padding = padding or beautiful.panel_button_icon_padding
-	margin = margin or beautiful.panel_internal_margin
-	local icon = wibox.widget({
-		image = image,
-		widget = wibox.widget.imagebox,
-		forced_height = beautiful.panel_button_icon_size,
-		forced_width = beautiful.panel_button_icon_size,
-		resize = true,
-		halign = "center",
-		valign = "center",
-	})
-	local buttons = gears.table.join(awful.button({}, 1, function()
-		awful.spawn.with_shell(command)
-	end))
-	local background = wibox.widget({
-		{
-			icon,
-			margins = padding,
-			layout = wibox.container.margin,
-		},
-		fill_horizontal = false,
-		fill_vertical = false,
-		bg = beautiful.panel_button_active_bg,
-		shape = helpers.rounded_rect(8),
-		layout = wibox.container.background,
-	})
-	background:buttons(buttons)
+local function create_small_button(image, command, description, bgcolor, fgcolor)
+	bgcolor = bgcolor or beautiful.panel_button_active_bg
+	fgcolor = fgcolor or beautiful.bg0
+    local icon = wibox.widget({
+        widget = wibox.widget.textbox,
+        markup = image,
+        font = beautiful.font_icon,
+        align = "center",
+        valign = "center"
+    })
+    local buttons = gears.table.join(awful.button({}, 1, function()
+        awful.spawn.with_shell(command)
+    end))
+    local background = wibox.widget({
+        icon,
+        forced_width = beautiful.panel_button_size,
+        forced_height = beautiful.panel_button_size,
+        fg = fgcolor,
+        bg = bgcolor,
+        shape = helpers.rounded_rect(),
+        layout = wibox.container.background
+    })
+    background:buttons(buttons)
 
-	local widget = wibox.widget({
-		background,
-		margins = margin,
-		layout = wibox.container.margin,
-	})
+    local tooltip = awful.tooltip({
+        objects = {background},
+        markup = description
+    })
 
-	local tooltip = awful.tooltip({
-		objects = { widget },
-		markup = description,
-	})
-
-	return widget
+    return background
 end
 
 return create_small_button

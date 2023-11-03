@@ -5,10 +5,8 @@ local add_background = require("helpers.background_widget")
 local function create_widget()
     -- Weather widget
     local weather_icon = wibox.widget({
-        image = beautiful.icon_sun,
-        widget = wibox.widget.imagebox,
-        forced_height = beautiful.panel_button_icon_size,
-        forced_width = beautiful.panel_button_icon_size,
+        widget = wibox.widget.textbox,
+        font = beautiful.font_icon,
         align = "center",
         valign = "center",
     })
@@ -49,19 +47,19 @@ local function create_widget()
         end
 
         if icon_code == "01" then
-            weather_icon = beautiful.icon_sun
+            weather_icon.markup = "✹"
         elseif icon_code == "02" or icon_code == "03" or icon_code == "04" then
-            weather_icon = beautiful.icon_cloud
+            weather_icon.markup = "☁"
         elseif icon_code == "09" then
-            weather_icon = beautiful.icon_cloud_drizzle
+            weather_icon.markup = "☃"
         elseif icon_code == "10" then
-            weather_icon = beautiful.icon_cloud_rain
+            weather_icon.markup = "░"
         elseif icon_code == "11" then
-            weather_icon = beautiful.icon_cloud_lightning
+            weather_icon.markup = "⚡"
         elseif icon_code == "13" then
-            weather_icon = beautiful.icon_cloud_snow
+            weather_icon.markup = "❄"
         elseif icon_code == "50" then
-            weather_icon = beautiful.icon_wind
+            weather_icon.markup = "≈"
         end
     end)
 

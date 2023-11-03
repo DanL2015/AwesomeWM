@@ -15,13 +15,19 @@ local function create_widget()
     })
 
     local button = wibox.widget({
-        image = beautiful.icon_chevron_up,
+        markup = "",
+        font = beautiful.font_icon,
         forced_width = beautiful.panel_title_button_icon_size,
         forced_height = beautiful.panel_title_button_icon_size,
-        resize = false,
         valign = "center",
-        halign = "center",
-        widget = wibox.widget.imagebox
+        align = "center",
+        widget = wibox.widget.textbox
+    })
+
+    local rotate = wibox.widget({
+        button,
+        direction = "north",
+        widget = wibox.container.rotate
     })
 
     button:buttons(gears.table.join(awful.button({}, 1, function()
@@ -30,10 +36,10 @@ local function create_widget()
         end
         button.on = not button.on
         if button.on then
-            button.image = beautiful.icon_chevron_up
+            rotate.direction = "north"
             awesome.emit_signal("panel::control::set", true)
         else
-            button.image = beautiful.icon_chevron_down
+            rotate.direction = "south"
             awesome.emit_signal("panel::control::set", false)
         end
     end)))
@@ -42,7 +48,7 @@ local function create_widget()
         {
             title,
             nil,
-            create_clickable(button),
+            create_clickable(rotate, button, ""),
             layout = wibox.layout.align.horizontal
         },
         forced_height = beautiful.panel_title_height,

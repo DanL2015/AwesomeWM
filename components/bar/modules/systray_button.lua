@@ -4,16 +4,28 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 
 local systray = require("components.bar.modules.systray").children[1]
+local create_clickable = require("helpers.clickable_widget")
 
 local function create_widget(s)
-  local button = wibox.widget({
-    widget = wibox.widget.imagebox,
-    image = beautiful.icon_chevron_right,
+  local image = wibox.widget({
+    markup = "",
+    font = beautiful.font_icon,
+    widget = wibox.widget.textbox,
+		forced_width = beautiful.bar_button_size,
+		forced_height = beautiful.bar_button_size,
     valign = "center",
-    halign = "center",
+    align = "center",
   })
 
-  button:buttons(gears.table.join(awful.button({}, 1, function()
+  local rotate = wibox.widget({
+    image,
+    direction = "west",
+    layout = wibox.container.rotate
+  })
+
+  local widget = create_clickable(rotate, image)
+
+  rotate:buttons(gears.table.join(awful.button({}, 1, function()
     systray.visible = not systray.visible
     systray.screen = s
     awesome.emit_signal("systray::toggle")
@@ -21,13 +33,11 @@ local function create_widget(s)
 
   awesome.connect_signal("systray::toggle", function()
     if systray.visible then
-      button.image = beautiful.icon_chevron_right
+      rotate.direction = "east"
     else
-      button.image = beautiful.icon_chevron_left
+      rotate.direction = "west"
     end
   end)
-
-  local widget = require("helpers.clickable_widget")(button)
   return widget
 end
 

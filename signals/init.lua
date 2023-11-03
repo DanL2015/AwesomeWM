@@ -90,9 +90,7 @@ client.connect_signal("request::titlebars", function(c)
             layout = wibox.container.margin
         },
         bg = beautiful.titlebar_button_bg,
-        shape = function(cr, width, height)
-            gears.shape.rounded_rect(cr, width, height, 8)
-        end,
+        shape = helpers.rounded_rect(),
         layout = wibox.container.background
     })
 
@@ -109,9 +107,7 @@ client.connect_signal("request::titlebars", function(c)
             layout = wibox.container.margin
         },
         bg = beautiful.titlebar_button_bg,
-        shape = function(cr, width, height)
-            gears.shape.rounded_rect(cr, width, height, 8)
-        end,
+        shape = helpers.rounded_rect(),
         layout = wibox.container.background
     })
 
@@ -138,9 +134,9 @@ client.connect_signal("request::titlebars", function(c)
 end)
 
 client.connect_signal("property::geometry", function(c)
-    c.shape = helpers.rounded_rect(8)
-    c.shape_clip = helpers.rounded_rect(8)
-    c.shape_bounding = helpers.rounded_rect(8)
+    c.shape = helpers.rounded_rect()
+    c.shape_clip = helpers.rounded_rect()
+    c.shape_bounding = helpers.rounded_rect()
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.

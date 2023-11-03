@@ -57,7 +57,7 @@ local function create_widget()
                 forced_width = beautiful.notification_icon_size,
                 halign = "center",
                 valign = "center",
-                clip_shape = helpers.rounded_rect(2),
+                clip_shape = helpers.rounded_rect(),
                 widget = wibox.widget.imagebox
             })
         end
@@ -69,7 +69,7 @@ local function create_widget()
             forced_width = beautiful.notification_image_size,
             halign = "right",
             valign = "center",
-            clip_shape = helpers.rounded_rect(4),
+            clip_shape = helpers.rounded_rect(),
             widget = wibox.widget.imagebox
         })
 
@@ -135,7 +135,7 @@ local function create_widget()
             bg = beautiful.notification_action_bg,
             forced_height = beautiful.notification_action_height,
             forced_width = beautiful.notification_action_width,
-            shape = helpers.rounded_rect(40),
+            shape = helpers.rounded_rect(),
             widget = wibox.container.background
         })
 
@@ -180,7 +180,7 @@ local function create_widget()
                         {
                             {
                                 notif_actions,
-                                shape = helpers.rounded_rect(8),
+                                shape = helpers.rounded_rect(),
                                 widget = wibox.container.background
                             },
                             margins = beautiful.notification_inner_margin,

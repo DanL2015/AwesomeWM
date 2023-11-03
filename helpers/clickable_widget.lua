@@ -5,7 +5,7 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
 
-local function create_widget(widget, hspace, vspace)
+local function create_widget(widget, icon, hspace, vspace)
 	hspace = hspace or beautiful.large_space
 	vspace = vspace or beautiful.large_space
 	local background = wibox.widget({
@@ -18,14 +18,16 @@ local function create_widget(widget, hspace, vspace)
 			bottom = vspace,
 			widget,
 		},
-		shape = helpers.rounded_rect(4),
+		shape = helpers.rounded_rect(),
 	})
 
 	background:connect_signal("mouse::enter", function()
+		background.fg = beautiful.bg0
 		background.bg = beautiful.clickable_active_bg
 	end)
 
 	background:connect_signal("mouse::leave", function()
+		background.fg = beautiful.fg0
 		background.bg = "#00000000"
 	end)
 

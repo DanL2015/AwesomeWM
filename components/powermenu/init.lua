@@ -13,19 +13,19 @@ local add_clickable = require("helpers.clickable_widget")
 
 local M = {}
 M.buttons = {{
-    icon = beautiful.icon_power,
+    icon = "⏻",
     description = "Power",
     cmd = "systemctl poweroff"
 }, {
-    icon = beautiful.icon_refresh_ccw,
+    icon = "⏼",
     description = "Restart",
     cmd = "systemctl reboot"
 }, {
-    icon = beautiful.icon_lock,
+    icon = "",
     description = "Lock",
     cmd = "sh $HOME/.config/i3lock-color/lock.sh"
 }, {
-    icon = beautiful.icon_log_out,
+    icon = "⏏",
     description = "Exit",
     cmd = "awesome-client 'awesome.quit()'"
 }}
@@ -52,13 +52,13 @@ end
 
 function M.add_button(icon, description, cmd)
     local image = wibox.widget({
-        image = icon,
-        resize = true,
+        markup = icon,
+        font = beautiful.font_icon,
         valign = "center",
-        halign = "center",
-        forced_width = 32,
-        forced_height = 32,
-        widget = wibox.widget.imagebox
+        align = "center",
+        forced_width = beautiful.powermenu_icon_size,
+        forced_height = beautiful.powermenu_icon_size,
+        widget = wibox.widget.textbox
     })
 
     local text = wibox.widget({
@@ -79,8 +79,8 @@ function M.add_button(icon, description, cmd)
             halign = "center",
             layout = wibox.container.place
         },
-        forced_height = 75,
-        forced_width = 75,
+        forced_height = beautiful.powermenu_button_size,
+        forced_width = beautiful.powermenu_button_size,
         layout = wibox.container.background
     })
 
@@ -94,7 +94,7 @@ end
 
 function M.new()
     M.button_group = wibox.widget({
-        layout = wibox.layout.fixed.horizontal
+        layout = wibox.layout.fixed.vertical,
     })
 
     M.image = wibox.widget({
@@ -103,7 +103,7 @@ function M.new()
         vertical_fit_policy = true,
         resize = true,
         opacity = 0.4,
-        clip_shape = helpers.rounded_rect(8),
+        clip_shape = helpers.rounded_rect(),
         widget = wibox.widget.imagebox
     })
 
@@ -111,8 +111,8 @@ function M.new()
         image = gears.filesystem.get_configuration_dir() .. "/pfp.jpg",
         halign = "center",
         valign = "center",
-        forced_height = 64,
-        forced_width = 64,
+        forced_height = beautiful.powermenu_pfp_size,
+        forced_width = beautiful.powermenu_pfp_size,
         resize = true,
         clip_shape = gears.shape.circle,
         widget = wibox.widget.imagebox
@@ -160,14 +160,14 @@ function M.new()
             },
             {
                 add_background(M.button_group, beautiful.xlarge_space, beautiful.xlarge_space),
-                halign = "center",
-                valign = "bottom",
+                halign = "right",
+                valign = "center",
                 layout = wibox.container.place
             },
             layout = wibox.layout.stack
         }),
         screen = awful.screen.focused(),
-        shape = helpers.rounded_rect(8),
+        shape = helpers.rounded_rect(),
         width = 600,
         height = 400,
         ontop = true

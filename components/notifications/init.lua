@@ -26,7 +26,7 @@ function M.new()
             layout = wibox.container.margin
         },
         bg = beautiful.panel_bg,
-        shape = helpers.rounded_rect(8),
+        shape = helpers.rounded_rect(),
         border_color = beautiful.panel_border_color,
         border_width = beautiful.border_width,
         widget = wibox.container.background

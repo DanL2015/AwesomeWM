@@ -12,7 +12,7 @@ function M.new()
 
     M.title = require("components.control.modules.title")()
     M.left_buttons_widget = require("components.control.modules.large_widgets")()
-    M.small_widgets = require("components.control.modules.small_widgets")()
+    M.power = require("components.control.modules.power")()
     M.weather = require("components.control.modules.weather")()
     M.brightness = require("components.control.modules.brightness")()
     M.volume = require("components.control.modules.volume")()
@@ -44,7 +44,7 @@ function M.new()
             layout = wibox.container.margin
         },
         bg = beautiful.panel_bg,
-        shape = helpers.rounded_rect(8),
+        shape = helpers.rounded_rect(),
         border_color = beautiful.panel_border_color,
         border_width = beautiful.border_width,
         widget = wibox.container.background
@@ -144,7 +144,7 @@ function M.add_widgets()
     M.widget.forced_num_cols = 6
     M.widget.expand = true
     M.widget:add_widget_at(M.left_buttons_widget, 1, 1, 6, 3)
-    M.widget:add_widget_at(M.small_widgets, 1, 4, 2, 3)
+    M.widget:add_widget_at(M.power, 1, 4, 2, 3)
     M.widget:add_widget_at(M.weather, 3, 4, 4, 3)
     M.widget:add_widget_at(M.brightness, 7, 1, 3, 6)
     M.widget:add_widget_at(M.volume, 10, 1, 3, 6)

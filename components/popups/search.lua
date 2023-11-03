@@ -1,19 +1,18 @@
 local gears = require("gears")
 local beautiful = require("beautiful")
 local bling = require("bling")
+local helpers = require("helpers")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 
 app_menu = bling.widget.app_launcher({
     apps_per_column = 1,
     terminal = "kitty",
-    favorites = { "firefox", "kitty", "nemo" },
+    favorites = { "firefox", "alacritty", "nemo" },
     background = beautiful.bg_normal,
     border_width = beautiful.border_width,
     border_color = beautiful.border_color_normal,
-    shape = function(cr, width, height)
-        gears.shape.rounded_rect(cr, width, height, 8)
-    end,
+    shape = helpers.rounded_rect(),
 
     prompt_height = beautiful.search_prompt_height,
     prompt_margins = beautiful.search_prompt_margins,
@@ -22,15 +21,10 @@ app_menu = bling.widget.app_launcher({
     prompt_text_color = beautiful.search_prompt_fg_color,
     prompt_icon_color = beautiful.search_prompt_fg_color,
     prompt_icon_font = beautiful.font_icon,
-    prompt_icon = "",
+    prompt_icon = "",
     prompt_cursor_color = beautiful.search_prompt_cursor_color,
-    prompt_shape = function(cr, width, height)
-        gears.shape.rounded_rect(cr, width, height, 8)
-    end,
-
-    app_shape = function(cr, width, height)
-        gears.shape.rounded_rect(cr, width, height, 8)
-    end,
+    prompt_shape = helpers.rounded_rect(),
+    app_shape = helpers.rounded_rect(),
     apps_margin = { left = dpi(10), right = dpi(10), bottom = dpi(10) },
     apps_spacing = beautiful.search_apps_spacing,
     app_normal_color = "#00000000",

@@ -12,11 +12,14 @@ end
 
 local function create_widget()
 	local image = wibox.widget({
-		image = beautiful.icon_sidebar,
-		widget = wibox.widget.imagebox,
+		markup = "",
+		font = beautiful.font_icon,
+		forced_width = beautiful.bar_button_size,
+		forced_height = beautiful.bar_button_size,
+		widget = wibox.widget.textbox,
 	})
 
-	local widget = require("helpers.clickable_widget")(image)
+	local widget = require("helpers.clickable_widget")(image, image)
 
 	widget:buttons(buttons())
 

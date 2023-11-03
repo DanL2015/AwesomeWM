@@ -56,7 +56,7 @@ awful.keyboard.append_global_keybindings({
         awful.spawn.with_shell("maim | xclip -selection clipboard -t image/png")
     end, { description = "screenshot screen", group = "launcher" }),
     awful.key({ "Mod1", "Shift" }, "x", function()
-        awful.spawn.with_shell("sh ~/.config/i3lock-color/lock.sh")
+        require("components.lock").toggle()
     end, { description = "lock screen", group = "launcher" }),
     awful.key({
         modifiers = {},

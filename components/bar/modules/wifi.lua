@@ -15,13 +15,13 @@ local function update_widget(image, tooltip, res)
 
 	-- Edit Image
 	if res == nil then
-		image.image = beautiful.icon_wifi_off
+		image.markup = "睊"
 		status = "<b>Unknown</b>"
 	elseif res == "" then
-		image.image = beautiful.icon_wifi_off
+		image.markup = "睊"
 		status = "<b>Disconnected</b>"
 	else
-		image.image = beautiful.icon_wifi
+		image.markup = ""
 		status = "<b>Connected</b>: " .. res
 	end
 
@@ -31,11 +31,14 @@ end
 
 local function create_widget()
 	local image = wibox.widget({
-		image = beautiful.icon_wifi,
-		widget = wibox.widget.imagebox,
+		markup = "",
+		font = beautiful.font_icon,
+		forced_width = beautiful.bar_button_size,
+		forced_height = beautiful.bar_button_size,
+		widget = wibox.widget.textbox,
 	})
 
-	local widget = require("helpers.clickable_widget")(image)
+	local widget = require("helpers.clickable_widget")(image, image)
 
 	widget:buttons(buttons())
 

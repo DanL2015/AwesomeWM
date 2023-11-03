@@ -3,6 +3,7 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local gears = require("gears")
 local bling = require("bling")
+local helpers = require("helpers")
 local playerctl = bling.signal.playerctl.lib()
 local add_background = require("helpers.background_widget")
 
@@ -15,9 +16,7 @@ local function create_widget()
         valign = "center",
         forced_height = beautiful.panel_art_size,
         forced_width = beautiful.panel_art_size,
-        clip_shape = function(cr, width, height)
-            gears.shape.rounded_rect(cr, width, height, 8)
-        end,
+        clip_shape = helpers.rounded_rect(),
         widget = wibox.widget.imagebox
     })
 
@@ -55,28 +54,31 @@ local function create_widget()
     artist_widget:pause()
 
     local toggle_button = wibox.widget({
-        image = beautiful.icon_play,
-        widget = wibox.widget.imagebox,
-        forced_height = beautiful.panel_button_icon_size,
-        forced_width = beautiful.panel_button_icon_size,
+        markup = "",
+        widget = wibox.widget.textbox,
+        font = beautiful.font_icon,
+        forced_height = beautiful.panel_icon_size,
+        forced_width = beautiful.panel_icon_size,
         align = "center",
         valign = "center"
     })
 
     local prev_button = wibox.widget({
-        image = beautiful.icon_skip_back,
-        widget = wibox.widget.imagebox,
-        forced_height = beautiful.panel_button_icon_size,
-        forced_width = beautiful.panel_button_icon_size,
+        markup = "",
+        widget = wibox.widget.textbox,
+        font = beautiful.font_icon,
+        forced_height = beautiful.panel_icon_size,
+        forced_width = beautiful.panel_icon_size,
         align = "center",
         valign = "center"
     })
 
     local next_button = wibox.widget({
-        image = beautiful.icon_skip_forward,
-        widget = wibox.widget.imagebox,
-        forced_height = beautiful.panel_button_icon_size,
-        forced_width = beautiful.panel_button_icon_size,
+        markup = "",
+        widget = wibox.widget.textbox,
+        font = beautiful.font_icon,
+        forced_height = beautiful.panel_icon_size,
+        forced_width = beautiful.panel_icon_size,
         align = "center",
         valign = "center"
     })
@@ -165,9 +167,9 @@ local function create_widget()
 
     playerctl:connect_signal("playback_status", function(_, playing, player_name)
         if playing then
-            toggle_button.image = beautiful.icon_pause
+            toggle_button.markup = ""
         else
-            toggle_button.image = beautiful.icon_play
+            toggle_button.markup = ""
         end
     end)
 

@@ -5,14 +5,11 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
 
-local entries = {{beautiful.icon_globe, "firefox", "Firefox"}, {beautiful.icon_terminal, "kitty", "Kitty"},
-                 {beautiful.icon_folder, "nemo", "Nemo"},
-                 {beautiful.icon_settings, "xfce4-settings-manager", "Settings"},
-                 {beautiful.icon_edit, "kitty -e nvim " .. gears.filesystem.get_configuration_dir() .. "rc.lua",
-                  "Edit Config"}, {beautiful.icon_refresh_ccw, "systemctl reboot", "Reboot"},
-                 {beautiful.icon_moon, "systemctl suspend", "Suspend"},
-                 {beautiful.icon_log_out, "awesome-client 'awesome.quit()'", "Quit"},
-                 {beautiful.icon_power, "systemctl poweroff", "Poweroff"}}
+local entries = {{"", "firefox", "Firefox"}, {"", "kitty", "Kitty"}, {"", "nemo", "Nemo"},
+                 {"", "xfce4-settings-manager", "Settings"},
+                 {"", "kitty -e nvim " .. gears.filesystem.get_configuration_dir() .. "rc.lua", "Edit Config"},
+                 {"⏼", "systemctl reboot", "Reboot"}, {"", "systemctl suspend", "Suspend"},
+                 {"⏏", "awesome-client 'awesome.quit()'", "Quit"}, {"⏻", "systemctl poweroff", "Poweroff"}}
 
 local menu = {}
 
@@ -30,10 +27,11 @@ local function create_menu()
 
     for _, entry in ipairs(entries) do
         local icon = wibox.widget({
-            image = entry[1],
-            forced_width = 20,
-            forced_height = 20,
-            widget = wibox.widget.imagebox
+            markup = entry[1],
+            font = beautiful.font_icon,
+            forced_width = 30,
+            forced_height = 30,
+            widget = wibox.widget.textbox
         })
 
         local title = wibox.widget({
@@ -61,7 +59,7 @@ local function create_menu()
             margins = beautiful.menu_padding,
             layout = wibox.container.margin
         },
-        shape = helpers.rounded_rect(8),
+        shape = helpers.rounded_rect(),
         border_width = beautiful.border_width,
         border_color = beautiful.border_color_normal,
         ontop = true,

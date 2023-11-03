@@ -8,9 +8,6 @@ local colors = require("themes.colors")()
 local dpi = beautiful.xresources.apply_dpi
 local helpers = require("helpers")
 local theme_assets = require("beautiful.theme_assets")
-local lgi = require("lgi")
-local Gio = lgi.Gio
-local Gtk = lgi.require("Gtk", "3.0")
 local rnotification = require("ruled.notification")
 
 wallpaper.init()
@@ -21,9 +18,10 @@ local themes_path = gears.filesystem.get_configuration_dir()
 
 local theme = {}
 
-theme.font = "RobotoCondensed Medium 12"
-theme.font_small = "RobotoCondensed Light 11"
-theme.font_icon = "Iosevka Nerd Font Mono 18"
+theme.font = "Cozette 10"
+theme.font_small = "Cozette 10"
+theme.font_icon = "CozetteHiDpi 16"
+-- theme.font_offset = {right = dpi(5), top = dpi(5)}
 
 theme.colors = colors
 theme.bg0 = theme.colors[1]
@@ -42,6 +40,8 @@ theme.fg_normal = theme.fg0
 theme.fg_focus = theme.fg0
 theme.fg_urgent = theme.fg1
 theme.fg_minimize = theme.fg0
+
+theme.border_radius = 0
 
 theme.clickable_active_bg = theme.accent0
 theme.clickable_inactive_bg = theme.bg1
@@ -65,6 +65,7 @@ theme.osd_bar_handle_width = dpi(20)
 -- Bar
 theme.bar_height = dpi(36)
 theme.bar_bg = theme.bg0
+theme.bar_button_size = dpi(20)
 
 -- Spacing
 theme.xlarge_space = dpi(8)
@@ -86,6 +87,8 @@ theme.slider_bar_color = theme.bg0
 theme.slider_handle_width = dpi(20)
 theme.slider_handle_border_color = theme.bg1
 theme.slider_handle_border_width = dpi(4)
+theme.slider_bar_shape = helpers.rounded_rect()
+theme.slider_height = dpi(20)
 
 -- Search
 theme.search_icon_size = dpi(24)
@@ -106,11 +109,11 @@ theme.taglist_bg_empty = theme.bg0
 
 theme.taglist_spacing = dpi(2)
 theme.taglist_margin_height = dpi(20)
-theme.taglist_margin_width = dpi(20)
+theme.taglist_margin_width = dpi(25)
 theme.taglist_height = dpi(10)
 theme.taglist_inactive_width = dpi(10)
 theme.taglist_occupied_width = dpi(15)
-theme.taglist_active_width = dpi(20)
+theme.taglist_active_width = dpi(25)
 
 -- Tasklist
 theme.tasklist_bg_normal = theme.bg0
@@ -153,16 +156,14 @@ theme.window_switcher_icon_valign = "center"
 theme.window_switcher_icon_width = dpi(40)
 
 -- Battery
-theme.bat_top_space = dpi(9)
-theme.bat_bottom_space = dpi(9)
-theme.bat_left_space = dpi(3)
-theme.bat_right_space = dpi(8)
+theme.bat_width = dpi(75)
 theme.bat_danger_color = theme.colors[2]
 theme.bat_low_color = theme.colors[4]
 theme.bat_mid_color = theme.colors[5]
 theme.bat_high_color = theme.colors[3]
 theme.bat_fg_color = theme.fg0
 theme.bat_bg_color = theme.bg0
+theme.bat_margins = dpi(4)
 
 -- Notifications
 theme.notification_bg = theme.bg0
@@ -186,7 +187,7 @@ theme.notification_progress_bg = theme.bg0
 theme.notification_action_width = dpi(40)
 theme.notification_action_height = dpi(30)
 theme.notification_action_bg = theme.accent0
-theme.notification_shape = helpers.rounded_rect(10)
+theme.notification_shape = helpers.rounded_rect()
 
 -- Panel
 theme.panel_bg = theme.bg0
@@ -197,9 +198,10 @@ theme.panel_minimize_width = dpi(400)
 theme.panel_widget_bg = theme.bg1
 theme.panel_button_inactive_bg = theme.bg0
 theme.panel_button_active_bg = theme.accent1
+theme.panel_button_size = dpi(48)
 theme.panel_button_fg = theme.fg0
 theme.panel_fg = theme.fg0
-theme.panel_button_icon_size = dpi(24)
+theme.panel_icon_size = dpi(24)
 theme.panel_title_button_icon_size = dpi(16)
 theme.panel_title_height = dpi(40)
 theme.panel_button_icon_padding = dpi(10)
@@ -229,6 +231,11 @@ theme.dock_app_margin = dpi(8)
 theme.dock_app_width = dpi(72)
 theme.dock_app_height = dpi(72)
 theme.dock_indicator_height = dpi(4)
+
+-- Powermenu
+theme.powermenu_pfp_size = dpi(128)
+theme.powermenu_icon_size = dpi(32)
+theme.powermenu_button_size = dpi(72)
 
 -- Titlebar
 theme.titlebar_height = dpi(40)
@@ -328,20 +335,6 @@ theme.icon_wind = themes_path .. "icons/wind.svg"
 
 -- Theme icons
 theme.icon_size = 48
-theme.gtk_theme = Gtk.IconTheme.get_default()
-theme.apps = Gio.AppInfo.get_all()
-
-function theme.get_icon(client_name)
-    local icon_info = theme.gtk_theme:lookup_icon(client_name, theme.icon_size, 0)
-    if icon_info then
-        local icon_path = icon_info:get_filename()
-        if icon_path then
-            return icon_path
-        end
-    end
-
-    return nil
-end
 
 -- Set different colors for urgent notifications.
 rnotification.connect_signal("request::rules", function()

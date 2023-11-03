@@ -6,6 +6,7 @@ local beautiful = require("beautiful")
 local function create_widget()
 	local systray = wibox.widget({
 		widget = wibox.widget.systray(),
+		visible = false,
 	})
 
 	local widget = wibox.widget({

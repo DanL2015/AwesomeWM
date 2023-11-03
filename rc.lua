@@ -11,7 +11,7 @@ require("awful.hotkeys_popup.keys")
 require("themes")
 
 apps = {
-    terminal = "kitty",
+    terminal = "alacritty",
     editor = "nvim",
     browser = "firefox",
     file_manager = "nemo",

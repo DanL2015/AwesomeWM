@@ -41,7 +41,7 @@ local function create_widget(s)
         layout = wibox.layout.fixed.horizontal,
         spacing = beautiful.taglist_spacing,
         style = {
-            shape = helpers.rounded_rect(8)
+            shape = helpers.rounded_rect()
         },
         widget_template = {
             {

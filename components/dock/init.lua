@@ -27,7 +27,7 @@ M.pinned = {{
 M.widgets = {}
 
 function M.add_widget_by_name(client_class, client_icon)
-    local icon = beautiful.get_icon(client_class) or client_icon
+    local icon = helpers.get_icon(client_class) or client_icon
     if not icon then
         return
     end
@@ -133,7 +133,7 @@ function M.add_widget_by_client(client)
     if M.widgets[class] and M.widgets[class].indicator then
         local indicator = M.widgets[class].indicator
         indicator:add(wibox.widget({
-            shape = helpers.rounded_rect(8),
+            shape = helpers.rounded_rect(),
             thickness = beautiful.dock_indicator_height,
             forced_height = beautiful.dock_indicator_height,
             halign = "center",
@@ -229,33 +229,36 @@ function M.show()
     if not M.timer then
         return
     end
-    M.timer.pos = M.y_pos_hide(M.screen)
-    M.timer.target = M.y_pos_show(M.screen)
+    M.timer.pos = M.y_pos_hide()
+    M.timer.target = M.y_pos_show()
 end
 
 function M.hide()
     if not M.timer then
         return
     end
-    M.timer.pos = M.y_pos_show(M.screen)
-    M.timer.target = M.y_pos_hide(M.screen)
+    M.timer.pos = M.y_pos_show()
+    M.timer.target = M.y_pos_hide()
 end
 
-function M.y_pos_show(screen)
-    if not screen then
-        return
+function M.y_pos_show()
+    if not M.screen then
+        M.screen = awful.screen.focused()
     end
-    return screen.geometry.height - beautiful.useless_gap - M.wibox.height
+    return M.screen.geometry.height - beautiful.useless_gap - M.wibox.height
 end
 
-function M.y_pos_hide(screen)
-    if not screen then
-        return
+function M.y_pos_hide()
+    if not M.screen then
+        M.screen = awful.screen.focused()
     end
-    return screen.geometry.height - beautiful.useless_gap
+    return M.screen.geometry.height - beautiful.useless_gap
 end
 
 function M.update_display()
+    if not M.screen then
+        M.screen = awful.screen.focused()
+    end
     if not M.screen.selected_tag then
         return
     end
@@ -269,6 +272,9 @@ function M.update_display()
 end
 
 function M.place()
+    if not M.screen then
+        M.screen = awful.screen.focused()
+    end
     M.wibox.x = M.screen.geometry.x + (M.screen.geometry.width - M.wibox.width) / 2
 end
 
@@ -301,7 +307,7 @@ function M.new()
         subscribed = function(pos)
             M.wibox.y = pos
         end,
-        pos = M.y_pos_hide(M.screen)
+        pos = M.y_pos_hide()
     })
 
     client.connect_signal("request::manage", function(c)
@@ -327,14 +333,6 @@ function M.new()
     end)
     tag.connect_signal("property::selected", function(t)
         M.update_display()
-    end)
-    screen.connect_signal("added", function()
-        M.screen = awful.screen.primary
-        M.hide()
-    end)
-    screen.connect_signal("removed", function()
-        M.screen = awful.screen.primary
-        M.hide()
     end)
 
     M.widget:connect_signal("mouse::enter", function()

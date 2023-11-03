@@ -4,6 +4,8 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local bling = require("bling")
 
+local helpers = require("helpers")
+
 local tasklist_buttons = gears.table.join(
     awful.button({}, 1, function(c)
         if c == client.focus then
@@ -32,9 +34,7 @@ local function create_widget(s)
         filter          = awful.widget.tasklist.filter.currenttags,
         buttons         = tasklist_buttons,
         style           = {
-            shape = function(cr, width, height)
-                gears.shape.rounded_rect(cr, width, height, 8)
-            end,
+            shape = helpers.rounded_rect()
         },
         -- Notice that there is *NO* wibox.wibox prefix, it is a template,
         -- not a widget instance.

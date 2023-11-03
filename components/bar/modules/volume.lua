@@ -3,6 +3,7 @@ local gears = require("gears")
 local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
+local helpers = require("helpers")
 
 local function buttons()
 	return gears.table.join(
@@ -30,13 +31,13 @@ local function update_volume(image, tooltip, vol)
 
 	-- Edit Icon
 	if not vol or vol == 0 then
-		image.image = beautiful.icon_volume_x
+		image.markup = "婢" 
 	elseif vol < 20 then
-		image.image = beautiful.icon_volume
+		image.markup = "奄"
 	elseif vol < 60 then
-		image.image = beautiful.icon_volume_1
+		image.markup = "奔"
 	else
-		image.image = beautiful.icon_volume_2
+		image.markup = "墳"
 	end
 
 	-- Edit Tooltip
@@ -55,11 +56,16 @@ end
 
 local function create_widget()
 	local image = wibox.widget({
-		image = beautiful.icon_volume,
-		widget = wibox.widget.imagebox,
+		markup = "墳",
+		font = beautiful.font_icon,
+		valign = "center",
+		align = "center",
+		forced_width = beautiful.bar_button_size,
+		forced_height = beautiful.bar_button_size,
+		widget = wibox.widget.textbox,
 	})
 
-	local widget = require("helpers.clickable_widget")(image)
+	local widget = require("helpers.clickable_widget")(image, image)
 
 	widget:buttons(buttons())
 

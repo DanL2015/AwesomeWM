@@ -54,7 +54,7 @@ function M.new()
         vertical_fit_policy = true,
         resize = true,
         opacity = 0.5,
-        clip_shape = helpers.rounded_rect(8),
+        clip_shape = helpers.rounded_rect(),
         widget = wibox.widget.imagebox
     })
 
