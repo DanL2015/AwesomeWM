@@ -23,7 +23,7 @@ M.buttons = {{
 }, {
     icon = "",
     description = "Lock",
-    cmd = "sh $HOME/.config/i3lock-color/lock.sh"
+    cmd = "awesome-client 'awesome.emit_signal(\"lockscreen::toggle\")'"
 }, {
     icon = "⏏",
     description = "Exit",

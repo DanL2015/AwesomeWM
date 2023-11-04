@@ -144,7 +144,7 @@ function M.new()
     })
 
     M.side_text = wibox.widget({
-        markup = "🐍:",
+        markup = ":",
         font = beautiful.icon_font,
         widget = wibox.widget.textbox
     })
@@ -233,6 +233,10 @@ function M.new()
 
     awesome.connect_signal("theme::wallpaper::init", function()
         M.background.image = gears.surface.load_uncached(backgrounds.get_wallpaper_path(backgrounds.id))
+    end)
+
+    awesome.connect_signal("lockscreen::toggle", function()
+        M.toggle()
     end)
 
     return M

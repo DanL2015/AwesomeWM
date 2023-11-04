@@ -21,7 +21,6 @@ local theme = {}
 theme.font = "Cozette 10"
 theme.font_small = "Cozette 10"
 theme.font_icon = "CozetteHiDpi 16"
--- theme.font_offset = {right = dpi(5), top = dpi(5)}
 
 theme.colors = colors
 theme.bg0 = theme.colors[1]
@@ -107,9 +106,7 @@ theme.taglist_bg_focus = theme.accent0
 theme.taglist_bg_occupied = theme.fg0
 theme.taglist_bg_empty = theme.bg0
 
-theme.taglist_spacing = dpi(2)
-theme.taglist_margin_height = dpi(20)
-theme.taglist_margin_width = dpi(25)
+theme.taglist_spacing = dpi(8)
 theme.taglist_height = dpi(10)
 theme.taglist_inactive_width = dpi(10)
 theme.taglist_occupied_width = dpi(15)
@@ -231,6 +228,8 @@ theme.dock_app_margin = dpi(8)
 theme.dock_app_width = dpi(72)
 theme.dock_app_height = dpi(72)
 theme.dock_indicator_height = dpi(4)
+theme.dock_indicator_unfocused_width = dpi(20)
+theme.dock_indicator_focused_width = dpi(40)
 
 -- Powermenu
 theme.powermenu_pfp_size = dpi(128)

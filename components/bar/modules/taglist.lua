@@ -48,14 +48,12 @@ local function create_widget(s)
                 {
                     forced_height = beautiful.taglist_height,
                     widget = wibox.container.background,
-                    id = "background_role"
+                    id = "background_role",
                 },
                 valign = "center",
                 layout = wibox.container.place
             },
-            layout = wibox.container.margin,
-            forced_height = beautiful.taglist_margin_height,
-            forced_width = beautiful.taglist_margin_width,
+            layout = wibox.container.background,
             valign = "center",
             align = "center",
             create_callback = update_tag,
