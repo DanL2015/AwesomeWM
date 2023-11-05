@@ -61,6 +61,7 @@ function M.dist(str1, str2)
 end
 
 function M.get_apps()
+    M.apps = {}
     local app_info = Gio.AppInfo
     local apps = app_info.get_all()
 
@@ -318,7 +319,7 @@ function M.new()
                     layout = wibox.layout.align.vertical
                 },
                 bg = beautiful.bg1,
-                layout = wibox.container.background,
+                layout = wibox.container.background
             },
             layout = wibox.layout.fixed.horizontal
         },
@@ -349,15 +350,16 @@ function M.new()
         M.toggle()
     end)
 
-    M.get_apps()
-    M.update_apps()
-
     return M
 end
 
 function M.toggle()
     M.wibox.visible = not M.wibox.visible
     if M.wibox.visible then
+        M.input = ""
+        M.prompt.markup = "Search..."
+        M.get_apps()
+        M.update_apps()
         awful.spawn.easy_async_with_shell("echo $USER", function(stdout)
             stdout = stdout:gsub("[\n\r]", ""):gsub("^%l", string.upper)
             M.name.markup = "<b>" .. stdout .. "</b>"
