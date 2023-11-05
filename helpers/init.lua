@@ -37,4 +37,15 @@ function M.get_icon(client_name)
     return nil
 end
 
+function M.get_gicon_path(gicon)
+    if not gicon then
+        return nil
+    end
+
+    local info = M.gtk_theme:lookup_by_gicon(gicon, beautiful.icon_size, 0)
+    if info then
+        return info:get_filename()
+    end
+end
+
 return M

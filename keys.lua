@@ -47,7 +47,7 @@ awful.keyboard.append_global_keybindings({
         awful.spawn(apps.terminal)
     end, { description = "open a terminal", group = "launcher" }),
     awful.key({ modkey }, "p", function()
-        app_menu:toggle()
+        awesome.emit_signal("launcher::toggle")
     end, { description = "show the menubar", group = "launcher" }),
     awful.key({ modkey, "Shift" }, "s", function()
         awful.spawn.with_shell("maim -su | xclip -selection clipboard -t image/png")

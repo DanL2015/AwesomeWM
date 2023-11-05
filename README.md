@@ -7,8 +7,9 @@ To Do
 - [x] Wallpaper changer with popular themes
 - [x] Dock
 - [x] Powermenu
-- [ ] Custom lockscreen
+- [x] Custom lockscreen
 - [ ] Independent app launcher
-- [ ] Independent app switcher (and remove bling)
+- [ ] Independent app switcher
+- [ ] Remove bling
 - [ ] Gnome-like overview
 - [ ] Options to control border-radius, outline thickness, etc...

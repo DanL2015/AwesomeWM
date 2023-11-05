@@ -244,9 +244,18 @@ theme.powermenu_pfp_size = dpi(128)
 theme.powermenu_icon_size = dpi(32)
 theme.powermenu_button_size = dpi(72)
 
+-- Launcher
+theme.launcher_inner_margin = theme.xlarge_space
+theme.launcher_large_icon_size = dpi(48)
+theme.launcher_app_icon_size = dpi(32)
+theme.launcher_width = dpi(400)
+theme.launcher_height = dpi(600)
+theme.launcher_main_width = dpi(350)
+theme.launcher_powermenu_width = dpi(50)
+
 -- Titlebar
 theme.titlebar_height = dpi(40)
-theme.titlebar_button_size = dpi(32)
+theme.titlebar_button_size = dpi(20)
 theme.titlebar_button_bg = theme.bg1
 theme.titlebar_fg_normal = theme.fg1
 theme.titlebar_bg_normal = theme.bg0

@@ -5,12 +5,10 @@ local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 
-local menu = require("components.popups.menu")
-
 local function create_widget()
 	local image = wibox.widget {
 		image = beautiful.icon_awesome,
-    resize = true,
+    	resize = true,
 		widget = wibox.widget.imagebox,
 	}
 
@@ -21,7 +19,7 @@ local function create_widget()
 	}))
 
 	widget:buttons(gears.table.join(awful.button({}, 1, function()
-    menu:toggle()
+		awesome.emit_signal("launcher::toggle")
 	end)))
 
 	return widget
