@@ -32,13 +32,14 @@ function M.new()
         widget = wibox.container.background
     })
 
-    M.min_height = awful.screen.focused().geometry.height - beautiful.bar_height - 3 * beautiful.margins - beautiful.panel_height
-    M.max_height = awful.screen.focused().geometry.height - beautiful.bar_height - beautiful.margins - beautiful.panel_minimize_height - beautiful.margins
+    M.min_height = awful.screen.focused().geometry.height - beautiful.bar_height - 4 * beautiful.margins - beautiful.panel_height
+    M.max_height = awful.screen.focused().geometry.height - beautiful.bar_height - 3 * beautiful.margins - beautiful.panel_minimize_height - beautiful.margins
 
     M.wibox = wibox({
         width = beautiful.panel_minimize_width,
-        height = beautiful.panel_height,
+        height = M.min_height,
         widget = panel_widget,
+        y = awful.screen.focused().geometry.height + M.min_height,
         ontop = true
     })
 
@@ -52,7 +53,7 @@ function M.new()
     })
 
     M.fly_timer:subscribe(function(pos)
-        M.wibox.y = pos
+        M.wibox.y = pos - 2 * beautiful.margins
         if not M.is_visible and pos == M.fly_timer.target then
             M.wibox.visible = false
         end
@@ -96,7 +97,7 @@ function M.flyin()
     M.is_visible = true
     M.wibox.visible = true
     M.fly_timer.pos = awful.screen.focused().geometry.height + M.min_height
-    M.fly_timer.target = awful.screen.focused().geometry.height - M.min_height
+    M.fly_timer.target = awful.screen.focused().geometry.height - M.min_height + beautiful.margins
 end
 
 function M.flyout()
