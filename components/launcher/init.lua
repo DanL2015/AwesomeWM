@@ -168,7 +168,7 @@ function M.keypressed_callback(_, mod, key, event)
         M.stop()
     end
 
-    if key == "Return" then
+    if key == "Return" and M.matches[1] then
         M.run_app(M.matches[1])
         M.stop()
     end

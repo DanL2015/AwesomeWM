@@ -87,7 +87,7 @@ client.connect_signal("request::titlebars", function(c)
                 {
                     halign = "left",
                     valign = "center",
-                    markup = "<b>" .. c.class:gsub("^%l", string.upper) .. "</b>",
+                    markup = "<b>" .. (c.class or c.name or "unknown"):gsub("^%l", string.upper) .. "</b>",
                     widget = wibox.widget.textbox,
                     font = beautiful.font_small
                 },

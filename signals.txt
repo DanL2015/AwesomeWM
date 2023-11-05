@@ -1,4 +1,5 @@
 Documentation of Signals (so i dont go insane)
+(This is outdated, I will fix it later)
 
 Daemons
 "daemon::battery::status"
@@ -28,14 +29,14 @@ Daemons
 "daemon::bluetooth::status"
 - Input: Nothing
 - Output: true is bluetooth is unblocked, false otherwise
-- Automatically updates every 2s
+- Updates every 2s
 
 "daemon::weather::status"
 - Input: Nothing
 - Output: temperature, description, icon code
-- Automatically updates every 1600s
+- Updates every 1600s
 
 "daemon::wifi::status"
 - Input: Nothing
 - Output: Wifi ID if wifi is unblocked, nothing otherwise
-- Automatically updates every 2s
+- Updates every 2s

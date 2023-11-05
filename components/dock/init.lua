@@ -27,9 +27,12 @@ M.pinned = {{
 M.widgets = {}
 
 function M.add_widget_by_name(client_class, client_icon)
+    if not client_class then
+        return
+    end
     local icon = helpers.get_icon(client_class) or client_icon or beautiful.icon_command
 
-    client_class = client_class:lower() or "none"
+    client_class = client_class:lower()
 
     local indicator = wibox.widget({
         shape = helpers.rounded_rect(),
@@ -202,7 +205,7 @@ function M.add_pinned()
 end
 
 function M.focus(client)
-    if not client then
+    if not client or not client.class then
         return
     end
 
@@ -223,7 +226,7 @@ function M.focus(client)
 end
 
 function M.unfocus(client)
-    if not client then
+    if not client or not client.class then
         return
     end
 
@@ -276,21 +279,12 @@ function M.update_display()
         return
     end
 
-    local hide = false
-
-    for _, client in pairs(M.screen.selected_tag:clients()) do
-        if not client.floating and not client.minimized then
-            hide = true
-            break
-        end
-    end
-
-    if hide then
-        M.display = false
-        M.hide()
-    else
+    if #M.screen.selected_tag:clients() == 0 then
         M.display = true
         M.show()
+    else
+        M.display = false
+        M.hide()
     end
 end
 
