@@ -32,8 +32,8 @@ function M.new()
         widget = wibox.container.background
     })
 
-    M.min_height = awful.screen.focused().geometry.height - beautiful.bar_height - beautiful.useless_gap - beautiful.panel_height - beautiful.panel_internal_margin
-    M.max_height = awful.screen.focused().geometry.height - beautiful.bar_height - beautiful.useless_gap - beautiful.panel_minimize_height - beautiful.panel_internal_margin
+    M.min_height = awful.screen.focused().geometry.height - beautiful.bar_height - 3 * beautiful.margins - beautiful.panel_height
+    M.max_height = awful.screen.focused().geometry.height - beautiful.bar_height - beautiful.margins - beautiful.panel_minimize_height - beautiful.margins
 
     M.wibox = wibox({
         width = beautiful.panel_minimize_width,
@@ -66,7 +66,7 @@ function M.new()
     })
 
     M.minmax_timer:subscribe(function(pos)
-        M.wibox.y = awful.screen.focused().geometry.height - beautiful.useless_gap - pos
+        M.wibox.y = awful.screen.focused().geometry.height - beautiful.margins - pos
         M.wibox.height = pos
     end)
 
@@ -76,7 +76,7 @@ function M.new()
 end
 
 function M.update_screen()
-    M.wibox.x = awful.screen.focused().geometry.width + awful.screen.focused().geometry.x - beautiful.useless_gap - M.wibox.width
+    M.wibox.x = awful.screen.focused().geometry.width + awful.screen.focused().geometry.x - beautiful.margins - M.wibox.width
 end
 
 function M.minimize()

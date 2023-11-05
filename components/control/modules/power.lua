@@ -7,7 +7,7 @@ local naughty = require("naughty")
 
 local function create_widget()
 
-    local power_widget = create_small_button("⏻",
+    local power_widget = create_small_button("",
         "awesome-client 'awesome.emit_signal(\"powermenu::toggle\")'", "Powermenu", "#00000000", beautiful.fg0)
     local name = wibox.widget({
         markup = "Name",
@@ -16,7 +16,7 @@ local function create_widget()
 
     awful.spawn.easy_async_with_shell("echo $USER", function(stdout)
         stdout = stdout:gsub("[\n\r]", ""):gsub("^%l", string.upper)
-        name.markup = "<b>"..stdout.."</b>"
+        name.markup = "Welcome <b>"..stdout.."</b>"
     end)
 
     local small_widgets = wibox.widget({

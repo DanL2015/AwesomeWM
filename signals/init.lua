@@ -11,7 +11,7 @@ local delayed_call = require("gears.timer").delayed_call
 naughty.connect_signal("request::display_error", function(message, startup)
     naughty.notification({
         urgency = "critical",
-        title = "Oops, an error happened" .. (startup and " during startup!" or "!"),
+        title = "An error occured" .. (startup and " during startup." or "."),
         message = message
     })
 end)
@@ -65,8 +65,20 @@ client.connect_signal("request::titlebars", function(c)
     end)}
 
     local minimizebutton = awful.titlebar.widget.minimizebutton(c)
+    minimizebutton.forced_height = beautiful.titlebar_button_size
+    minimizebutton.forced_width = beautiful.titlebar_button_size
+    minimizebutton.halign = "center"
+    minimizebutton.valign = "center"
     local maximizebutton = awful.titlebar.widget.maximizedbutton(c)
+    maximizebutton.forced_height = beautiful.titlebar_button_size
+    maximizebutton.forced_width = beautiful.titlebar_button_size
+    maximizebutton.halign = "center"
+    maximizebutton.valign = "center"
     local closebutton = awful.titlebar.widget.closebutton(c)
+    closebutton.forced_height = beautiful.titlebar_button_size
+    closebutton.forced_width = beautiful.titlebar_button_size
+    closebutton.halign = "center"
+    closebutton.valign = "center"
 
     local left_widget = wibox.widget({
         {
@@ -131,12 +143,6 @@ client.connect_signal("request::titlebars", function(c)
     })
 
     titlebar.widget = titlebar_widget
-end)
-
-client.connect_signal("property::geometry", function(c)
-    c.shape = helpers.rounded_rect()
-    c.shape_clip = helpers.rounded_rect()
-    c.shape_bounding = helpers.rounded_rect()
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.

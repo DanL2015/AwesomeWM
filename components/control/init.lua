@@ -99,7 +99,7 @@ function M.new()
 end
 
 function M.update_screen()
-    M.wibox.x = awful.screen.focused().geometry.width + awful.screen.focused().geometry.x - beautiful.useless_gap - M.wibox.width
+    M.wibox.x = awful.screen.focused().geometry.width + awful.screen.focused().geometry.x - beautiful.margins - M.wibox.width
 end
 
 function M.minimize()
@@ -121,12 +121,12 @@ function M.flyin()
     M.is_visible = true
     M.wibox.visible = true
     M.fly_timer.pos = -M.max_height
-    M.fly_timer.target = beautiful.bar_height + beautiful.useless_gap
+    M.fly_timer.target = beautiful.bar_height + beautiful.margins + beautiful.margins
 end
 
 function M.flyout()
     M.is_visible = false
-    M.fly_timer.pos = beautiful.bar_height + beautiful.useless_gap
+    M.fly_timer.pos = beautiful.bar_height - beautiful.margins
     M.fly_timer.target = -M.max_height
 end
 

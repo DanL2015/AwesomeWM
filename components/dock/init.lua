@@ -81,6 +81,14 @@ function M.add_widget_by_name(client_class, client_icon)
         layout = wibox.container.margin
     })
 
+    background:connect_signal("mouse::enter", function()
+        indicator.color = beautiful.bg0
+    end)
+
+    background:connect_signal("mouse::leave", function()
+        indicator.color = beautiful.fg0
+    end)
+
     M.widgets[client_class] = {
         icon = icon,
         indicator = indicator,
@@ -249,14 +257,14 @@ function M.y_pos_show()
     if not M.screen then
         M.screen = awful.screen.focused()
     end
-    return M.screen.geometry.height - beautiful.useless_gap - M.wibox.height
+    return M.screen.geometry.height - beautiful.margins - M.wibox.height
 end
 
 function M.y_pos_hide()
     if not M.screen then
         M.screen = awful.screen.focused()
     end
-    return M.screen.geometry.height - beautiful.useless_gap
+    return M.screen.geometry.height - beautiful.margins
 end
 
 function M.update_display()
@@ -298,7 +306,7 @@ function M.new()
 
     awful.placement.bottom(M.wibox, {
         margins = {
-            bottom = beautiful.useless_gap
+            bottom = beautiful.margins
         }
     })
 
@@ -348,6 +356,11 @@ function M.new()
         if not M.display then
             M.hide()
         end
+    end)
+    screen.connect_signal("list", function()
+        naughty.notify({text="Screen changed!"})
+        M.screen = awful.screen.focused()
+        M.update_display()
     end)
 
     return M

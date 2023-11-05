@@ -39,7 +39,7 @@ local function update_widget(image, progressbar, tooltip, res)
 
     -- Edit battery icon
     if status == "Charging" or status == "Full" then
-        image.markup = ""
+        image.markup = ""
     else
         image.markup = ""
     end
@@ -69,7 +69,7 @@ local function create_widget()
     local image = wibox.widget({
         font = beautiful.font_icon,
         widget = wibox.widget.textbox,
-        align = "center",
+        halign = "center",
         valign = "center"
     })
 

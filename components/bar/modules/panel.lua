@@ -12,10 +12,12 @@ end
 
 local function create_widget()
 	local image = wibox.widget({
-		markup = "",
+		markup = "",
 		font = beautiful.font_icon,
 		forced_width = beautiful.bar_button_size,
 		forced_height = beautiful.bar_button_size,
+		halign = "center",
+		valign = "center",
 		widget = wibox.widget.textbox,
 	})
 

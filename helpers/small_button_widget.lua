@@ -12,7 +12,7 @@ local function create_small_button(image, command, description, bgcolor, fgcolor
         widget = wibox.widget.textbox,
         markup = image,
         font = beautiful.font_icon,
-        align = "center",
+        halign = "center",
         valign = "center"
     })
     local buttons = gears.table.join(awful.button({}, 1, function()

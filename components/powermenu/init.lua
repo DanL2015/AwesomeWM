@@ -13,19 +13,19 @@ local add_clickable = require("helpers.clickable_widget")
 
 local M = {}
 M.buttons = {{
-    icon = "⏻",
+    icon = "",
     description = "Power",
     cmd = "systemctl poweroff"
 }, {
-    icon = "⏼",
+    icon = "",
     description = "Restart",
     cmd = "systemctl reboot"
 }, {
-    icon = "",
+    icon = "",
     description = "Lock",
     cmd = "awesome-client 'awesome.emit_signal(\"lockscreen::toggle\")'"
 }, {
-    icon = "⏏",
+    icon = "",
     description = "Exit",
     cmd = "awesome-client 'awesome.quit()'"
 }}
@@ -55,7 +55,7 @@ function M.add_button(icon, description, cmd)
         markup = icon,
         font = beautiful.font_icon,
         valign = "center",
-        align = "center",
+        halign = "center",
         forced_width = beautiful.powermenu_icon_size,
         forced_height = beautiful.powermenu_icon_size,
         widget = wibox.widget.textbox

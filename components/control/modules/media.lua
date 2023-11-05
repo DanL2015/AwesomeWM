@@ -12,7 +12,7 @@ local function create_widget()
     local art = wibox.widget({
         image = beautiful.icon_music,
         resize = true,
-        align = "center",
+        halign = "center",
         valign = "center",
         forced_height = beautiful.panel_art_size,
         forced_width = beautiful.panel_art_size,
@@ -22,7 +22,7 @@ local function create_widget()
 
     local title_text = wibox.widget({
         markup = "Playing",
-        align = "left",
+        halign = "left",
         valign = "center",
         widget = wibox.widget.textbox
     })
@@ -39,7 +39,7 @@ local function create_widget()
 
     local artist_text = wibox.widget({
         markup = "Nothing",
-        align = "left",
+        halign = "left",
         valign = "center",
         widget = wibox.widget.textbox
     })
@@ -54,32 +54,32 @@ local function create_widget()
     artist_widget:pause()
 
     local toggle_button = wibox.widget({
-        markup = "",
+        markup = "",
         widget = wibox.widget.textbox,
         font = beautiful.font_icon,
         forced_height = beautiful.panel_icon_size,
         forced_width = beautiful.panel_icon_size,
-        align = "center",
+        halign = "center",
         valign = "center"
     })
 
     local prev_button = wibox.widget({
-        markup = "",
+        markup = "",
         widget = wibox.widget.textbox,
         font = beautiful.font_icon,
         forced_height = beautiful.panel_icon_size,
         forced_width = beautiful.panel_icon_size,
-        align = "center",
+        halign = "center",
         valign = "center"
     })
 
     local next_button = wibox.widget({
-        markup = "",
+        markup = "",
         widget = wibox.widget.textbox,
         font = beautiful.font_icon,
         forced_height = beautiful.panel_icon_size,
         forced_width = beautiful.panel_icon_size,
-        align = "center",
+        halign = "center",
         valign = "center"
     })
 
@@ -99,7 +99,8 @@ local function create_widget()
         {
             {
                 art,
-                margins = beautiful.panel_internal_margin,
+                top = beautiful.panel_internal_margin,
+                bottom = beautiful.panel_internal_margin,
                 layout = wibox.container.margin
             },
             {
@@ -116,28 +117,14 @@ local function create_widget()
                     },
                     layout = wibox.layout.flex.vertical
                 },
-                right = beautiful.panel_internal_margin,
-                top = beautiful.panel_internal_margin,
-                bottom = beautiful.panel_internal_margin,
+                margins = beautiful.panel_internal_margin,
                 layout = wibox.container.margin
             },
             {
                 {
-                    {
-                        prev_button,
-                        margins = beautiful.medium_space,
-                        layout = wibox.container.margin
-                    },
-                    {
-                        toggle_button,
-                        margins = beautiful.medium_space,
-                        layout = wibox.container.margin
-                    },
-                    {
-                        next_button,
-                        margins = beautiful.medium_space,
-                        layout = wibox.container.margin
-                    },
+                    prev_button,
+                    toggle_button,
+                    next_button,
                     layout = wibox.layout.flex.horizontal
                 },
                 margins = beautiful.panel_internal_margin,
@@ -167,9 +154,9 @@ local function create_widget()
 
     playerctl:connect_signal("playback_status", function(_, playing, player_name)
         if playing then
-            toggle_button.markup = ""
+            toggle_button.markup = ""
         else
-            toggle_button.markup = ""
+            toggle_button.markup = ""
         end
     end)
 

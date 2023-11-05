@@ -6,8 +6,8 @@ local function create_widget()
     -- Weather widget
     local weather_icon = wibox.widget({
         widget = wibox.widget.textbox,
-        font = beautiful.font_icon,
-        align = "center",
+        font = beautiful.font_icon_alt,
+        halign = "center",
         valign = "center",
     })
 
@@ -47,19 +47,19 @@ local function create_widget()
         end
 
         if icon_code == "01" then
-            weather_icon.markup = "✹"
+            weather_icon.markup = "󰖙"
         elseif icon_code == "02" or icon_code == "03" or icon_code == "04" then
-            weather_icon.markup = "☁"
+            weather_icon.markup = "󰖐"
         elseif icon_code == "09" then
-            weather_icon.markup = "☃"
+            weather_icon.markup = "󰖗"
         elseif icon_code == "10" then
-            weather_icon.markup = "░"
+            weather_icon.markup = "󰖖"
         elseif icon_code == "11" then
-            weather_icon.markup = "⚡"
+            weather_icon.markup = "󰖓"
         elseif icon_code == "13" then
-            weather_icon.markup = "❄"
+            weather_icon.markup = "󰖘"
         elseif icon_code == "50" then
-            weather_icon.markup = "≈"
+            weather_icon.markup = "󰖑"
         end
     end)
 

@@ -11,7 +11,7 @@ local function create_widget()
         local icon = wibox.widget({
             markup = image,
             font = beautiful.font_icon,
-            align = "center",
+            halign = "center",
             valign = "center",
             widget = wibox.widget.textbox
         })
@@ -38,13 +38,9 @@ local function create_widget()
             {
                 background,
                 {
-                    {
                         text,
                         description,
                         layout = wibox.layout.fixed.vertical
-                    },
-                    margins = beautiful.panel_internal_margin,
-                    layout = wibox.container.margin
                 },
                 spacing = beautiful.panel_internal_margin,
                 layout = wibox.layout.fixed.horizontal
@@ -58,11 +54,12 @@ local function create_widget()
             if button.on then
                 awful.spawn.with_shell(on_command)
                 background.bg = beautiful.panel_button_active_bg
-                background.fg = beautiful.fg0
+                background.fg = beautiful.bg0
                 description.markup = "On"
             else
                 awful.spawn.with_shell(off_command)
                 background.bg = beautiful.panel_button_inactive_bg
+                background.fg = beautiful.fg0
                 description.markup = "Off"
             end
         end))
@@ -80,10 +77,10 @@ local function create_widget()
     end
 
     -- Left widgets
-    local wifi = create_large_button("", "<b>Network</b>", "rfkill unblock wifi", "rfkill block wifi")
-    local bluetooth = create_large_button("", "<b>Bluetooth</b>", "rfkill unblock bluetooth",
+    local wifi = create_large_button("", "<b>Network</b>", "rfkill unblock wifi", "rfkill block wifi")
+    local bluetooth = create_large_button("", "<b>Bluetooth</b>", "rfkill unblock bluetooth",
         "rfkill block bluetooth")
-    local alerts = create_large_button("", "<b>Alerts</b>", "awesome-client 'require(\"naughty\").suspended=false'",
+    local alerts = create_large_button("", "<b>Alerts</b>", "awesome-client 'require(\"naughty\").suspended=false'",
         "awesome-client 'require(\"naughty\").suspended=true'")
 
     if naughty.suspended then

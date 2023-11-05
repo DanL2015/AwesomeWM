@@ -18,9 +18,10 @@ local themes_path = gears.filesystem.get_configuration_dir()
 
 local theme = {}
 
-theme.font = "Cozette 10"
-theme.font_small = "Cozette 10"
-theme.font_icon = "CozetteHiDpi 16"
+theme.font = "RobotoCondensed 12"
+theme.font_small = "RobotoCondensed 10"
+theme.font_icon = "Material-Design-Iconic-Font 14"
+theme.font_icon_alt = "Iosevka Nerd Font Mono 24"
 
 theme.colors = colors
 theme.bg0 = theme.colors[1]
@@ -46,6 +47,7 @@ theme.clickable_active_bg = theme.accent0
 theme.clickable_inactive_bg = theme.bg1
 
 theme.useless_gap = dpi(4)
+theme.margins = dpi(8)
 
 -- OSD
 theme.osd_width = dpi(200)
@@ -185,6 +187,7 @@ theme.notification_action_width = dpi(40)
 theme.notification_action_height = dpi(30)
 theme.notification_action_bg = theme.accent0
 theme.notification_shape = helpers.rounded_rect()
+theme.notification_position = "top_middle"
 
 -- Panel
 theme.panel_bg = theme.bg0
@@ -199,7 +202,7 @@ theme.panel_button_size = dpi(48)
 theme.panel_button_fg = theme.fg0
 theme.panel_fg = theme.fg0
 theme.panel_icon_size = dpi(24)
-theme.panel_title_button_icon_size = dpi(16)
+theme.panel_title_button_icon_size = dpi(32)
 theme.panel_title_height = dpi(40)
 theme.panel_button_icon_padding = dpi(10)
 theme.panel_internal_margin = dpi(8)
@@ -227,7 +230,7 @@ theme.dock_icon_size = dpi(48)
 theme.dock_app_margin = dpi(8)
 theme.dock_app_width = dpi(72)
 theme.dock_app_height = dpi(72)
-theme.dock_indicator_height = dpi(4)
+theme.dock_indicator_height = dpi(2)
 theme.dock_indicator_unfocused_width = dpi(20)
 theme.dock_indicator_focused_width = dpi(40)
 
@@ -238,6 +241,7 @@ theme.powermenu_button_size = dpi(72)
 
 -- Titlebar
 theme.titlebar_height = dpi(40)
+theme.titlebar_button_size = dpi(32)
 theme.titlebar_button_bg = theme.bg1
 theme.titlebar_fg_normal = theme.fg1
 theme.titlebar_bg_normal = theme.bg0

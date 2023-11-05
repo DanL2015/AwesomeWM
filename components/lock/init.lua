@@ -19,6 +19,65 @@ function M.auth()
     return pam.auth_current_user(M.input)
 end
 
+function M.create_wiboxes()
+    for s in screen do
+        M.wiboxes[s] = wibox({
+            widget = wibox.widget({
+                M.background,
+                {
+                    {
+                        M.pfp,
+                        add_background(wibox.widget({
+                            {
+                                M.greeting,
+                                M.uptime,
+                                M.status,
+                                {
+                                    M.side_text,
+                                    M.prompt,
+                                    layout = wibox.layout.fixed.horizontal
+                                },
+                                spacing = beautiful.xlarge_space,
+                                layout = wibox.layout.fixed.vertical
+                            },
+                            margins = beautiful.xlarge_space,
+                            layout = wibox.container.margin
+                        })),
+                        spacing = beautiful.xlarge_space,
+                        layout = wibox.layout.fixed.vertical
+                    },
+                    halign = "center",
+                    valign = "center",
+                    layout = wibox.container.place
+                },
+                {
+                    {
+                        add_background(wibox.widget({
+                            M.date,
+                            M.time,
+                            spacing = beautiful.xlarge_space,
+                            layout = wibox.layout.fixed.vertical
+                        })),
+                        margins = beautiful.xlarge_space,
+                        layout = wibox.container.margin
+                    },
+                    halign = "right",
+                    valign = "bottom",
+                    layout = wibox.container.place
+                },
+                layout = wibox.layout.stack
+            }),
+            visible = true,
+            ontop = true,
+            screen = s,
+            width = s.geometry.width,
+            height = s.geometry.height,
+            x = s.geometry.x,
+            y = s.geometry.y
+        })
+    end
+end
+
 function M.toggle()
     M.visible = not M.visible
     if M.visible then
@@ -30,62 +89,7 @@ function M.toggle()
             M.greeting.markup = "<b>Welcome " .. stdout .. "!</b>"
         end)
         M.keygrabber:start()
-        for s in screen do
-            M.wiboxes[s] = wibox({
-                widget = wibox.widget({
-                    M.background,
-                    {
-                        {
-                            M.pfp,
-                            add_background(wibox.widget({
-                                {
-                                    M.greeting,
-                                    M.uptime,
-                                    M.status,
-                                    {
-                                        M.side_text,
-                                        M.prompt,
-                                        layout = wibox.layout.fixed.horizontal
-                                    },
-                                    spacing = beautiful.xlarge_space,
-                                    layout = wibox.layout.fixed.vertical
-                                },
-                                margins = beautiful.xlarge_space,
-                                layout = wibox.container.margin
-                            })),
-                            spacing = beautiful.xlarge_space,
-                            layout = wibox.layout.fixed.vertical
-                        },
-                        halign = "center",
-                        valign = "center",
-                        layout = wibox.container.place
-                    },
-                    {
-                        {
-                            add_background(wibox.widget({
-                                M.date,
-                                M.time,
-                                spacing = beautiful.xlarge_space,
-                                layout = wibox.layout.fixed.vertical
-                            })),
-                            margins = beautiful.xlarge_space,
-                            layout = wibox.container.margin
-                        },
-                        halign = "right",
-                        valign = "bottom",
-                        layout = wibox.container.place
-                    },
-                    layout = wibox.layout.stack
-                }),
-                visible = true,
-                ontop = true,
-                screen = s,
-                width = s.geometry.width,
-                height = s.geometry.height,
-                x = s.geometry.x,
-                y = s.geometry.y
-            })
-        end
+        M.create_wiboxes()
     else
         M.input = ""
         M.prompt.markup = ""
@@ -144,29 +148,29 @@ function M.new()
     })
 
     M.side_text = wibox.widget({
-        markup = ":",
-        font = beautiful.icon_font,
+        markup = ": ",
+        font = beautiful.font_icon,
         widget = wibox.widget.textbox
     })
 
     M.greeting = wibox.widget({
         markup = "Welcome!",
         valign = "center",
-        align = "center",
+        halign = "center",
         widget = wibox.widget.textbox
     })
 
     M.uptime = wibox.widget({
         markup = "Uptime",
         valign = "center",
-        align = "center",
+        halign = "center",
         widget = wibox.widget.textbox
     })
 
     M.status = wibox.widget({
         markup = "Screen is locked",
         valign = "center",
-        align = "center",
+        halign = "center",
         widget = wibox.widget.textbox
     })
 
@@ -233,6 +237,13 @@ function M.new()
 
     awesome.connect_signal("theme::wallpaper::init", function()
         M.background.image = gears.surface.load_uncached(backgrounds.get_wallpaper_path(backgrounds.id))
+    end)
+
+    screen.connect_signal("list", function()
+        if M.visible then
+            M.wiboxes = {}
+            M.create_wiboxes()
+        end
     end)
 
     awesome.connect_signal("lockscreen::toggle", function()

@@ -5,11 +5,11 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
 
-local entries = {{"", "firefox", "Firefox"}, {"", "kitty", "Kitty"}, {"", "nemo", "Nemo"},
-                 {"", "xfce4-settings-manager", "Settings"},
-                 {"", "kitty -e nvim " .. gears.filesystem.get_configuration_dir() .. "rc.lua", "Edit Config"},
-                 {"⏼", "systemctl reboot", "Reboot"}, {"", "systemctl suspend", "Suspend"},
-                 {"⏏", "awesome-client 'awesome.quit()'", "Quit"}, {"⏻", "systemctl poweroff", "Poweroff"}}
+local entries = {{"", "firefox", "Firefox"}, {"", "alacritty", "Alacritty"}, {"", "nemo", "Nemo"},
+                 {"", "xfce4-settings-manager", "Settings"},
+                 {"", "alacritty -e nvim " .. gears.filesystem.get_configuration_dir() .. "rc.lua", "Edit Config"},
+                 {"", "systemctl reboot", "Restart"}, {"", "systemctl suspend", "Suspend"}, {"", "awesome-client 'awesome.emit_signal(\"lockscreen::toggle\")'", "Lock"},
+                 {"", "awesome-client 'awesome.quit()'", "Exit"}, {"", "systemctl poweroff", "Poweroff"}}
 
 local menu = {}
 

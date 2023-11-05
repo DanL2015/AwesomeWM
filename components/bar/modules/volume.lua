@@ -31,13 +31,13 @@ local function update_volume(image, tooltip, vol)
 
 	-- Edit Icon
 	if not vol or vol == 0 then
-		image.markup = "婢" 
+		image.markup = "" 
 	elseif vol < 20 then
-		image.markup = "奄"
+		image.markup = ""
 	elseif vol < 60 then
-		image.markup = "奔"
+		image.markup = ""
 	else
-		image.markup = "墳"
+		image.markup = ""
 	end
 
 	-- Edit Tooltip
@@ -56,10 +56,10 @@ end
 
 local function create_widget()
 	local image = wibox.widget({
-		markup = "墳",
+		markup = "",
 		font = beautiful.font_icon,
 		valign = "center",
-		align = "center",
+		halign = "center",
 		forced_width = beautiful.bar_button_size,
 		forced_height = beautiful.bar_button_size,
 		widget = wibox.widget.textbox,

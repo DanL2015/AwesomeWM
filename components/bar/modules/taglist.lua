@@ -55,7 +55,7 @@ local function create_widget(s)
             },
             layout = wibox.container.background,
             valign = "center",
-            align = "center",
+            halign = "center",
             create_callback = update_tag,
             update_callback = update_tag
         },

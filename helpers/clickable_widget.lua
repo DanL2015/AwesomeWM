@@ -6,8 +6,8 @@ local beautiful = require("beautiful")
 local helpers = require("helpers")
 
 local function create_widget(widget, icon, hspace, vspace)
-	hspace = hspace or beautiful.large_space
-	vspace = vspace or beautiful.large_space
+	hspace = hspace or beautiful.xlarge_space
+	vspace = vspace or beautiful.xlarge_space
 	local background = wibox.widget({
 		widget = wibox.container.background,
 		{

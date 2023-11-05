@@ -11,7 +11,7 @@ bling.widget.task_preview.enable {
     width = 300,
     placement_fn = function(c)
         awful.placement.top(c,
-            { parent = awful.screen.focused(), margins = { top = beautiful.bar_height + beautiful.useless_gap } })
+            { parent = awful.screen.focused(), margins = { top = beautiful.bar_height + beautiful.margins } })
     end,
     widget_structure = {
         {
