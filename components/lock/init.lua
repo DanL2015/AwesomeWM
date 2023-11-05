@@ -259,6 +259,9 @@ function M.new()
 
     screen.connect_signal("list", function()
         if M.visible then
+            for s, wibox in pairs(M.wiboxes) do
+                wibox.visible = false
+            end
             M.wiboxes = {}
             M.create_wiboxes()
         end
