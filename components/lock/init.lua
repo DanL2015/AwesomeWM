@@ -26,25 +26,38 @@ function M.create_wiboxes()
                 M.background,
                 {
                     {
-                        M.pfp,
-                        add_background(wibox.widget({
+                        {
                             {
-                                M.greeting,
-                                M.uptime,
-                                M.status,
-                                {
-                                    M.side_text,
-                                    M.prompt,
-                                    layout = wibox.layout.fixed.horizontal
-                                },
-                                spacing = beautiful.xlarge_space,
+                                M.pfp,
+                                add_background(wibox.widget({
+                                    {
+                                        M.greeting,
+                                        M.status,
+                                        {
+                                            M.side_text,
+                                            M.prompt,
+                                            layout = wibox.layout.fixed.horizontal
+                                        },
+                                        spacing = beautiful.small_space,
+                                        layout = wibox.layout.fixed.vertical
+                                    },
+                                    margins = beautiful.xlarge_space,
+                                    layout = wibox.container.margin
+                                })),
+                                spacing = beautiful.lock_margin,
                                 layout = wibox.layout.fixed.vertical
                             },
-                            margins = beautiful.xlarge_space,
-                            layout = wibox.container.margin
-                        })),
-                        spacing = beautiful.xlarge_space,
-                        layout = wibox.layout.fixed.vertical
+                            halign = "center",
+                            valign = "center",
+                            layout = wibox.container.place
+                        },
+                        bg = beautiful.bg0,
+                        shape = helpers.rounded_rect(),
+                        forced_width = beautiful.lock_bg_size,
+                        forced_height = beautiful.lock_bg_size,
+                        border_width = beautiful.border_width,
+                        border_color = beautiful.border_color_normal,
+                        layout = wibox.container.background
                     },
                     halign = "center",
                     valign = "center",
@@ -52,17 +65,17 @@ function M.create_wiboxes()
                 },
                 {
                     {
-                        add_background(wibox.widget({
-                            M.date,
+                        {
                             M.time,
+                            M.date,
                             spacing = beautiful.xlarge_space,
                             layout = wibox.layout.fixed.vertical
-                        })),
+                        },
                         margins = beautiful.xlarge_space,
                         layout = wibox.container.margin
                     },
-                    halign = "right",
-                    valign = "bottom",
+                    halign = "center",
+                    valign = "top",
                     layout = wibox.container.place
                 },
                 layout = wibox.layout.stack
@@ -92,8 +105,8 @@ function M.toggle()
         M.create_wiboxes()
     else
         M.input = ""
-        M.prompt.markup = ""
-        M.status.markup = "Screen is locked"
+        M.prompt.markup = "|"
+        M.status.markup = ""
         for _, widget in pairs(M.wiboxes) do
             widget.visible = false
         end
@@ -104,8 +117,8 @@ end
 function M.stop()
     M.visible = false
     M.input = ""
-    M.prompt.markup = ""
-    M.status.markup = "Screen is locked"
+    M.prompt.markup = "|"
+    M.status.markup = ""
     for _, widget in pairs(M.wiboxes) do
         widget.visible = false
     end
@@ -120,19 +133,24 @@ function M.new()
         vertical_fit_policy = true,
         horizontal_fit_policy = true,
         resize = true,
-        opacity = 1,
+        opacity = 0.5,
         clip_shape = helpers.rounded_rect(),
         widget = wibox.widget.imagebox
     })
 
     M.date = wibox.widget({
-        format = "Today is %A, %B %e.",
-        refresh = 1,
+        format = "%A, %B %d.",
+        refresh = 60,
+        valign = "center",
+        halign = "center",
         widget = wibox.widget.textclock
     })
     M.time = wibox.widget({
-        format = "It is currently %l:%M:%S %p",
+        format = "%I:%M:%S %p",
         refresh = 1,
+        valign = "center",
+        halign = "center",
+        font = beautiful.lock_clock_font,
         widget = wibox.widget.textclock
     })
 
@@ -168,14 +186,14 @@ function M.new()
     })
 
     M.status = wibox.widget({
-        markup = "Screen is locked",
+        markup = "",
         valign = "center",
         halign = "center",
         widget = wibox.widget.textbox
     })
 
     M.prompt = wibox.widget({
-        markup = "",
+        markup = "|",
         ellipsize = "start",
         forced_width = 150,
         widget = wibox.widget.textbox
@@ -207,16 +225,16 @@ function M.new()
 
             if key == "BackSpace" then
                 M.input = M.input:sub(1, -2)
-                M.prompt.markup = M.prompt.markup:sub(1, -2)
+                M.prompt.markup = M.prompt.markup:sub(1, -3) .. "|"
             end
 
             if #key == 1 then
                 if not M.input then
                     M.input = key
-                    M.prompt.markup = "*"
+                    M.prompt.markup = "*|"
                 else
                     M.input = M.input .. key
-                    M.prompt.markup = M.prompt.markup .. "*"
+                    M.prompt.markup = M.prompt.markup:sub(1, -2) .. "*|"
                 end
             end
         end,

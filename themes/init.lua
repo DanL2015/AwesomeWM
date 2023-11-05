@@ -234,6 +234,11 @@ theme.dock_indicator_height = dpi(2)
 theme.dock_indicator_unfocused_width = dpi(20)
 theme.dock_indicator_focused_width = dpi(40)
 
+-- Lock
+theme.lock_margin = dpi(40)
+theme.lock_bg_size = dpi(400)
+theme.lock_clock_font = "RobotoCondensed 50"
+
 -- Powermenu
 theme.powermenu_pfp_size = dpi(128)
 theme.powermenu_icon_size = dpi(32)
