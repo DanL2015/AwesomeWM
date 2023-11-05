@@ -27,12 +27,9 @@ M.pinned = {{
 M.widgets = {}
 
 function M.add_widget_by_name(client_class, client_icon)
-    local icon = helpers.get_icon(client_class) or client_icon
-    if not icon then
-        return
-    end
+    local icon = helpers.get_icon(client_class) or client_icon or beautiful.icon_command
 
-    client_class = client_class:lower()
+    client_class = client_class:lower() or "none"
 
     local indicator = wibox.widget({
         shape = helpers.rounded_rect(),
@@ -94,7 +91,7 @@ function M.add_widget_by_name(client_class, client_icon)
         indicator = indicator,
         background = background,
         widget = widget,
-        num_clients = 0,
+        num_clients = 0
     }
 
     icon:add_button(gears.table.join(awful.button({}, 1, function()
@@ -111,7 +108,11 @@ function M.add_widget_by_name(client_class, client_icon)
         elseif M.widgets[class].num_clients == 1 then
             for _, c in ipairs(client.get()) do
                 if class == c.class:lower() then
-                    c:jump_to()
+                    if c.first_tag == awful.screen.focused().selected_tag then
+                        c.minimized = not c.minimized
+                    else
+                        c:jump_to()
+                    end
                 end
             end
         else
@@ -274,12 +275,22 @@ function M.update_display()
     if not M.screen.selected_tag then
         return
     end
-    if #M.screen.selected_tag:clients() == 0 then
-        M.display = true
-        M.show()
-    else
+
+    local hide = false
+
+    for _, client in pairs(M.screen.selected_tag:clients()) do
+        if not client.floating and not client.minimized then
+            hide = true
+            break
+        end
+    end
+
+    if hide then
         M.display = false
         M.hide()
+    else
+        M.display = true
+        M.show()
     end
 end
 
@@ -358,7 +369,6 @@ function M.new()
         end
     end)
     screen.connect_signal("list", function()
-        naughty.notify({text="Screen changed!"})
         M.screen = awful.screen.focused()
         M.update_display()
     end)

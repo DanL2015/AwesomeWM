@@ -64,6 +64,7 @@ function M.new()
     end), awful.button({}, 1, function()
         colorscheme.set_color()
         awesome.restart()
+        naughty.notify({text="Changing colorscheme! Please be patient."})
     end)))
 
     awesome.connect_signal("theme::colorscheme::load", function()

@@ -151,11 +151,7 @@ function M.update_apps()
 end
 
 function M.run_app(app)
-    awful.spawn.easy_async("gtk-launch " .. app.exec, function(stdout, stderr)
-        if stderr then
-            awful.spawn(app.exec)
-        end
-    end)
+    awful.spawn(app.exec)
     M.stop()
 end
 
