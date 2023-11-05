@@ -94,7 +94,7 @@ end
 
 function M.new()
     M.button_group = wibox.widget({
-        layout = wibox.layout.fixed.vertical,
+        layout = wibox.layout.fixed.vertical
     })
 
     M.image = wibox.widget({
@@ -141,30 +141,36 @@ function M.new()
 
     M.wibox = wibox({
         widget = wibox.widget({
-            M.image,
             {
+                M.image,
                 {
-                    M.pfp,
                     {
-                        M.greeting,
-                        M.uptime,
+                        M.pfp,
+                        {
+                            M.greeting,
+                            M.uptime,
+                            spacing = beautiful.large_space,
+                            layout = wibox.layout.fixed.vertical
+                        },
                         spacing = beautiful.large_space,
                         layout = wibox.layout.fixed.vertical
                     },
-                    spacing = beautiful.large_space,
-                    layout = wibox.layout.fixed.vertical
+                    halign = "center",
+                    valign = "center",
+                    layout = wibox.container.place
                 },
-                halign = "center",
-                valign = "center",
-                layout = wibox.container.place
+                {
+                    add_background(M.button_group, beautiful.large_space, beautiful.large_space),
+                    halign = "right",
+                    valign = "center",
+                    layout = wibox.container.place
+                },
+                layout = wibox.layout.stack
             },
-            {
-                add_background(M.button_group, beautiful.xlarge_space, beautiful.xlarge_space),
-                halign = "right",
-                valign = "center",
-                layout = wibox.container.place
-            },
-            layout = wibox.layout.stack
+            shape = helpers.rounded_rect(),
+            border_width = beautiful.border_width,
+            border_color = beautiful.border_color_normal,
+            layout = wibox.container.background
         }),
         screen = awful.screen.focused(),
         shape = helpers.rounded_rect(),
