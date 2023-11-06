@@ -79,10 +79,6 @@ function M.get_apps()
             })
         end
     end
-
-    table.sort(M.apps, function(a, b)
-        return a.name:lower() < b.name:lower()
-    end)
 end
 
 function M.create_app_widget(app)
@@ -139,9 +135,15 @@ function M.update_apps()
         end
     end
 
-    table.sort(M.matches, function(a, b)
-        return M.dist(a, M.input) < M.dist(b, M.input)
-    end)
+    -- if M.input == "" then
+        table.sort(M.matches, function(a, b)
+            return a.name:lower() < b.name:lower()
+        end)
+    -- else
+        -- table.sort(M.matches, function(a, b)
+        --     return M.dist(a, M.input) < M.dist(b, M.input)
+        -- end)
+    -- end
 
     M.list:reset()
 
