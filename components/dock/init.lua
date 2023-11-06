@@ -60,7 +60,7 @@ function M.add_widget_by_name(client_class, client_icon)
     local background = wibox.widget({
         add_clickable(icon),
         shape = helpers.rounded_rect(),
-        bg = beautiful.bg1,
+        bg = beautiful.bg0,
         layout = wibox.container.background
     })
 
@@ -220,7 +220,7 @@ function M.focus(client)
                 widget.background.bg = beautiful.fg1 .. "50"
             else
                 widget.indicator.forced_width = beautiful.dock_indicator_unfocused_width
-                widget.background.bg = beautiful.bg1
+                widget.background.bg = beautiful.bg0
             end
         end
     end
@@ -305,7 +305,13 @@ function M.new()
     })
 
     M.wibox = wibox({
-        widget = add_background(M.widget, 0, 0),
+        widget = wibox.widget({
+            M.widget,
+            bg = beautiful.bg0,
+            border_width = beautiful.border_width,
+            border_color = beautiful.border_color_normal,
+            layout = wibox.container.background
+        }),
         height = beautiful.dock_app_height,
         ontop = true,
         visible = true
