@@ -10,22 +10,6 @@ require("awful.hotkeys_popup.keys")
 -- Beautiful
 require("themes")
 
-apps = {
-    terminal = "alacritty",
-    editor = "nvim",
-    browser = "firefox",
-    file_manager = "nemo",
-    volume_manager = "pavucontrol",
-    network_manager = "nm-connection-editor",
-    power_manager = "xfce4-power-manager-settings",
-    bluetooth_manager = "blueman-manager",
-    settings = "xfce4-settings-manager",
-}
-
-modkey = "Mod4"
-
-menubar.utils.terminal = apps.terminal -- Set the terminal for applications that require it
-
 -- Signals
 require("signals")
 

@@ -5,11 +5,13 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
 
-local entries = {{"", "firefox", "Firefox"}, {"", "alacritty", "Alacritty"}, {"", "nemo", "Nemo"},
-                 {"", "xfce4-settings-manager", "Settings"},
-                 {"", "alacritty -e nvim " .. gears.filesystem.get_configuration_dir() .. "rc.lua", "Edit Config"},
-                 {"", "systemctl reboot", "Restart"}, {"", "systemctl suspend", "Suspend"}, {"", "awesome-client 'awesome.emit_signal(\"lockscreen::toggle\")'", "Lock"},
-                 {"", "awesome-client 'awesome.quit()'", "Exit"}, {"", "systemctl poweroff", "Poweroff"}}
+local config = require("config")
+
+local entries = {{"separator"}, {"", config.apps.browser, "Browser"}, {"", config.apps.terminal, "Terminal"},
+                 {"", config.apps.file_manager, "Files"}, {"", config.apps.settings, "Settings"}, {"separator"},
+                 {"", "systemctl suspend", "Suspend"},
+                 {"", "awesome-client 'awesome.emit_signal(\"lockscreen::toggle\")'", "Lock"},
+                 {"", "systemctl poweroff", "Poweroff"}}
 
 local menu = {}
 
@@ -26,31 +28,42 @@ local function create_menu()
     })
 
     for _, entry in ipairs(entries) do
-        local icon = wibox.widget({
-            markup = entry[1],
-            font = beautiful.font_icon,
-            forced_width = 30,
-            forced_height = 30,
-            widget = wibox.widget.textbox
-        })
+        if entry[1] == "separator" then
+            local separator = wibox.widget({
+                thickness = 2,
+                shape = helpers.rounded_rect(),
+                forced_height = 2,
+                forced_width = 10,
+                widget = wibox.widget.separator
+            })
+            widget:add(separator)
+        else
+            local icon = wibox.widget({
+                markup = entry[1],
+                font = beautiful.font_icon,
+                forced_width = 30,
+                forced_height = 30,
+                widget = wibox.widget.textbox
+            })
 
-        local title = wibox.widget({
-            markup = entry[3],
-            widget = wibox.widget.textbox
-        })
+            local title = wibox.widget({
+                markup = entry[3],
+                widget = wibox.widget.textbox
+            })
 
-        local template = require("helpers.clickable_widget")(wibox.widget({
-            icon,
-            title,
-            layout = wibox.layout.fixed.horizontal,
-            spacing = beautiful.medium_space
-        }))
+            local template = require("helpers.clickable_widget")(wibox.widget({
+                icon,
+                title,
+                layout = wibox.layout.fixed.horizontal,
+                spacing = beautiful.medium_space
+            }))
 
-        template:buttons(gears.table.join(awful.button({}, 1, function()
-            awful.spawn(entry[2])
-        end)))
+            template:buttons(gears.table.join(awful.button({}, 1, function()
+                awful.spawn(entry[2])
+            end)))
 
-        widget:add(template)
+            widget:add(template)
+        end
     end
 
     local menu = awful.popup({

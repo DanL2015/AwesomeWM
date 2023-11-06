@@ -11,6 +11,8 @@ local add_clickable = require("helpers.clickable_widget")
 
 local M = {}
 
+-- Class is class name of application
+-- Cmd is terminal command to execute application
 M.pinned = {{
     class = "firefox",
     cmd = "firefox"

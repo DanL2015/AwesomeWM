@@ -132,27 +132,10 @@ theme.task_preview_widget_border_width = dpi(1)
 theme.task_preview_widget_margin = dpi(20)
 
 -- Switcher
-theme.window_switcher_widget_bg = theme.bg0
-theme.window_switcher_widget_border_width = dpi(2)
-theme.window_switcher_widget_border_radius = dpi(8)
-theme.window_switcher_widget_border_color = theme.bg1
-theme.window_switcher_clients_spacing = dpi(20)
-theme.window_switcher_client_icon_horizontal_spacing = dpi(5)
-theme.window_switcher_client_width = dpi(200)
-theme.window_switcher_client_height = dpi(200)
-theme.window_switcher_client_margins = dpi(40)
-theme.window_switcher_thumbnail_margins = dpi(10)
-
-theme.thumbnail_scale = false
-theme.window_switcher_name_margins = dpi(10)
-theme.window_switcher_name_valign = "center"
-theme.window_switcher_name_forced_width = dpi(200)
-theme.window_switcher_name_font = theme.font
-theme.window_switcher_name_normal_color = theme.bg1
-theme.window_switcher_name_bg_color = theme.bg0
-theme.window_switcher_name_focus_color = theme.fg0
-theme.window_switcher_icon_valign = "center"
-theme.window_switcher_icon_width = dpi(40)
+theme.switcher_inner_margin = theme.large_space
+theme.switcher_icon_size = dpi(32)
+theme.switcher_height = dpi(200)
+theme.switcher_client_width = dpi(200)
 
 -- Battery
 theme.bat_width = dpi(75)

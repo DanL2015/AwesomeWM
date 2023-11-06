@@ -1,6 +1,10 @@
 local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local gears = require("gears")
+local config = require("config")
+
+local modkey = config.modkey
+local apps = config.apps
 
 local brightness_osd = require("components.popups.brightness")()
 local brightness_timer = gears.timer({
@@ -146,7 +150,7 @@ awful.keyboard.append_global_keybindings({
         awful.client.focus.byidx(-1)
     end, { description = "focus previous by index", group = "client" }),
     awful.key({ "Mod1" }, "Tab", function()
-        awesome.emit_signal("bling::window_switcher::turn_on")
+        awesome.emit_signal("switcher::toggle")
     end, { description = "window switcher", group = "bling" }),
     awful.key({ modkey }, "Left", function()
         awful.screen.focus_relative(1)
