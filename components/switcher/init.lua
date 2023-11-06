@@ -139,11 +139,12 @@ function M.cycle()
         end
     end
 
-    if cur == -1 then
-        return
+    if cur ~= -1 then
+        M.clients[cur].background.bg = beautiful.bg0
+        M.clients[cur].client.minimized = M.client_minimized
+    else
+        cur = 1
     end
-
-    M.clients[cur].background.bg = beautiful.bg0
 
     if cur == #M.clients then
         cur = 1
@@ -153,6 +154,7 @@ function M.cycle()
 
     M.clients[cur].background.bg = beautiful.bg1
 
+    M.client_minimized = M.clients[cur].client.minimized
     M.clients[cur].client:jump_to()
 end
 
@@ -210,6 +212,7 @@ end
 function M.toggle()
     M.wibox.visible = not M.wibox.visible
     if M.wibox.visible then
+        M.client_minimized = false
         M.place()
         M.update_clients()
         M.cycle()
