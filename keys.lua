@@ -151,7 +151,7 @@ awful.keyboard.append_global_keybindings({
     end, { description = "focus previous by index", group = "client" }),
     awful.key({ "Mod1" }, "Tab", function()
         awesome.emit_signal("switcher::toggle")
-    end, { description = "window switcher", group = "bling" }),
+    end, { description = "window switcher", group = "client" }),
     awful.key({ modkey }, "Left", function()
         awful.screen.focus_relative(1)
     end, { description = "focus the next screen", group = "screen" }),

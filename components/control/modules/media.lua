@@ -2,10 +2,9 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local gears = require("gears")
-local bling = require("bling")
 local helpers = require("helpers")
-local playerctl = bling.signal.playerctl.lib()
 local add_background = require("helpers.background_widget")
+local naughty = require("naughty")
 
 local function create_widget()
     -- Media widget
@@ -84,15 +83,15 @@ local function create_widget()
     })
 
     toggle_button:buttons(gears.table.join(awful.button({}, 1, function()
-        playerctl:play_pause()
+        awesome.emit_signal("playerctl::toggle")
     end)))
 
     next_button:buttons(gears.table.join(awful.button({}, 1, function()
-        playerctl:next()
+        awesome.emit_signal("playerctl::next")
     end)))
 
     prev_button:buttons(gears.table.join(awful.button({}, 1, function()
-        playerctl:previous()
+        awesome.emit_signal("playerctl::prev")
     end)))
 
     local media = add_background(wibox.widget({
@@ -146,13 +145,13 @@ local function create_widget()
         artist_widget:pause()
     end)
 
-    playerctl:connect_signal("metadata", function(_, title, artist, album_path, album, new, player_name)
-        art:set_image(gears.surface.load_uncached(album_path))
-        title_text:set_markup_silently(title)
-        artist_text:set_markup_silently(artist)
+    awesome.connect_signal("playerctl::metadata::status", function(title, artist, art_path, album)
+        title_text.markup = title
+        artist_text.markup = artist
+        art.image = art_path or beautiful.icon_music
     end)
 
-    playerctl:connect_signal("playback_status", function(_, playing, player_name)
+    awesome.connect_signal("playerctl::toggle::status", function(playing)
         if playing then
             toggle_button.markup = ""
         else

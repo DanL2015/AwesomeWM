@@ -11,7 +11,7 @@ To Do
 - [x] Independent app launcher
 - [ ] Colorscheme switching without reloading awesome, add back pywal support, integration with alacritty reloading
 - [x] Independent app switcher
-- [ ] Remove bling
+- [x] Remove bling
 - [ ] Gnome-like overview
 - [ ] More themes
 - [ ] Options menu to control border-radius, outline thickness, etc...

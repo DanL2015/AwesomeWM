@@ -3,7 +3,6 @@ local awful = require("awful")
 local wibox = require("wibox")
 local gears = require("gears")
 local beautiful = require("beautiful")
-local bling = require("bling")
 local helpers = require("helpers")
 local cairo = require("lgi").cairo
 local delayed_call = require("gears.timer").delayed_call
