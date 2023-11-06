@@ -10,6 +10,52 @@ local add_clickable = require("helpers.clickable_widget")
 
 local M = {}
 
+function M.create_default()
+    local image = wibox.widget({
+        markup = "",
+        font = beautiful.font_icon,
+        valign = "center",
+        halign = "center",
+        forced_height = beautiful.switcher_icon_size,
+        forced_width = beautiful.switcher_icon_size,
+        widget = wibox.widget.textbox
+    })
+
+    local name = wibox.widget({
+        markup = "<b>Desktop</b>",
+        valign = "center",
+        halign = "center",
+        forced_width = 150,
+        forced_height = 50,
+        widget = wibox.widget.textbox
+    })
+
+    local background = wibox.widget({
+        bg = beautiful.bg0,
+        shape = helpers.rounded_rect(),
+        widget = wibox.container.background
+    })
+
+    local widget = wibox.widget({
+        background,
+        {
+            image,
+            valign = "center",
+            halign = "center",
+            layout = wibox.container.place
+        },
+        {
+            name,
+            valign = "bottom",
+            halign = "center",
+            layout = wibox.container.place
+        },
+        layout = wibox.layout.stack
+    })
+
+    M.list:add(widget)
+end
+
 function M.create_widget(c)
     local icon = c.icon or helpers.get_icon(c.class) or beautiful.icon_command
 
@@ -74,18 +120,27 @@ function M.update_clients()
     for _, c in ipairs(awful.screen.focused().selected_tag:clients()) do
         M.create_widget(c)
     end
-    M.wibox.width = #M.clients * beautiful.switcher_client_width
+    if #M.clients == 0 then
+        M.create_default()
+        M.wibox.width = beautiful.switcher_client_width
+    else
+        M.wibox.width = #M.clients * beautiful.switcher_client_width
+    end
     M.wibox.height = beautiful.switcher_height
     M.place()
 end
 
 function M.cycle()
-    local cur = 1
+    local cur = -1
     for i, c in ipairs(M.clients) do
         if c.client == client.focus then
             cur = i
             break
         end
+    end
+
+    if cur == -1 then
+        return
     end
 
     M.clients[cur].background.bg = beautiful.bg0
