@@ -163,7 +163,17 @@ naughty.connect_signal("request::display", function(n)
         maximum_height = beautiful.notification_max_height,
         widget_template = {
             {
-                nil,
+                {
+                    {
+                        progressbar,
+                        direction = "east",
+                        forced_width = beautiful.notification_progress_width,
+                        layout = wibox.container.rotate
+                    },
+                    halign = "right",
+                    content_fill_vertical = true,
+                    layout = wibox.container.place
+                },
                 {
                     {
                         {
@@ -207,14 +217,7 @@ naughty.connect_signal("request::display", function(n)
                     margins = beautiful.notification_padding,
                     layout = wibox.container.margin
                 },
-                {
-                    progressbar,
-                    direction = "east",
-                    forced_width = beautiful.notification_progress_width,
-                    forced_height = beautiful.notification_progress_height,
-                    layout = wibox.container.rotate
-                },
-                layout = wibox.layout.align.horizontal
+                layout = wibox.layout.stack
             },
             id = "background_role",
             widget = naughty.container.background
