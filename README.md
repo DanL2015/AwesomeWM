@@ -10,7 +10,7 @@ To Do
 - [x] Custom lockscreen
 - [x] Independent app launcher
 - [ ] Colorscheme switching without reloading awesome, add back pywal support, integration with alacritty reloading
-- [ ] Independent app switcher
+- [x] Independent app switcher
 - [ ] Remove bling
 - [ ] Gnome-like overview
 - [ ] More themes
