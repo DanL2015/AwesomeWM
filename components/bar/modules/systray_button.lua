@@ -17,7 +17,7 @@ local function create_widget(s)
 
     local widget = create_clickable(image, image)
 
-    image:buttons(gears.table.join(awful.button({}, 1, function()
+    widget:buttons(gears.table.join(awful.button({}, 1, function()
         systray.visible = not systray.visible
         systray.screen = s
         awesome.emit_signal("systray::toggle")
