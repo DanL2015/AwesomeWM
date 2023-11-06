@@ -148,7 +148,11 @@ local function create_widget()
     awesome.connect_signal("playerctl::metadata::status", function(title, artist, art_path, album)
         title_text.markup = title
         artist_text.markup = artist
-        art.image = art_path or beautiful.icon_music
+        if not art_path or art_path == "" then
+            art.image = beautiful.icon_music
+        else
+            art.image = art_path
+        end
     end)
 
     awesome.connect_signal("playerctl::toggle::status", function(playing)
