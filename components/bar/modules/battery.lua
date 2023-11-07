@@ -4,12 +4,13 @@ local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
+local config = require("config")
 
 local create_clickable = require("helpers.clickable_widget")
 
 local function buttons()
     return gears.table.join(awful.button({}, 1, function()
-        awful.spawn(apps.power_manager, false)
+        awful.spawn(config.apps.power_manager, false)
     end))
 end
 

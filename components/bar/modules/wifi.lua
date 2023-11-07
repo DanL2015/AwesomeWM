@@ -3,10 +3,11 @@ local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
+local config = require("config")
 
 local function buttons()
     return gears.table.join(awful.button({}, 1, function()
-        awful.spawn(apps.network_manager, false)
+        awful.spawn(config.apps.network_manager, false)
     end))
 end
 

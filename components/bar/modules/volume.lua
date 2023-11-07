@@ -4,11 +4,12 @@ local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
+local config = require("config")
 
 local function buttons()
 	return gears.table.join(
 		awful.button({}, 1, function()
-			awful.spawn(apps.volume_manager, false)
+			awful.spawn(config.apps.volume_manager, false)
 		end),
 		awful.button({}, 4, function()
 			awful.spawn.with_shell("pamixer -i 5")
