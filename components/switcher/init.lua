@@ -152,10 +152,13 @@ function M.cycle()
         cur = cur + 1
     end
 
-    M.clients[cur].background.bg = beautiful.bg1
+    if M.clients[cur] then
 
-    M.client_minimized = M.clients[cur].client.minimized
-    M.clients[cur].client:jump_to()
+        M.clients[cur].background.bg = beautiful.bg1
+
+        M.client_minimized = M.clients[cur].client.minimized
+        M.clients[cur].client:jump_to()
+    end
 end
 
 function M.keypressed_callback(_, mod, key, event)
