@@ -113,7 +113,7 @@ function M.add_widget_by_name(client_class, client_icon)
         elseif M.widgets[class].num_clients == 1 then
             for _, c in ipairs(client.get()) do
                 if class == c.class:lower() then
-                    if c.first_tag == awful.screen.focused().selected_tag then
+                    if c.first_tag == awful.screen.focused().selected_tag and c == client.focus then
                         c.minimized = not c.minimized
                     else
                         c:jump_to()

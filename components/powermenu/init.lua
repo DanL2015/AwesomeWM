@@ -134,6 +134,9 @@ function M.new()
     awesome.connect_signal("theme::wallpaper::init", function()
         M.image.image = gears.surface.load_uncached(backgrounds.get_wallpaper_path(backgrounds.id))
     end)
+    awesome.connect_signal("theme::wallpaper::change", function()
+        M.image.image = gears.surface.load_uncached(backgrounds.get_wallpaper_path(backgrounds.id))
+    end)
 
     for _, i in ipairs(M.buttons) do
         M.add_button(i.icon, i.description, i.cmd)

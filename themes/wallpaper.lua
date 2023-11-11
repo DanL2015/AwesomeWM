@@ -61,6 +61,7 @@ function M.set_wallpaper(i)
             gears.wallpaper.maximized(M.get_wallpaper_path(i), s, true)
         end
         awful.spawn.with_shell("echo " .. i .. " > " .. M.file)
+        awesome.emit_signal("theme::wallpaper::change")
     else
         awful.spawn.easy_async_with_shell("cat " .. wall_file, function(stdout)
             stdout = stdout:gsub("[\n\r]", "")
@@ -75,6 +76,7 @@ function M.set_wallpaper(i)
                 end
                 awful.spawn.with_shell("echo " .. stdout .. " > " .. M.file)
             end
+            awesome.emit_signal("theme::wallpaper::change")
         end)
     end
 end

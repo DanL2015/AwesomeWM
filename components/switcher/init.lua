@@ -70,7 +70,7 @@ function M.create_widget(c)
     })
 
     local name = wibox.widget({
-        markup = c.class or "Unknown",
+        markup = c.class:gsub("^%l", string.upper) or "Unknown",
         valign = "center",
         halign = "center",
         forced_width = 150,
@@ -117,9 +117,23 @@ end
 function M.update_clients()
     M.list:reset()
     M.clients = {}
-    for _, c in ipairs(awful.screen.focused().selected_tag:clients()) do
+    for _, c in ipairs(M.history) do
         M.create_widget(c)
     end
+
+    for _, i in ipairs(awful.screen.focused().selected_tag:clients()) do
+        local in_history = false
+        for _, j in ipairs(M.history) do
+            if i == j then
+                in_history = true
+                break
+            end
+        end
+        if not in_history then
+            M.create_widget(i)
+        end
+    end
+
     if #M.clients == 0 then
         M.create_default()
         M.wibox.width = beautiful.switcher_client_width
@@ -153,11 +167,16 @@ function M.cycle()
     end
 
     if M.clients[cur] then
-
         M.clients[cur].background.bg = beautiful.bg1
 
         M.client_minimized = M.clients[cur].client.minimized
         M.clients[cur].client:jump_to()
+        for i, c in ipairs(M.history) do
+            if c == M.clients[cur].client then
+                table.remove(M.history, i)
+            end
+        end
+        table.insert(M.history, 1, M.clients[cur].client)
     end
 end
 
@@ -175,6 +194,7 @@ end
 
 function M.new()
     M.clients = {}
+    M.history = {}
 
     M.keygrabber = awful.keygrabber({
         keypressed_callback = M.keypressed_callback,
@@ -207,6 +227,10 @@ function M.new()
 
     awesome.connect_signal("switcher::toggle", function()
         M.toggle()
+    end)
+
+    tag.connect_signal("property::selected", function(t)
+        M.history = {}
     end)
 
     return M

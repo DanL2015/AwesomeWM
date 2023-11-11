@@ -256,6 +256,9 @@ function M.new()
     awesome.connect_signal("theme::wallpaper::init", function()
         M.background.image = gears.surface.load_uncached(backgrounds.get_wallpaper_path(backgrounds.id))
     end)
+    awesome.connect_signal("theme::wallpaper::change", function()
+        M.background.image = gears.surface.load_uncached(backgrounds.get_wallpaper_path(backgrounds.id))
+    end)
 
     screen.connect_signal("list", function()
         if M.visible then

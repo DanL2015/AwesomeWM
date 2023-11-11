@@ -24,7 +24,7 @@ local function create_menu()
             widget = wibox.widget.textbox
         },
         layout = wibox.layout.fixed.vertical,
-        spacing = beautiful.xlarge_space
+        spacing = beautiful.small_space
     })
 
     for _, entry in ipairs(entries) do
@@ -51,12 +51,14 @@ local function create_menu()
                 widget = wibox.widget.textbox
             })
 
-            local template = require("helpers.clickable_widget")(wibox.widget({
+            local button = wibox.widget({
                 icon,
                 title,
                 layout = wibox.layout.fixed.horizontal,
                 spacing = beautiful.medium_space
-            }))
+            })
+
+            local template = require("helpers.clickable_widget")(button, button)
 
             template:buttons(gears.table.join(awful.button({}, 1, function()
                 awful.spawn(entry[2])

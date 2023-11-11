@@ -82,7 +82,13 @@ client.connect_signal("request::titlebars", function(c)
     local left_widget = wibox.widget({
         {
             {
-                awful.titlebar.widget.iconwidget(c),
+                {
+                    image = c.icon or helpers.get_icon(c.class) or beautiful.icon_command,
+                    resize = true,
+                    valign = "center",
+                    halign = "center",
+                    widget = wibox.widget.imagebox,
+                },
                 {
                     halign = "left",
                     valign = "center",

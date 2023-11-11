@@ -80,7 +80,6 @@ function M.new()
         M.next()
     end), awful.button({}, 1, function()
         backgrounds.set_wallpaper(backgrounds.id)
-        naughty.notify({text="Changing Wallpaper! Please be patient."})
     end)))
 
     awesome.connect_signal("theme::wallpaper::load", function()
