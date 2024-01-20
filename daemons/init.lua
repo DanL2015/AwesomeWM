@@ -1,0 +1,7 @@
+require("daemons.battery")
+require("daemons.network")
+require("daemons.volume")
+require("daemons.playerctl")
+require("daemons.cpu")
+require("daemons.memory")
+require("daemons.brightness")
