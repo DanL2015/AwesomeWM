@@ -3,48 +3,12 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
+local naughty = require("naughty")
 local gears = require("gears")
 
 local M = {}
 
-M.pinned = { "Nemo", "Firefox Web Browser", "Vesktop" }
-
-function M.dist(str1, str2)
-    -- Classic dp problem thing
-    local len1 = #str1
-    local len2 = #str2
-    local dp = {}
-    local c = 0
-
-    if (len1 == 0) then
-        return len2
-    elseif (len2 == 0) then
-        return len1
-    elseif (str1 == str2) then
-        return 0
-    end
-
-    for i = 0, len1, 1 do
-        dp[i] = {}
-        dp[i][0] = i
-    end
-    for j = 0, len2, 1 do
-        dp[0][j] = j
-    end
-
-    for i = 1, len1, 1 do
-        for j = 1, len2, 1 do
-            if (str1:byte(i) == str2:byte(j)) then
-                c = 0
-            else
-                c = 1
-            end
-
-            dp[i][j] = math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + c)
-        end
-    end
-    return dp[len1][len2]
-end
+M.pinned = { "Nemo", "Firefox Web Browser", "Vesktop", "Alacritty" }
 
 function M.get_apps()
     M.apps = {}
@@ -135,7 +99,7 @@ function M.create_default()
     return background
 end
 
-function M.create_app_widget(app)
+function M.create_app_widget(app, default_bg)
     local image = wibox.widget({
         image = app.icon or beautiful.icon_default,
         resize = true,
@@ -171,15 +135,19 @@ function M.create_app_widget(app)
         layout = wibox.layout.fixed.horizontal
     })))
 
+    background.bg = default_bg
+
     background:buttons(gears.table.join(awful.button({}, 1, function()
         M.run_app(app)
     end)))
 
     background:connect_signal("mouse::enter", function()
-        background.bg = beautiful.bg1
+        background.bg = beautiful.blue
+        background.fg = beautiful.bg0
     end)
     background:connect_signal("mouse::leave", function()
-        background.bg = beautiful.bg0
+        background.bg = default_bg
+        background.fg = beautiful.fg0
     end)
 
     return background
@@ -199,8 +167,13 @@ function M.update_apps()
 
     M.list:reset()
 
-    for _, app in pairs(M.matches) do
-        M.list:add(M.create_app_widget(app))
+    for i, app in pairs(M.matches) do
+        local default_bg = beautiful.bg0
+        if i == M.selected then
+            default_bg = beautiful.bg1
+        end
+        local app_widget = M.create_app_widget(app, default_bg)
+        M.list:add(app_widget)
     end
 
     M.list:add(M.create_default())
@@ -225,7 +198,7 @@ function M.keypressed_callback(_, mod, key, event)
     end
 
     if key == "Return" and M.matches[1] then
-        M.run_app(M.matches[1])
+        M.run_app(M.matches[M.selected])
         awesome.emit_signal("launcher::stop")
     end
 
@@ -238,9 +211,9 @@ function M.keypressed_callback(_, mod, key, event)
     end
 
     if not M.input or M.input == "" then
-        M.prompt.text = "Search..."
+        M.prompt.text = "|"
     else
-        M.prompt.text = M.input
+        M.prompt.text = M.input.."|"
     end
     M.update_apps()
 end
@@ -249,6 +222,7 @@ function M.new()
     M.apps = {}
     M.matches = {}
     M.input = ""
+    M.selected = 1
 
     M.keygrabber = awful.keygrabber({
         mask_event_callback = true,
@@ -264,7 +238,7 @@ function M.new()
     })
 
     M.prompt = wibox.widget({
-        text = "Search...",
+        text = "|",
         valign = "center",
         halign = "left",
         widget = wibox.widget.textbox

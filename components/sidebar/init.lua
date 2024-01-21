@@ -23,7 +23,7 @@ function M.toggle()
             }
         })
         launcher.input = ""
-        launcher.prompt.markup = "Search..."
+        launcher.prompt.markup = "|"
         launcher.get_apps()
         launcher.update_apps()
         awful.spawn.easy_async_with_shell("echo $USER", function(stdout)

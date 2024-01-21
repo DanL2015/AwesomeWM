@@ -37,6 +37,7 @@ function M.create_button(icon, cmd, text, color)
         markup = icon,
         font = beautiful.font_icon,
         forced_width = beautiful.icon_size[2],
+        forced_height = beautiful.icon_size[2],
         valign = "center",
         halign = "center",
         widget = wibox.widget.textbox
@@ -74,10 +75,19 @@ function M.new()
         widget = wibox.widget.imagebox
     })
 
+    M.uptime_text = wibox.widget({
+        valign = "center",
+        halign = "left",
+        widget = wibox.widget.textbox
+    })
+
+    M.uptime = helpers.add_bg0(M.uptime_text)
+    M.uptime.fg = beautiful.bg2
+
     M.name = wibox.widget({
         markup = "",
         valign = "center",
-        halign = "center",
+        halign = "left",
         widget = wibox.widget.textbox
     })
 
@@ -93,8 +103,13 @@ function M.new()
     M.widget = helpers.add_margin(wibox.widget({
         {
             M.pfp,
-            M.name,
+            {
+                M.name,
+                M.uptime,
+                layout = wibox.layout.fixed.vertical
+            },
             spacing = beautiful.margin[1],
+            forced_height = beautiful.icon_size[2],
             layout = wibox.layout.fixed.horizontal
         },
         nil,
@@ -102,6 +117,10 @@ function M.new()
         expand = "none",
         layout = wibox.layout.align.horizontal
     }))
+
+    awesome.connect_signal("uptime::update", function(stdout)
+        M.uptime_text.markup = stdout
+    end)
 
     return M.widget
 end
