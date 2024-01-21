@@ -82,7 +82,7 @@ local function create_widget(s)
                         forced_height = beautiful.dpi(16),
                         color = beautiful.blue,
                     },
-                    margins = beautiful.dpi(2),
+                    margins = beautiful.dpi(1),
                     layout = wibox.container.margin
                 },
                 valign = "center",

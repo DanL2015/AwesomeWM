@@ -14,6 +14,7 @@ local M = {}
 function M.toggle()
     M.wibox.visible = not M.wibox.visible
     if M.wibox.visible then
+        M.wibox.height = awful.screen.focused().geometry.height - 4 * beautiful.useless_gap
         M.wibox.screen = awful.screen.focused()
         awful.placement.top_left(M.wibox, {
             margins = {
