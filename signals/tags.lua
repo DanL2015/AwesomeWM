@@ -7,8 +7,6 @@ tag.connect_signal("request::default_layouts", function()
     })
 end)
 
--- TODO: Check if this needs to be called again if new screen added
-
-awful.screen.connect_for_each_screen(function(s)
+screen.connect_signal("request::desktop_decoration", function(s)
     awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
 end)

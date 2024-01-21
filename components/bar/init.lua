@@ -5,14 +5,14 @@ local beautiful = require("beautiful")
 
 
 local function create_bar(s)
-    local bar = awful.wibar({
+    s.bar = awful.wibar({
         position = "left",
         width = beautiful.bar_width,
         screen = s,
         height = s.geometry.height
     })
 
-    bar.widget = helpers.add_bg0(wibox.widget({
+    s.bar.widget = helpers.add_bg0(wibox.widget({
         layout = wibox.layout.align.vertical,
         { -- Top widgets
             -- Launcher, Taglist
