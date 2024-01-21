@@ -26,10 +26,15 @@ function M.new()
     M.notifications = wibox.widget({
         spacing = beautiful.margin[0],
         layout = wibox.layout.overflow.vertical,
-        forced_height = beautiful.dpi(200),
+        forced_height = beautiful.dpi(1000),
         scrollbar_width = 10,
         step = 50
     })
+
+    M.notifications:set_scrollbar_widget(wibox.widget({
+        shape = helpers.rrect(),
+        widget = wibox.widget.separator
+    }))
 
     M.erase:buttons(awful.util.table.join(awful.button({}, 1, function()
         M.notifications:reset()
