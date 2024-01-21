@@ -32,7 +32,8 @@ awful.keyboard.append_global_keybindings({
         description = "brightness up",
         group = "launcher",
         on_press = function()
-            awful.spawn("xbacklight -inc 5")
+            awesome.emit_signal("brightness::osd")
+            awesome.emit_signal("brightness::increase", 5)
         end,
     }),
     awful.key({
@@ -41,7 +42,8 @@ awful.keyboard.append_global_keybindings({
         description = "brightness down",
         group = "launcher",
         on_press = function()
-            awful.spawn("xbacklight -dec 5")
+            awesome.emit_signal("brightness::osd")
+            awesome.emit_signal("brightness::decrease", 5)
         end,
     }),
     awful.key({
@@ -50,6 +52,7 @@ awful.keyboard.append_global_keybindings({
         description = "volume up",
         group = "launcher",
         on_press = function()
+            awesome.emit_signal("volume::osd")
             awesome.emit_signal("volume::increase", 5)
         end,
     }),
@@ -60,6 +63,7 @@ awful.keyboard.append_global_keybindings({
         description = "volume down",
         group = "launcher",
         on_press = function()
+            awesome.emit_signal("volume::osd")
             awesome.emit_signal("volume::decrease", 5)
         end,
     }),
@@ -70,6 +74,7 @@ awful.keyboard.append_global_keybindings({
         description = "toggle mute",
         group = "launcher",
         on_press = function()
+            awesome.emit_signal("volume::osd")
             awesome.emit_signal("volume::mute")
         end,
     }),

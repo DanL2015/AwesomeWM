@@ -18,6 +18,7 @@ function M.create_status_widget(icon, color, hover_text)
     local progressbar = wibox.widget({
         icon_widget,
         colors = { color },
+        bg = beautiful.bg0,
         thickness = beautiful.dpi(8),
         forced_height = beautiful.dpi(74),
         paddings = beautiful.dpi(2),
@@ -81,6 +82,7 @@ function M.new()
             volume.tooltip.markup = "<b>Muted</b>"
             volume.icon.markup = ""
             volume.widget.fg = beautiful.red
+            volume.progressbar.colors[1] = beautiful.red
             return
         end
 
@@ -102,7 +104,7 @@ function M.new()
             volume.progressbar.colors[1] = beautiful.green
         end
         volume.text.markup = tostring(vol).."%"
-        volume.progressbar.value = -1 * vol
+        volume.progressbar.value = vol
         volume.tooltip.markup = "<b>Volume</b>: " .. tostring(vol) .. "%"
     end)
     volume.widget:buttons({
