@@ -48,6 +48,11 @@ function M.display_widget()
     M.timer:again()
 end
 
+function M.hide_widget()
+    M.wibox.visible = false
+    M.timer:stop()
+end
+
 function M.new()
     M.icon = wibox.widget({
         widget = wibox.widget.textbox,
@@ -115,6 +120,10 @@ function M.new()
 
     awesome.connect_signal("volume::osd", function()
         M.display_widget()
+    end)
+
+    awesome.connect_signal("brightness::osd", function()
+        M.hide_widget()
     end)
 
     return M.wibox
