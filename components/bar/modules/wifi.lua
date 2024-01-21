@@ -37,7 +37,7 @@ local function create_widget()
 
     local tooltip = awful.tooltip({
         objects = { widget },
-        markup = "<b>WIFI</b>"
+        markup = "<b>Unknown</b>"
     })
 
     awesome.connect_signal("network::update", function(id, eth_state, wifi_state)

@@ -23,15 +23,13 @@ ruled.client.connect_signal("request::rules", function()
 				"Blueman-manager",
 				"Gpick",
 			},
-			-- Note that the name property shown in xprop might be set slightly after creation of the client
-			-- and the name shown there might not match defined rules here.
 			name = {
-				"Event Tester", -- xev.
+				"Event Tester",
 			},
 			role = {
-				"AlarmWindow", -- Thunderbird's calendar.
-				"ConfigManager", -- Thunderbird's about:config.
-				"pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
+				"AlarmWindow",
+				"ConfigManager",
+				"pop-up",
 			},
 		},
 		properties = { floating = true },

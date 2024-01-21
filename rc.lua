@@ -28,6 +28,7 @@ require("notifications")
 -- Autostart Applications
 awful.spawn.single_instance("xfsettingsd", false)
 awful.spawn.single_instance("picom", false)
+awful.spawn.single_instance("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1", false)
 
 -- Run garbage collector regularly to prevent memory leaks
 gears.timer {

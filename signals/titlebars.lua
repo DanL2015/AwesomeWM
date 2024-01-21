@@ -1,37 +1,7 @@
-local naughty = require("naughty")
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
-
-naughty.connect_signal("request::display_error", function(message, startup)
-    naughty.notification({
-        urgency = "critical",
-        title = "An error occured" .. (startup and " during startup." or "."),
-        message = message
-    })
-end)
-
--- Tags
-tag.connect_signal("request::default_layouts", function()
-    awful.layout.append_default_layouts({ awful.layout.suit.tile, awful.layout.suit.floating,
-        awful.layout.suit.spiral, awful.layout.suit.spiral.dwindle -- awful.layout.suit.max,
-    })
-end)
-
-awful.screen.connect_for_each_screen(function(s)
-    awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
-end)
-
-client.connect_signal("manage", function(c)
-    if not awesome.startup then
-        awful.client.setslave(c)
-    end
-
-    if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
-        awful.placement.no_offscreen(c)
-    end
-end)
 
 -- Titlebars
 client.connect_signal("request::titlebars", function(c)
@@ -135,7 +105,7 @@ client.connect_signal("request::titlebars", function(c)
 
     titlebar.widget = titlebar_widget
 
-    -- c.shape = helpers.rrect()
+    c.shape = helpers.rrect()
 
     client.connect_signal("focus", function()
         if c.active then
@@ -149,17 +119,29 @@ client.connect_signal("request::titlebars", function(c)
         end
     end)
 end)
--- client.connect_signal("property::maximized", function(c)
---     if c.maximized then
---         c.shape = nil
---     else
---         c.shape = helpers.rrect()
---     end
--- end)
--- client.connect_signal("property::fullscreen", function(c)
---     if c.fullscreen then
---         c.shape = nil
---     else
---         c.shape = helpers.rrect()
---     end
--- end)
+
+client.connect_signal("manage", function(c)
+    if not awesome.startup then
+        awful.client.setslave(c)
+    end
+
+    if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
+        awful.placement.no_offscreen(c)
+    end
+end)
+
+client.connect_signal("property::maximized", function(c)
+    if c.maximized then
+        c.shape = nil
+    else
+        c.shape = helpers.rrect()
+    end
+end)
+
+client.connect_signal("property::fullscreen", function(c)
+    if c.fullscreen then
+        c.shape = nil
+    else
+        c.shape = helpers.rrect()
+    end
+end)
