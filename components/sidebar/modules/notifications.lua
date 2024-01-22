@@ -216,7 +216,7 @@ function M.new()
         local widget = helpers.add_bg0(wibox.widget({
             title_bar,
             body,
-            forced_height = beautiful.dpi(120),
+            forced_height = (n.actions and #n.actions > 0) and beautiful.dpi(150) or beautiful.dpi(120),
             layout = wibox.layout.fixed.vertical
         }))
 

@@ -51,7 +51,7 @@ local function create_widget()
         },
         {
             icon,
-            fg = beautiful.fg2,
+            fg = beautiful.bg2,
             layout = wibox.container.background,
         },
         layout = wibox.layout.stack

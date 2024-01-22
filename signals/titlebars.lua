@@ -2,6 +2,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
+local naughty = require("naughty")
 
 -- Titlebars
 client.connect_signal("request::titlebars", function(c)

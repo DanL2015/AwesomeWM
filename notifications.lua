@@ -102,6 +102,8 @@ naughty.connect_signal("request::display", function(n)
         border_width = beautiful.dpi(2),
         color = beautiful.blue,
         border_color = beautiful.bg0,
+        forced_width = beautiful.icon_size[1],
+        forced_height = beautiful.icon_size[1],
         layout = wibox.container.radialprogressbar
     })
 

@@ -37,7 +37,7 @@ function M.get_apps()
 
         if name and exec and icon then
             table.insert(M.apps, {
-                name = "<b>"..name.."</b>",
+                name = "<b>" .. name .. "</b>",
                 cmd = cmd,
                 exec = exec,
                 icon = icon,
@@ -85,8 +85,7 @@ function M.create_default()
     })))
 
     background:buttons(gears.table.join(awful.button({}, 1, function()
-        awful.spawn.with_shell(M.prompt.text)
-        awesome.emit_signal("launcher::stop")
+        M.run_default()
     end)))
 
     background:connect_signal("mouse::enter", function()
@@ -156,7 +155,7 @@ end
 function M.update_apps()
     M.matches = {}
     for _, app in pairs(M.apps) do
-        if app.filter:lower():find(M.input:lower()) then
+        if app.filter:lower():find(M.input:lower():gsub("%W", "%%%0")) then
             table.insert(M.matches, app)
         end
     end
@@ -167,20 +166,31 @@ function M.update_apps()
 
     M.list:reset()
 
+    local selected = false
     for i, app in pairs(M.matches) do
         local default_bg = beautiful.bg0
         if i == M.selected then
             default_bg = beautiful.bg1
+            selected = true
         end
         local app_widget = M.create_app_widget(app, default_bg)
         M.list:add(app_widget)
     end
 
-    M.list:add(M.create_default())
+    local default = M.create_default()
+    if not selected then
+        default.bg = beautiful.bg1
+    end
+    M.list:add(default)
 end
 
 function M.run_app(app)
     awful.spawn(app.exec)
+    awesome.emit_signal("launcher::stop")
+end
+
+function M.run_default()
+    awful.spawn(M.prompt.text:sub(1, -2))
     awesome.emit_signal("launcher::stop")
 end
 
@@ -197,8 +207,12 @@ function M.keypressed_callback(_, mod, key, event)
         awesome.emit_signal("launcher::stop")
     end
 
-    if key == "Return" and M.matches[1] then
-        M.run_app(M.matches[M.selected])
+    if key == "Return" then
+        if M.selected <= #M.matches then
+            M.run_app(M.matches[M.selected])
+        else
+            M.run_default()
+        end
         awesome.emit_signal("launcher::stop")
     end
 
@@ -213,7 +227,7 @@ function M.keypressed_callback(_, mod, key, event)
     if not M.input or M.input == "" then
         M.prompt.text = "|"
     else
-        M.prompt.text = M.input.."|"
+        M.prompt.text = M.input .. "|"
     end
     M.update_apps()
 end
