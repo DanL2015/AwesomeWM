@@ -43,10 +43,7 @@ function M.create_status_widget(icon, color, hover_text)
     })))
     widget.fg = color
 
-    local tooltip = awful.tooltip({
-        objects = { widget },
-        markup = hover_text
-    })
+    local tooltip = helpers.add_tooltip(widget, hover_text)
 
     return { widget = widget, icon = icon_widget, text = text, progressbar = progressbar, tooltip = tooltip }
 end

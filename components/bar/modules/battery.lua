@@ -51,7 +51,7 @@ local function create_widget()
         },
         {
             icon,
-            fg = beautiful.bg2,
+            fg = beautiful.bg0,
             layout = wibox.container.background,
         },
         layout = wibox.layout.stack
@@ -59,10 +59,7 @@ local function create_widget()
 
     local widget = helpers.add_margin(stack, beautiful.margin[1], beautiful.margin[0])
 
-    local tooltip = awful.tooltip({
-        objects = { widget },
-        markup = "<b>Unknown</b>"
-    })
+    local tooltip = helpers.add_tooltip(widget, "<b>Unknown</b>")
 
     awesome.connect_signal("battery::update", function(device)
         update(progressbar, icon, tooltip, device)

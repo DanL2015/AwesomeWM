@@ -26,10 +26,7 @@ end
 
 local function init(self, client, index, clients)
     local background = self:get_children_by_id("background")[1]
-    awful.tooltip({
-        objects = { background },
-        markup = "<b>" .. (client.class:gsub("^%l", string.upper)) .. "</b>"
-    })
+    local tooltip = helpers.add_tooltip(background, "<b>" .. (client.class:gsub("^%l", string.upper)) .. "</b>")
     update(self, client, index, clients)
 end
 

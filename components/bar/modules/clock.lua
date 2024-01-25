@@ -12,11 +12,7 @@ local function create_widget()
         widget = wibox.widget.textclock,
     })
 
-    local tooltip = awful.tooltip({
-        objects = { clock },
-        markup = "<b>Date</b>: "..os.date("%A, %B %e")
-    })
-
+    local tooltip = helpers.add_tooltip(clock, "<b>Date</b>: "..os.date("%A, %B %e"))
     return helpers.add_margin(clock)
 end
 return create_widget

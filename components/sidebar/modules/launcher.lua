@@ -8,7 +8,7 @@ local gears = require("gears")
 
 local M = {}
 
-M.pinned = { "Nemo", "Firefox Web Browser", "Vesktop", "Alacritty" }
+M.pinned = { "Nemo", "Firefox Web Browser", "Vesktop", "Alacritty", "Spotify" }
 
 function M.get_apps()
     M.apps = {}

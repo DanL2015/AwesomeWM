@@ -35,10 +35,7 @@ local function create_widget()
 
     local widget = helpers.add_margin(background, beautiful.margin[1], 0)
 
-    local tooltip = awful.tooltip({
-        objects = { widget },
-        markup = "<b>Unknown</b>"
-    })
+    local tooltip = helpers.add_tooltip(widget, "<b>Unknown</b>")
 
     awesome.connect_signal("network::update", function(id, eth_state, wifi_state)
         update(icon, background, tooltip, id, eth_state, wifi_state)
