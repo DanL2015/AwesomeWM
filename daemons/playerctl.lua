@@ -42,10 +42,10 @@ function M.update_metadata()
         "playerctl -F metadata --format 'title_{{title}}artist_{{artist}}player_name_{{playerName}}album_{{album}}'",
         {
             stdout = function(stdout)
-                local title = gears.string.xml_escape(stdout:match('title_(.*)artist_')) or ""
-                local artist = gears.string.xml_escape(stdout:match('artist_(.*)player_name_')) or ""
-                local player_name = stdout:match('player_name_(.*)album_') or ""
-                local album = gears.string.xml_escape(stdout:match('album_(.*)')) or ""
+                local title = gears.string.xml_escape(stdout:match('title_(.*)artist_')) or nil
+                local artist = gears.string.xml_escape(stdout:match('artist_(.*)player_name_')) or nil
+                local player_name = stdout:match('player_name_(.*)album_') or nil
+                local album = gears.string.xml_escape(stdout:match('album_(.*)')) or nil
                 awesome.emit_signal("playerctl::metadata::update", title, artist, player_name, album)
             end
         })

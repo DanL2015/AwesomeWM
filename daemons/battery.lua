@@ -1,17 +1,22 @@
 local upower = require('lgi').require('UPowerGlib')
-
-local gtable = require("gears.table")
-local gtimer = require("gears.timer")
+local gears = require("gears")
 
 local M = {}
 
-function M.start()
-    local device = upower.Client():get_display_device()
+M.interval = 5
+M.device = upower.Client():get_display_device()
 
-    device.on_notify = function (d)
-        awesome.emit_signal('battery::update', d)
-    end
-    gtimer.delayed_call(awesome.emit_signal, 'battery::update', device)
+function M.update()
+  awesome.emit_signal("battery::update", M.device)
+end
+
+function M.start()
+  gears.timer {
+    timeout = M.interval,
+    autostart = true,
+    call_now = true,
+    callback = M.update
+  }
 end
 
 M.start()
