@@ -4,7 +4,7 @@ local M = {}
 M.modkey = "Mod4"
 
 M.apps =  {
-    terminal = "st",
+    terminal = "alacritty",
     editor = "nvim",
     browser = "firefox",
     file_manager = "nemo",

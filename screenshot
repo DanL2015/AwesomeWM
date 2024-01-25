@@ -46,7 +46,7 @@ _FONT_='Roboto-Condensed-Regular'
 function check() {
     if [[ $? -eq 1 && ${PIPESTATUS[0]} -eq 1 ]]; then
         _end_job_=$(date +%s)
-        summary $_start_job_ $_end_job_ 'failed' && notify-send -u critical -t 3000 -a "Screenshot Tool" "Screensht!" "screenshot aborted" >> $_LOG_FILE_ 2>&1
+        summary $_start_job_ $_end_job_ 'failed' && notify-send -u critical -t 3000 -a "Screenshot Tool" "Screenshot" "screenshot aborted" >> $_LOG_FILE_ 2>&1
         exit 1
     fi
 }

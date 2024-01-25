@@ -57,24 +57,24 @@ M.purple = "#cea5fb"
 
 -- Default colors
 M.bg_normal = M.bg0
-M.bg_focus = M.bg0
+M.bg_focus = M.bg1
 M.bg_urgent = M.bg0
 M.bg_minimize = M.bg0
 
-M.fg_normal = M.fg1
+M.fg_normal = M.fg2
 M.fg_focus = M.fg0
 M.fg_urgent = M.red
 M.fg_minimize = M.fg2
 
 M.border_color_normal = M.bg0
-M.border_color_active = M.bg0
+M.border_color_active = M.bg1
 M.border_width = dpi(2)
 
 -- Configs
 M.bar_width = M.dpi(42)
 
 M.titlebar_height = M.dpi(42)
-M.useless_gap = M.dpi(8)
+M.useless_gap = M.dpi(4)
 
 M.switcher_height = M.dpi(200)
 M.switcher_width = M.dpi(200)
